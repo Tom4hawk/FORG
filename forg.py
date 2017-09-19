@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 # FORG.py
 # $Id: forg.py,v 1.15 2001/09/02 17:01:42 s2mdalle Exp $
 # Written by David Allen <mda@idatar.com>
