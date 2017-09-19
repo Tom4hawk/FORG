@@ -1,0 +1,15 @@
+# This is a FORG configuration file.
+# From here, you can configure which fonts and colors the FORG uses.
+#
+# I strongly recommend a fixed-width font, particularly since on many 
+# gopher sites, you'll find ASCII art that doesn't display well with 
+# variable width fonts.
+#
+# In order to make this options file "active", copy it to $HOME/.forg/options
+# and that's all there is to it.
+#
+##############################################################################
+*font:  -adobe-courier-*-r-*-*-12-*-*-*-*-*-*-*
+*Label*font:    -adobe-courier-*-r-*-*-12-*-*-*-*-*-*-*
+*background:    Gray80
+*Entry*background: white

@@ -1,0 +1,75 @@
+Changes since version 0.5
+	- Fixed short read for gopher servers that misreport the content
+	  lengths of documents.  FORG now totally disregards content
+	  lenghts since they are so unreliable.
+
+Changes since version 0.4.1
+	- Added the 'delete' feature in the Bookmark Editor.
+	- Bookmarks now reload after the editor widget is destroyed.
+	- Fixed "inactive bookmark menu" problem when reloading bookmark
+	  menu.
+	- Added many more docstrings to the source.
+	- Fixed URL parsing bug on startup.  Previously the program
+	  mishandled fully qualified URLs as arguments, now it doesn't.
+	- Added option:  delete cache on exit
+	- Added option:  home.  
+	- Added "Home" button on toolbar and "Set this site as my home
+	  site" option in the options menu.
+
+Changes since version 0.4:
+	- Fixed Makefile bug pointed out by stain <sta1n@libero.it>
+	- Fixed Python 2.1 compatibility bug pointed out by stain
+	<sta1n@libero.it> 
+	- Migrated all regsub.[g]sub calls to re.sub
+	- Fixed other Python 2.1 compatibility issues in Tree.py
+
+Changes since version 0.3:
+	- Added the ability to select fonts/colors with
+	  $HOME/.forg/options
+	- Fixed critical bug that was causing directory creation errors on
+	  windows systems.
+	- Fixed fatal bug if the options file didn't exist.  Whoops.  :)
+	- Fixed several bookmark editor bugs including disallowing cutting
+	  the root node, adding error dialogs for inactive conditions
+	  (like when the user tries to paste and no node is on the
+	  clipboard)
+	- Disabled menu tearoffs.  If anybody really wants them, I'll make
+	  them an option, but they seem to confuse windows users, and
+	  they're not exactly a super useful innovation.  :)
+	- Small GUI tweaks.
+	
+Changes since version 0.2:
+	Many bugfixes to the bookmark editor, including:
+	- pasting folders into other folders
+	- inserting folders as siblings of other folders
+	- editing bookmarks and folder names in their places
+	Display bugfixes, including a fix for some menu lockups.
+	
+	Program redesign - rather than having most of the logic of the
+	program in TkGui, it has been separated out into a module allowing
+	the FORG to be embedded in other applications.
+
+	Improved caching and directory creation
+
+	Addition of "purge cache" and "query cache" features.
+
+Changes since version 0.1:
+	Added the "Purge Cache" functionality, which does the equivalent
+	of a "rm -rf" on the users cache directory, which is usually
+	$HOME/.forg/cache/.
+
+	Added the "Cache Statistics" functionality to count
+	files/directories and total filesize.
+
+	Added support for the PIL (Python Imaging Library).  If you have
+	this software installed, it will be used to display images
+	supported by the PIL inside the FORG's window when selecting
+	images.  This will only happen if you don't have an application
+	bound to that filetype, and if the "Use PIL" option is checked.
+
+	Added rudimentary bookmark editor, which isn't working yet, but
+	gives you an idea of what it will be like.
+
+	Added the Tree widget written by Charles E. "Gene" Cash
+	<gcash@fdn.com>.  Used in the Bookmark Editor.
+	

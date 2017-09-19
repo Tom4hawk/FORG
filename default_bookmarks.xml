@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE xbel SYSTEM "xbel-1.0.dtd">
+
+<!-- This file holds the bookmarks for FORG.  
+     Please copy this file to $HOME/.forg/bookmarks to install it as
+     your default bookmarks. -->
+
+<xbel>
+  <folder>
+    <title>Bookmarks</title>
+    <folder>
+      <title>Essential Links</title>
+      <bookmark href="gopher://gopher.floodgap.com:70/1/">
+        <title>gopher.floodgap.com root</title>
+      </bookmark>                              
+      <bookmark href="gopher://gopher.quux.org:70/1/">
+        <title>gopher.quux.org root</title>
+      </bookmark>                          
+      <bookmark href="gopher://gopher.quux.org:70/11/devel">
+        <title>Development Projects</title>
+      </bookmark>                          
+      <bookmark href="gopher://gopher.floodgap.com:70/7/v2/vs">
+        <title>Search gopherspace with Veronica 2</title>
+      </bookmark>                                        
+      <bookmark href="gopher://gopher.heatdeath.org:70/1/">
+        <title>The Heatdeath Organization</title>
+      </bookmark>
+      <bookmark href="gopher://gopher.well.sf.ca.us:70/1/">
+        <title>Whole Earth 'Lectronic Links</title>
+      </bookmark>
+    </folder> <!-- Essential links -->
+  </folder> <!-- Bookmarks -->
+</xbel>

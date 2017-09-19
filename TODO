@@ -1,0 +1,17 @@
+- Optionally make use of PIL if it is installed (Python Imaging
+  Library).  I don't know how well this is going to work across
+  platforms though.  This could be used to display jpeg/gif/png when
+  downloaded rather than using a launching program.
+- Maybe work in an alternative to GUIDirectory for listing things in
+  an icon-list fashion.
+- Add Options editor.  (See Options.py -- there are a number of
+  configurable options, but no way to do that yet)
+- Improve associations editor.
+- Make it irrelevant whether users enter URLs or hostnames for
+  starting points.  (This will probably disallow interpretation as a
+  local flie)
+- Support bookmark subfolders
+- Write bookmark handling widget  (add/delete/rename/folders, etc)
+- Do more with information from server on different resources.
+  (i.e. more than just block separation and presenting it to the user
+  in a dialog)

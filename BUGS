@@ -1,0 +1,21 @@
+Current known bugs in FORG:
+
+- Some dialog menus have to have their titlebar clicked or be resized
+  before they will actually appear.  This looks like a Pmw thing.
+- Find facility for text files works, but it doesn't show the user the
+  result, so for all practical purposes it doesn't work.  :)
+- Find facility on directories works, but if the item found wasn't on
+  the screen, you may have to scroll down to find it.
+- Random python segfaults seem to happen occasionally due to Pmw.  I
+  cannot trace this.  If you are able to get a core file out of python
+  and this happens to you, please email it to me. (Along with info on
+  the version of python you're running)
+- Sometimes (rarely) windows will not appear, and there will be an
+  unhandled exception thrown through Pmw's convoluted scrolling code.
+  I'm having a hell of a time tracing this too, but it should be done
+  with eventually.
+- Under some strange circumstances, the program may crash when
+  launching an external application to deal with a file.
+- The "STOP" button doesn't work.
+- If the program is abnormally killed, it may leave spawned processes
+  behind, despite its best efforts not to.

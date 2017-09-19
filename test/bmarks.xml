@@ -1,0 +1,28 @@
+<xml version="1.0"?>
+
+<xbel>
+  <folder>
+    <title>Bookmarks</title>
+    <bookmark href="gopher://gopher.mothra.dyndns.org:70/1/">
+      <title>Mothra Madness</title>
+    </bookmark>
+    <folder>
+      <title>Essential Resources</title>
+      <bookmark href="gopher://gopher.floodgap.com:70/1/">
+        <title>Floodgap Home</title>
+      </bookmark>
+      <bookmark href="gopher://gopher.heatdeath.org:70/1/">
+        <title>Heatdeath Organization</title>
+      </bookmark>
+      <bookmark href="gopher://gopher.quux.org:70/1/">
+        <title>Quux.org</title>
+      </bookmark>
+      <bookmark href="gopher://gopher.tc.umn.edu:70/1/">
+        <title>UMN Home</title>
+      </bookmark>
+      <bookmark href="gopher://gopher.floodgap.com:70/7/v2/vs">
+        <title>Veronica-2 Search</title>
+      </bookmark>
+    </folder>
+  </folder>
+</xbel>

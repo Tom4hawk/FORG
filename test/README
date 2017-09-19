@@ -1,0 +1,6 @@
+What you'll find here is several miscellaneous python scripts used to
+test different components of the system.  When I first was writing
+things like List.py and the various socket routines, I needed tiny
+modules to test them and this is what I used.
+
+They aren't really of any value to the main program.
