@@ -144,7 +144,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                 blurb_label = Label(self.sbox, foreground=self.DEFAULT_COLOR,
                                     text=rname)
                 blurb_label.grid(row=x, columnspan=self.BLURB_SPAN,
-                                 col=self.BLURB_COLUMN, sticky=W)
+                                 column=self.BLURB_COLUMN, sticky=W)
                 self.searchlist.append([rname, blurb_label,
                                         self.DEFAULT_COLOR])
                 
@@ -207,11 +207,11 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                 self.searchlist.append([rname, b, default_color])
                 
                 l.grid(row=x,
-                       col=self.TYPE_COLUMN,
+                       column=self.TYPE_COLUMN,
                        columnspan=self.TYPE_SPAN,
                        sticky=W)
                 b.grid(row=x,
-                       col=self.NAME_COLUMN,
+                       column=self.NAME_COLUMN,
                        columnspan=self.NAME_SPAN,
                        sticky=W)
 
