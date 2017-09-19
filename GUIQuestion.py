@@ -48,7 +48,7 @@ class GUIQuestion(Frame):
         promptString = self.question.getPromptString()
         defaultValue = self.question.getDefault()
 
-        Label(self, text=promptString).grid(row=0, col=0, sticky=W)        
+        Label(self, text=promptString).grid(row=0, column=0, sticky=W)
 
         if self.type == QUESTION_NOTE:
             # Prompt string is all we need for this one.
@@ -58,30 +58,30 @@ class GUIQuestion(Frame):
             self.entry = Entry(self)
             if len(defaultValue) > 0:
                 self.entry.insert('end', defaultValue)
-            self.entry.grid(row=0, col=1, columnspan=4, sticky=W)
+            self.entry.grid(row=0, column=1, columnspan=4, sticky=W)
             return None
         if self.type == QUESTION_ASKF or self.type == QUESTION_CHOOSEF:
             self.entry = Entry(self)
             if len(defaultValue) > 0:
                 self.entry.insert('end', defaultValue)
-            self.entry.grid(row=0, col=1, columnspan=4, sticky=W)
+            self.entry.grid(row=0, column=1, columnspan=4, sticky=W)
 
             # Browse buttons for file selection.
             self.browse = Button(text="Browse", command=self.browse)
-            self.browse.grid(row=0, col=5, sticky=W)
+            self.browse.grid(row=0, column=5, sticky=W)
             return None
         if self.type == QUESTION_ASKP:
             self.entry = Entry(self, show="*")
 
             if len(defaultValue) > 0:
                 self.entry.insert('end', defaultValue)
-            self.entry.grid(row=0, col=1, columnspan=4, sticky=W)
+            self.entry.grid(row=0, column=1, columnspan=4, sticky=W)
             return None
         if self.type == QUESTION_ASKL:
             self.entry = Pmw.ScrolledText(self, hscrollmode='dynamic',
                                           text_width=80, text_height=6,
                                           vscrollmode='dynamic')
-            self.entry.grid(row=1, col=0, columnspan=2, rowspan=2,
+            self.entry.grid(row=1, column=0, columnspan=2, rowspan=2,
                             sticky='N')
             return None
         if self.type == QUESTION_SELECT:
@@ -95,7 +95,7 @@ class GUIQuestion(Frame):
                 print "Invoking defalut %s" % defaultValue
                 self.entry.invoke(defaultValue)
 
-            self.entry.grid(row=1, col=0, columnspan=4, rowspan=4,
+            self.entry.grid(row=1, column=0, columnspan=4, rowspan=4,
                             sticky='NSEW')
             print 'Returning SELECT GUIQuestion'
             return None
@@ -108,7 +108,7 @@ class GUIQuestion(Frame):
                 print "Invoking defalut %s" % defaultValue
                 self.entry.invoke(defaultValue)
                 
-            self.entry.grid(row=1, col=0, columnspan=4, rowspan=4,
+            self.entry.grid(row=1, column=0, columnspan=4, rowspan=4,
                             sticky='NSEW')
             print "Returning CHOOSE GUIQuestion"
             return None

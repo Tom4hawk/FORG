@@ -38,12 +38,12 @@ class FindDialog:
         self.frame = Frame(self.dialog.interior())
         self.frame.pack(expand=1, fill='both')
 
-        Label(self.frame, text="Find a term...").grid(row=0, col=0,
+        Label(self.frame, text="Find a term...").grid(row=0, column=0,
                                                       columnspan=5)
-        Label(self.frame, text="Term: ").grid(row=1, col=0)
+        Label(self.frame, text="Term: ").grid(row=1, column=0)
 
         self.searchEntry = Entry(self.frame, text="")
-        self.searchEntry.grid(row=1, col=1, columnspan=4)
+        self.searchEntry.grid(row=1, column=1, columnspan=4)
 
         self.css = IntVar()
         
@@ -51,7 +51,7 @@ class FindDialog:
                                                  text="Case-sensitive search",
                                                  variable = self.css,
                                                  command  = self.cb)
-        self.caseSensitiveCheckBox.grid(row=2, col=0, columnspan=4)
+        self.caseSensitiveCheckBox.grid(row=2, column=0, columnspan=4)
         
         self.lastMatch = None
         # self.dialog.activate()
@@ -161,10 +161,10 @@ class NewFolderDialog:
                                  buttons=self.buttons)
 
         i = self.dialog.interior()
-        Label(i, text="New Folder Title:").grid(row=0, col=0,
+        Label(i, text="New Folder Title:").grid(row=0, column=0,
                                                sticky='EW')
         self.__entry = Entry(i)        
-        self.__entry.grid(row=1, col=0, sticky='EW')
+        self.__entry.grid(row=1, column=0, sticky='EW')
         
         if folderName:
             self.__entry.insert('end', folderName)

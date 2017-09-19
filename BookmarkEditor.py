@@ -86,7 +86,7 @@ class BookmarkEditor(Toplevel):
         
         self.tree = Tree.Tree(self.mainBox, bmtree,
                               rootlabel="Bookmarks", lineflag=0)
-        self.tree.grid(row=0, col=0, sticky='NSEW')
+        self.tree.grid(row=0, column=0, sticky='NSEW')
 
         # Make expandable
         self.mainBox.grid_rowconfigure(0, weight=1)

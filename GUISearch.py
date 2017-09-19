@@ -48,11 +48,11 @@ class GUISearch(ContentFrame.ContentFrame, Frame):
         for x in range(0, len(labels)):
             last = x
             label = labels[x]
-            Label(self, text=label, foreground='#000000').grid(row=x, col=0,
+            Label(self, text=label, foreground='#000000').grid(row=x, column=0,
                                                                columnspan=2)
 
         self.entryArea = Frame(self)
-        self.entryArea.grid(row=(x+1), col=0, columnspan=5, sticky='EW')
+        self.entryArea.grid(row=(x+1), column=0, columnspan=5, sticky='EW')
         self.entryBox = Entry(self.entryArea, text='')
         self.entryBox.pack(side='left', expand=1, fill='x')
         self.entryBox.bind("<Return>", self.submit)
@@ -74,7 +74,7 @@ class GUISearch(ContentFrame.ContentFrame, Frame):
         if self.bottom_label:
             self.bottom_label.destroy()
             self.bottom_label = Label(self, "Searching for \"%s\"" % terms)
-            self.bottom_label.grid(row=10, col=0, columnspan=2,
+            self.bottom_label.grid(row=10, column=0, columnspan=2,
                                    sticky=W)
 
         # Copy the data from the current resource.

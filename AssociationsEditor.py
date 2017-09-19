@@ -48,19 +48,19 @@ class AssociationsEditor:
 
         # Left side widgets
         inputbox = Frame(self.left_side)
-        inputbox.grid(row=0, col=0, columnspan=2, rowspan=2, sticky=W)
+        inputbox.grid(row=0, column=0, columnspan=2, rowspan=2, sticky=W)
 
         # File extension entry box and label.
         ftlabel = Label(inputbox, text='File extension:')
         self.ftEntry = Entry(inputbox, width=6)
-        ftlabel.grid(row=0, col=0, sticky=W)
-        self.ftEntry.grid(row=0, col=1, sticky=W)
+        ftlabel.grid(row=0, column=0, sticky=W)
+        self.ftEntry.grid(row=0, column=1, sticky=W)
 
         # Application entry box and label
         applabel = Label(inputbox, text='Application:')
         self.appEntry = Entry(inputbox, width=30)
-        applabel.grid(row=1, col=0, sticky=W)
-        self.appEntry.grid(row=1, col=1, sticky=W)
+        applabel.grid(row=1, column=0, sticky=W)
+        self.appEntry.grid(row=1, column=1, sticky=W)
 
         # Instruction group box.
         group = Pmw.Group(self.left_side, tag_text='Instructions:')
@@ -99,9 +99,9 @@ class AssociationsEditor:
                                               command=self.resetAssociations)
         # self.addAssociationButton.pack(side='top', expand=1, fill='both')
         # self.removeAssociationButton.pack(side='bottom', expand=1, fill='both')
-        self.addAssociationButton.grid(row=0, col=0, sticky='NEW')
-        self.removeAssociationButton.grid(row=1, col=0, sticky='NEW')
-        self.setDefaultsButton.grid(row=2, col=0, sticky='NEW')
+        self.addAssociationButton.grid(row=0, column=0, sticky='NEW')
+        self.removeAssociationButton.grid(row=1, column=0, sticky='NEW')
+        self.setDefaultsButton.grid(row=2, column=0, sticky='NEW')
         
         # Right side widgets
         self.associationList = Pmw.ScrolledListBox(self.right_side,

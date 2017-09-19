@@ -87,12 +87,12 @@ class Cache:
         lab5 = Label(fr, text=" ")
         lab6 = Label(fr, text="Continue?")
 
-        lab1.grid(row=1, col=0, columnspan=5)
-        lab2.grid(row=2, col=0, columnspan=5)
-        lab3.grid(row=3, col=0, columnspan=5)
-        lab4.grid(row=4, col=0, columnspan=5)
-        lab5.grid(row=5, col=0, columnspan=5)
-        lab6.grid(row=6, col=0, columnspan=5)
+        lab1.grid(row=1, column=0, columnspan=5)
+        lab2.grid(row=2, column=0, columnspan=5)
+        lab3.grid(row=3, column=0, columnspan=5)
+        lab4.grid(row=4, column=0, columnspan=5)
+        lab5.grid(row=5, column=0, columnspan=5)
+        lab6.grid(row=6, column=0, columnspan=5)
                                                 
         # self.dialog.activate()
 

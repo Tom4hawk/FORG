@@ -141,19 +141,19 @@ class TkGui(Tk):
             self.portEntry = Entry(self.navBox, width=5)
 
             self.portEntry.insert('end', '70')
-            self.hostLabel.grid(row=0, col=0, sticky=W)
-            self.hostEntry.grid(row=0, col=1, columnspan=2, sticky=W)
-            self.resourceLabel.grid(row=0, col=3, sticky=W)
-            self.resourceEntry.grid(row=0, col=4, columnspan=2, sticky=W)
-            self.portLabel.grid(row=0, col=6, sticky=W)
-            self.portEntry.grid(row=0, col=7, sticky=W) # No colspan: short box
+            self.hostLabel.grid(row=0, column=0, sticky=W)
+            self.hostEntry.grid(row=0, column=1, columnspan=2, sticky=W)
+            self.resourceLabel.grid(row=0, column=3, sticky=W)
+            self.resourceEntry.grid(row=0, column=4, columnspan=2, sticky=W)
+            self.portLabel.grid(row=0, column=6, sticky=W)
+            self.portEntry.grid(row=0, column=7, sticky=W) # No colspan: short box
 
         self.gobutton = Button(self.navBox, text='Go', command=self.go)
 
         if Options.program_options.getOption('use_url_format'):
             self.gobutton.pack(side='right')
         else:
-            self.gobutton.grid(row=0, col=8, sticky=W)
+            self.gobutton.grid(row=0, column=8, sticky=W)
 
         if URL != None:
             resource = GopherResource.GopherResource()

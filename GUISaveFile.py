@@ -44,8 +44,8 @@ import Dialogs
 
 try:
     import PIL
-    import Image
-    import ImageTk
+    from PIL import Image
+    from PIL import ImageTk
 except:
     print "Bummer dude!  You don't have the PIL installed on your machine!"
     print "That means that the \"Use PIL\" option is going to be irrelevant"

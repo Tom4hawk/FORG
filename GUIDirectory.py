@@ -167,7 +167,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                     resource.__blurb__ = Label(box,
                                                text=resource.toURL())
                     resource.__blurb__.grid(row=rowno,
-                                            col=p.HOSTPORT_COLUMN,
+                                            column=p.HOSTPORT_COLUMN,
                                             columnspan=p.HOSTPORT_SPAN,
                                             sticky=E)
 
@@ -226,16 +226,16 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                             t = t[0:40]
                             Label(self.sbox,
                                   text=t).grid(row=x,
-                                               col=self.INFO_COLUMN,
+                                               column=self.INFO_COLUMN,
                                                columnspan=self.INFO_SPAN)
                         else:
                             Label(self.sbox,
                                   text=t).grid(row=x,
-                                               col=self.INFO_COLUMN,
+                                               column=self.INFO_COLUMN,
                                                columnspan=self.INFO_SPAN)
                     else:
                         Label(self.sbox, text="  ").grid(row=x,
-                                                    col=self.INFO_COLUMN,
+                                                    column=self.INFO_COLUMN,
                                                     columnspan=self.INFO_SPAN)
 
                 # Possibly report to the user whether or not a given file is
@@ -245,12 +245,12 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                     if cacheobj.isInCache(r):
                         Label(self.sbox,
                               text="Cached").grid(row=x,
-                                                  col=self.CACHE_COLUMN,
+                                                  column=self.CACHE_COLUMN,
                                                   columnspan=self.CACHE_SPAN)
                     else:
                         Label(self.sbox,
                               text=" ").grid(row=x,
-                                             col=self.CACHE_COLUMN,
+                                             column=self.CACHE_COLUMN,
                                              columnspan=self.CACHE_SPAN)
 
         self.scrolled_window.resizescrollregion()

@@ -65,7 +65,7 @@ class GUIAskForm(ContentFrame.ContentFrame, Frame):
                 print "Couldn't make wid: %s" % errstr
                 continue
 
-            wid.grid(row=x, col=0, sticky=W)
+            wid.grid(row=x, column=0, sticky=W)
             self.question_widgets.append(wid)
 
         self.submit = Button(self,
