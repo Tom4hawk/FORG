@@ -1,4 +1,13 @@
-THE FORG
+#Fork info
+Original program is no longer maintained (since ~2005) and doesn't work well with newer pythons. This fork aims to address those two problems :)
+
+Quick todo:
+- [x] Port to newest Python 2.x
+- [] Change name
+- [] New readme
+- [] Port to Python 3.x
+
+#THE FORG
 Written by David Allen <mda@idatar.com>
 http://opop.nols.com/
 
