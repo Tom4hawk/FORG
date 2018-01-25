@@ -21,18 +21,18 @@ Table of contents
 
 Features
 ========
-- Ability to load other programs with different file formats. I.e. this program does not interpret HTML, so you may want to associate .html files with [Firefox](https://firefox.com/), so it will be launched upon saving a .html file.
+- Ability to load other programs with different file formats. I.e. this program does not interpret HTML, so you may want to associate .html files with [Firefox](https://firefox.com/), so it will be launched upon saving a .html file
 - Full caching of directories and files
-- Searching supported.  (Tested against gopher.floodgap.com's Veronica, but of course)
-- Bookmark support.  Bookmarks are written in XBEL and support arbitrary folders and subfolders.
+- Searching support.  (Tested against gopher.floodgap.com's Veronica, but of course)
+- Bookmarking support.  Bookmarks are written in XBEL and support arbitrary folders and subfolders
 - Bookmark editing, similar to Firefox
-- Directories are searchable by name.
-- Statistics on size of cache, number of files in the cache, and number of documents in the queue.
+- Directories are searchable by name
+- Statistics on size of cache, number of files in the cache, and number of documents in the queue
 - Ability to save files and directories.  (Note: when directories are saved, the protocol information that the server sent is what is saved to disk...for now)
-- ASK menus - users can interact with programs on foreign servers through the use of miniature questionnaires.
+- ASK menus - users can interact with programs on foreign servers through the use of miniature questionnaires
 - Right click context menus on all items providing all available information on a resource.  (If the server supports Gopher+)
 - Between 0 and 100% complete implementation of Gopher *AND* Gopher+!!! :)
-- Managerspeak.  This program leverages automatic internet data retrieval and storaging technologies for quasi-reliable interlocked handshake protocol interaction, allowing open-ended failsafe solutions to be developed in the realm of...oh whatever.
+- Managerspeak.  This program leverages automatic internet data retrieval and storaging technologies for quasi-reliable interlocked handshake protocol interaction, allowing open-ended failsafe solutions to be developed in the realm of...oh whatever
 
 Requirements
 ============
