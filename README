@@ -1,102 +1,90 @@
-#Fork info
-Original program is no longer maintained (since ~2005) and doesn't work well with newer pythons. This fork aims to address those two problems :)
+Forg
+===
+The FORG is a __Linux__ graphical client for [Gopher](https://en.wikipedia.org/wiki/Gopher_\(protocol\)) written in Python. It will let you browse the world-wide gopherspace and handles various types of media, including HTML and video.
 
-Quick todo:
-- [x] Port to newest Python 2.x
-- [] Change name
-- [] New readme
-- [] Port to Python 3.x
+Table of contents
+=================
+* [Features](#features)
+* [Requirements](#requirements)
+	* [Python & Libraries](#python--libraries)
+	* [Windows/MacOSX support](#windowsmacosx-support)
+* [How to use](#how-to-use)
+	* [Basics](#basics)
+    * [Associate extensions](#associate-extensions)
+    * [Bookmarks](#bookmarks)
+* [Original author](#original-author)
+* [Why fork](#why-fork)
+* [To do](#to-do)
+* [License](#license)
 
-#THE FORG
-Written by David Allen <mda@idatar.com>
-http://opop.nols.com/
 
-Released under the terms of the GNU General Public License.  Please
-see the file COPYING or visit http://www.gnu.org/ for more details.
-One of the things that the COPYING file is going to tell you is that I
-am not responsible for anything that may happen as a result of running
-this program.
 
-Please read the section "IN ORDER TO RUN THE FORG" below on how to get
-this running.  (Hint:  python, Tkinter, and Pmw, and you're there)
-
-FORG is a graphical gopher client.  To run the program, run:
-
-./forg.py host
-
-as an example, host can be "gopher.floodgap.com",
-"gopher.heatdeath.org", or "gopher.quux.org", which are all 3 valid
-gopher sites.  Alternately, you can use URL syntax, as in:
-
-./forg gopher://gopher.quux.org
-
----=== Features ===---
-
-Everything listed here actually does work, well at least most of the
-time.  Please see the BUGS file to find out about what doesn't work.
-
-- Ability to load other programs with different file formats.
-  I.e. this program does not interpret HTML, so you may want to
-  associate .html files with mozilla, so it will be launched upon
-  saving a .html file.
+Features
+========
+- Ability to load other programs with different file formats. I.e. this program does not interpret HTML, so you may want to associate .html files with [Firefox](https://firefox.com/), so it will be launched upon saving a .html file.
 - Full caching of directories and files
-- Searching supported.  (Tested against gopher.floodgap.com's
-  Veronica, but of course)
-- Bookmark support.  Bookmarks are written in XBEL and support
-  arbitrary folders and subfolders.
-- Bookmark editing, similar to netscape
+- Searching supported.  (Tested against gopher.floodgap.com's Veronica, but of course)
+- Bookmark support.  Bookmarks are written in XBEL and support arbitrary folders and subfolders.
+- Bookmark editing, similar to Firefox
 - Directories are searchable by name.
-- Statistics on size of cache, number of files in the cache, and
-  number of documents in the queue.
-- Ability to save files and directories.  (Note: when directories are
-  saved, the protocol information that the server sent is what is
-  saved to disk...for now)
-- ASK menus - users can interract with programs on foreign servers
-  through the use of miniature questionnaires.
-- Right click context menus on all items providing all available
-  information on a resource.  (If the server supports Gopher+)
-- Between 0 and 100% complete implementation of Gopher *AND*
-  Gopher+!!! :)
-- Managerspeak.  This program leverages automatic internet data retrieval
-  and storaging technologies for quasi-reliable interlocked handshake
-  protocol interaction, allowing open-ended failsafe solutions to be
-  developed in the realm of...oh whatever.
+- Statistics on size of cache, number of files in the cache, and number of documents in the queue.
+- Ability to save files and directories.  (Note: when directories are saved, the protocol information that the server sent is what is saved to disk...for now)
+- ASK menus - users can interact with programs on foreign servers through the use of miniature questionnaires.
+- Right click context menus on all items providing all available information on a resource.  (If the server supports Gopher+)
+- Between 0 and 100% complete implementation of Gopher *AND* Gopher+!!! :)
+- Managerspeak.  This program leverages automatic internet data retrieval and storaging technologies for quasi-reliable interlocked handshake protocol interaction, allowing open-ended failsafe solutions to be developed in the realm of...oh whatever.
 
-Please email me with information on anything that the program does
-that you don't think it should do.  (Like penning filthy Russian
-novels, provoking arab/israeli hostilities, breaking your toaster, or
-causing a MIDI rendition of "Yankee Doodle" to be played backwards
-through your speakers)
+Requirements
+============
+Python & Libraries
+------------------
+You will need 4 things. Python 2.7.x, Tkinter (should be bundled with Python), Pmw and Pillow. There is a good chance that your distribution has all of them in official repository. You can use _pip_ if you cannot/don't want to use official repository.
 
----=== IN ORDER TO RUN THE FORG ===---
+Windows/MacOSX support
+----------------------
+Theoretically, this program should run under these systems. I've never tested this theory and I'm not going to.
 
-You will need 3 things.  Python, Tkinter, and Pmw.  If you have an up
-to date linux system, chances are good that you have python and
-Tkinter already.  If you don't, you can download them from
-http://www.python.org/.  The version of python required is 1.5.2, and
-the version of Tkinter required is the latest.  Python version 2.0 is
-strongly suggested.
+How to use
+==========
+Basics
+------
+To run the program, run:
 
-To obtain Pmw, do one of several things:
+    ./forg.py host
+as an example, host can be "___gopher.floodgap.com___", "___gopher.meulie.net___" or "___gopher.quux.org___", which are all valid gopher sites.  
+Alternatively, you can use URL syntax, as in:
 
-Pmw's page is located at:
-http://www.dscpl.com.au/pmw/
-There you will find extensive instructions on downloading it and
-installing it.  The instructions here should be sufficient though.  
+    ./forg gopher://gopher.quux.org
 
-Download the actual package from
-http://download.sourceforge.net/pmw/Pmw.0.8.5.tar.gz
-This is the latest version that was used for development.  You could
-possibly skate by with an earlier version (I haven't tried it) but
-why?
+Associate extensions
+--------------------
+How to Associate extensions
 
-If you're using debian, you can just type "apt-get install python-pmw"
-and let the package management system do all of the dirty work for
-you. 
+Bookmarks
+---------
+How to bookmarks
 
-To install Pmw, just unzip it into your python's library directory.
-For most people, this will be something like
-/usr/lib/python1.5/site-packages/ or something similar.
+Original author
+===============
+_David Allen_ <mda@idatar.com>  
+__http://opop.nols.com/__  
+The upstream home page mentioned in original README is unavailable but if you are curious there is a copy of the site on [archve.org](http://web.archive.org/web/20030416195623/http://opop.nols.com/forg.shtml)
 
-Theoretically, this program should run under windows.  I haven't tried
-it, so don't be suprised if it dies horribly.  But do email me.
+Why fork
+========
+Original program is no longer maintained (latest release is from 2001) and doesn't work well with newer Pythons (quote from original readme: "The version of python required is 1.5.2, (...) Python version 2.0 is strongly suggested."). This fork aims to address those two problems.
+
+To do
+=====
+- [x] ~~Port to newest Python 2.x~~ __Works with Python 2.7__
+- [ ] Port to Python 3.x
+	- [ ] Remove dependency on _xmllib_
+	- [ ] Move as much as possible to syntax compatible with both Python 2 and 3
+- [ ] Change name
+- [ ] Stop using [PMW](http://pmw.sourceforge.net/) (library doesn't look alive)
+- [ ] Scrolling with mouse wheel
+- [ ] Start using _[flake8](http://flake8.pycqa.org/)_
+
+License
+=======
+[GNU General Public License, version 2](https://www.gnu.org/licenses/gpl-2.0.html) - copy of the licence is in _COPYING_ file
