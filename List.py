@@ -31,7 +31,11 @@
 
 from ListNode import *
 
-ListException = "List error"
+
+class ListException(Exception):
+    def __init__(self, message):
+        super(ListException, self).__init__(message)
+
 
 class List:
     def __init__(self):
@@ -96,7 +100,7 @@ class List:
         n = self.front.getNext()
 
         if newnode.__class__ != ListNode:
-            raise ListException, "newnode argument must be a ListNode"
+            raise ListException("newnode argument must be a ListNode")
 
         while n != self.back.getPrev():
             if afterWhat == n or afterWhat == n.getData():
@@ -109,7 +113,7 @@ class List:
 
             n = n.getNext()
 
-        raise ListException, "cannot insert after nonexistent node."
+        raise ListException("cannot insert after nonexistent node.")
 
     def removeReference(self, ref):
         """Removes ref from the list.  Note this must be a reference to
@@ -132,7 +136,7 @@ class List:
             
             n = n.getNext()          # Next item in the list.
             
-        raise ListException, "Reference not found in list"
+        raise ListException("Reference not found in list")
         
     def countNodes(self, f=None):
         """Returns the number of nodes in the list."""
@@ -182,11 +186,11 @@ class List:
         """Removes the current node.  The current node then becomes the next
         node in the list."""
         if not self.current:
-            raise ListException, "Error:  Cannot delete NONE"
+            raise ListException("Error:  Cannot delete NONE")
         if self.current == self.front:
-            raise ListException, "Cannot delete FRONT"
+            raise ListException("Cannot delete FRONT")
         if self.current == self.back:
-            raise ListException, "Cannot delete BACK"
+            raise ListException("Cannot delete BACK")
         
         one_before_this_one = self.current.getPrev()
         one_after_this_one  = self.current.getNext()
@@ -205,7 +209,7 @@ class List:
         first = self.front.next
 
         if first == self.back:
-            raise ListException, "The list is empty"
+            raise ListException("The list is empty")
         return first
 
     def getLast(self):
@@ -214,7 +218,7 @@ class List:
         last = self.back.prev
 
         if last == self.front:
-            raise ListException, "The list is empty"
+            raise ListException("The list is empty")
         return last
     
     def getNext(self):
@@ -222,9 +226,9 @@ class List:
         next = self.current.getNext()
         
         if next == self.back or (next == None and next == self.back):
-            raise ListException, "Already at the end of the list"
+            raise ListException("Already at the end of the list")
         elif next == None:
-            raise ListException, "getNext(): Null next field"
+            raise ListException("getNext(): Null next field")
         
         self.current = next
         return self.current
@@ -235,9 +239,9 @@ class List:
         prev = self.current.getPrev()
         
         if prev == self.front or (prev == None and prev == self.front):
-            raise ListException, "Already at the beginning of the list"
+            raise ListException("Already at the beginning of the list")
         elif prev == None:
-            raise ListException, "getPrev(): Null prev field."
+            raise ListException("getPrev(): Null prev field.")
 
         self.current = self.current.getPrev()
         return self.current
