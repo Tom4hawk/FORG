@@ -22,20 +22,23 @@
 import os
 import utils
 import string
-from gopher           import *
-from Tkinter          import *
+from gopher import *
+from Tkinter import *
 import GopherResponse
 import Pmw
 import Options
 
-CacheException = "Error"
+
+class CacheException(Exception):
+    def __init__(self, message):
+        super(CacheException, self).__init__(message)
+
 
 class Cache:
     verbose = None
     
     def __init__(self, *args):
         self._d = None
-        return None
 
     def getCacheDirectory(self):
         try:
@@ -114,7 +117,7 @@ class Cache:
         pref = self.getCachePrefix()
 
         if not utils.dir_exists(pref):
-            raise CacheException, "Cache prefix %s doesn't exist." % pref
+            raise CacheException("Cache prefix %s doesn't exist." % pref)
                         
         cache_directories = os.listdir(pref)
 
@@ -203,9 +206,9 @@ class Cache:
             # Got it!  Loaded from cache anyway...
             # print "UNCACHE found data for use."
             return resp       
-        except IOError, errstr:
-            raise CacheException, "Couldn't read data on\n%s:\n%s" % (filename,
-                                                                      errstr)
+        except IOError as errstr:
+            raise CacheException("Couldn't read data on\n%s:\n%s" % (filename,
+                                                                      errstr))
 
         # We failed.  Oh well...
         return None
@@ -219,7 +222,7 @@ class Cache:
             # will interpret it as data, and put the question structure inside
             # a text box.   Plus, since these may be dynamic, caching could
             # lead to missing out on things.
-            raise CacheException, "Do not cache AskTypes.  Not a good idea."
+            raise CacheException("Do not cache AskTypes.  Not a good idea.")
         
         basedir      = self.getCachePrefix()
         basefilename = resource.toCacheFilename()
@@ -268,10 +271,10 @@ class Cache:
 
             fp.flush()
             fp.close()
-        except IOError, errstr:
+        except IOError as errstr:
             # Some error writing data to the file.  Bummer.
-            raise CacheException, "Couldn't write to\n%s:\n%s" % (filename,
-                                                                  errstr)
+            raise CacheException("Couldn't write to\n%s:\n%s" % (filename,
+                                                                  errstr))
         # Successfully wrote the data - return the filename that was used
         # to save the data into.  (Absolute path)
         return os.path.abspath(filename)

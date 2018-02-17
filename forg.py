@@ -401,7 +401,7 @@ class FORG(Frame):
                 try:
                     cfilename = self.opts.cache.cache(resp=self.response,
                                                       resource=self.resource)
-                except Cache.CacheException, exceptionstr:
+                except Cache.CacheException as exceptionstr:
                     self.genericError(exceptionstr)
 
         r = self.response

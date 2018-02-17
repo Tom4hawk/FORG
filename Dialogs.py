@@ -199,7 +199,7 @@ class InformationDialog:
         # print "========================================================"
 
         if type(errstr) != StringType:
-            errstr = errstr.__str__
+            errstr = str(errstr)
 
         labels = split(errstr, "\n")
         
@@ -212,7 +212,6 @@ class InformationDialog:
 class ErrorDialog(InformationDialog):
     def __init__(self, parent, errstr, title="Error:"):
         InformationDialog.__init__(self, parent, errstr, title)
-        return None
 
 
 
