@@ -76,10 +76,11 @@ VERSION = '0.6.0'
 class FORGException(Exception):
     def __init__(self, message):
         super(FORGException, self).__init__(message)
-FORGContentException = "Content was missing probably"
+
 
 def getVersion():
     return VERSION
+
 
 class FORG(Frame):
     verbose = None
