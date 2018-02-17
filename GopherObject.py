@@ -26,8 +26,6 @@ import utils
 from string import *
 from gopher import *
 
-GopherObjectException = "Whoops...something went wrong!"
-
 class GopherObject:
     def __init__(self,
                  typecode = None,
