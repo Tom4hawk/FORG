@@ -21,8 +21,13 @@ import re
 import os
 from string import *
 
+
+class AssociationsException(Exception):
+    def __init__(self, message):
+        super(AssociationsException, self).__init__(message)
+
+
 class Associations:
-    AssociationsException = "foo"
     verbose = None
     DELIMITER = " => "
     
@@ -147,7 +152,7 @@ class Associations:
             assoc = self.getAssociation(filename)
 
         if assoc == None or assoc == '':
-            raise AssociationsException, "No association found."
+            raise AssociationsException("No association found.")
         
         # Assoc holds the program name
         assoc = re.sub("$1", "\"" + filename + "\"", assoc, 1)

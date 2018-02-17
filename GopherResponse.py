@@ -35,16 +35,19 @@ import GopherResource
 import ResourceInformation
 import Options
 
-GopherResponseException = "Gopher response error"
+class GopherResponseException(Exception):
+    def __init__(self, message):
+        super(GopherResponseException, self).__init__(message)
 
 class GopherResponse(GopherObject.GopherObject):
     verbose = None
+
     def __init__(self, type=None, host=None, port=None, loc=None, name=None):
         GopherObject.GopherObject.__init__(self, type, host, port, loc, name)
         self.__class = "GopherResponse"
         self.data = None
         self.responses = []
-        return None
+
     def toProtocolString(self):
         if self.getData() == None:
             def protString(item):
@@ -52,7 +55,7 @@ class GopherResponse(GopherObject.GopherObject):
             return join(map(protString, self.getResponses()), "")
         else:
             return self.getData()
-        return None
+
     def writeToFile(self, filename):
         """Writes the contents of this response to a disk file at filename
         this may raise IOError which the caller should deal with"""
@@ -67,40 +70,48 @@ class GopherResponse(GopherObject.GopherObject):
         fp.flush()
         fp.close()
         return filename
+
     def getResponses(self):
         """Return a list of responses.  This is only really good when the
         response was a directory and set of entries."""
         if self.getData() != None:
-            raise GopherResponseException, "Get data instead."
+            raise GopherResponseException("Get data instead.")
         return self.responses
+
     def getData(self):
         """Return the data associated with the response.  This is usually all
         of the data off of the socket except the trailing closer."""
         return self.data
+
     def getDataLength(self):
         return len(self.data)
+
     def getDataChunk(self, startIndex, endIndex=-1):
         """This method provides a way to get chunks of data at a time,
         rather than snarfing the entire ball."""
         
         if endIndex == -1:
             endIndex = len(self.data)
-        return self.data[startindex, endIndex]
+        return self.data[startIndex, endIndex]
+
     def getError(self):
         """If there was an error message, return it."""
         try:
             return self.error
         except:
             return None
+
     def setError(self, errorstr):
         """Modify the error message within this response."""
         self.error = errorstr
         return self.getError()
+
     def setData(self, data):
         """Modify the data within the response.  You probably don't want to
         do this."""
         self.data = data
         return None
+
     def looksLikeDir(self, data):
         """Takes a chunk of data and returns true if it looks like directory
         data, and false otherwise.  This is tricky, and is of course not 100%.
