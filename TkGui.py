@@ -53,8 +53,6 @@ import BookmarkEditor             # Editing bookmarks window
 import Pmw                        # Python Mega Widgets
 import Dialogs                    # FORG specific dialogs
 
-ContentException = "ContentException:"
-
 class TkGui(Tk):
     verbose = None
     MENU_FILE       = 1
