@@ -175,7 +175,7 @@ class Connection:
         utils.msg(msgBar,
                   "Connecting to %s:%s..." % (ipaddr, resource.getPort()))
         try:
-            retval = self.socket.connect((ipaddr, int(resource.getPort()) +3))
+            retval = self.socket.connect((ipaddr, int(resource.getPort())))
             #if retval != 0:
             #    errortype = errno.errorcode[retval]
             #    raise socket.error, errortype
