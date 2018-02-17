@@ -70,10 +70,12 @@ import ResourceInformation
 import Dialogs
 
 #--------------------------- VERSION ------------------------------------
-VERSION = '0.5.1'
+VERSION = '0.6.0'
 #--------------------------- VERSION ------------------------------------
 
-FORGException = "Some error came up. I sure hope it came with a real message"
+class FORGException(Exception):
+    def __init__(self, message):
+        super(FORGException, self).__init__(message)
 FORGContentException = "Content was missing probably"
 
 def getVersion():
@@ -175,7 +177,7 @@ class FORG(Frame):
             self.response = self.conn.getResource(resource=self.resource,
                                                   msgBar=self.mb)
         except GopherConnection.GopherConnectionException, estr:
-            raise FORGException, estr
+            raise FORGException(estr)
         except socket.error, err:
             try:
                 if len(err) >= 2:
@@ -185,10 +187,10 @@ class FORG(Frame):
             except AttributeError:  # This is really weird, don't ask.
                 msg =  "Can't fetch - unknown error."
             err = "getGopherResponse: %s" % err
-            raise FORGException, err
+            raise FORGException(err)
 
         if self.response.getError():
-            raise FORGException, self.response.getError()
+            raise FORGException(self.response.getError())
 
         # Turn the green light back on, since we're done with the transmission.
         self.opts.greenLight()
@@ -274,7 +276,7 @@ class FORG(Frame):
 
         try:
             self.getGopherResponse()
-        except FORGException, estr:
+        except FORGException as estr:
             self.genericError("Error fetching resource:\n%s" % estr)
             return None
             
@@ -300,7 +302,7 @@ class FORG(Frame):
         """Reloads from the network the current resource."""
         try:
             self.getGopherResponse()
-        except FORGException, estr:
+        except FORGException as estr:
             self.genericError("Error fetching resource:\n%s" % estr)
             return None
         
