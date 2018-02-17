@@ -124,10 +124,9 @@ class GopherConnection(Connection.Connection):
                 self.response = self.requestToData(resource,
                                                    request,
                                                    msgBar, None)
-        except Connection.ConnectionException, estr:
+        except Connection.ConnectionException as estr:
             error_resp = GopherResponse.GopherResponse()
-            errstr = "Cannot fetch\n%s:\n%s" % (resource.toURL(),
-                                                estr)
+            errstr = "Cannot fetch\n%s:\n%s" % (resource.toURL(), estr)
 
             error_resp.setError(errstr)
             return error_resp

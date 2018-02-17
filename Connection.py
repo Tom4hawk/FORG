@@ -24,15 +24,18 @@ from string import *
 import utils
 import errno
 
-ConnectionException = "foo"
+
+class ConnectionException(Exception):
+    def __init__(self, message):
+        super(ConnectionException, self).__init__(message)
+
 
 class Connection:
     def __init__(self, *args):
         self._d = None
         self.bytes_transferred = {'sent'     : 0,
                                   'received' : 0 }
-        return None
-    
+
     def received(self, bytes):
         """Keep track of the number of bytes received on this socket object"""
         oldval = self.bytes_transferred['received']
@@ -132,7 +135,7 @@ class Connection:
         """Issue a message to the user and jump out if greenlight
         isn't true."""
         if not Options.program_options.GREEN_LIGHT:
-            raise ConnectionException, "Connection stopped"
+            raise ConnectionException("Connection stopped")
 
     def requestToData(self, resource, request,
                       msgBar=None, grokLine=None):
@@ -160,10 +163,10 @@ class Connection:
             try:
                 self.checkStopped(msgBar)
                 ipaddr = socket.gethostbyname(resource.getHost())
-            except socket.error, err:
+            except socket.error as err:
                 host = resource.getHost()
                 estr = "Cannot lookup\n%s:\n%s" % (host, err)
-                raise ConnectionException, estr
+                raise ConnectionException(estr)
 
         Options.program_options.setIP(resource.getHost(), ipaddr)
         
@@ -172,7 +175,7 @@ class Connection:
         utils.msg(msgBar,
                   "Connecting to %s:%s..." % (ipaddr, resource.getPort()))
         try:
-            retval = self.socket.connect((ipaddr, int(resource.getPort())))
+            retval = self.socket.connect((ipaddr, int(resource.getPort()) +3))
             #if retval != 0:
             #    errortype = errno.errorcode[retval]
             #    raise socket.error, errortype
@@ -180,7 +183,7 @@ class Connection:
             newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(),
                                                          resource.getPort(),
                                                          err)
-            raise ConnectionException, newestr
+            raise ConnectionException(newestr)
         
         data = ""
 
