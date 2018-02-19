@@ -76,7 +76,7 @@ Original program is no longer maintained (latest release is from 2001) and doesn
 
 To do
 =====
-- [x] ~~Port to newest Python 2.x~~ __Works with Python 2.7__
+- [x] Port to newest Python 2.x __Work in progress__
 - [ ] Port to Python 3.x
 	- [ ] Remove dependency on _xmllib_
 	- [ ] Move as much as possible to syntax compatible with both Python 2 and 3
