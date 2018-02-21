@@ -492,11 +492,11 @@ if __name__ == '__main__':
 
     try:
         url = arr[1]
+        if find(lower(url[:]), "gopher://") == -1:
+            url = "gopher://" + url
     except:
-        url = "gopher://gopher.floodgap.com:70/"
+        url = None
 
-    if find(lower(url[:]), "gopher://") == -1:
-        url = "gopher://" + url
 
     # Start the program
     print "Starting program with \"%s\"" % url
