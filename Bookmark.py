@@ -27,10 +27,6 @@ import List
 import utils
 import xmllib
 
-BookmarkFactoryException = "Error"
-BookmarkException        = "Error"
-BookmarkMenuException    = "Error"
-
 class Bookmark(GopherResource.GopherResource):
     def __init__(self, res=None):
         GopherResource.GopherResource.__init__(self)
@@ -43,7 +39,6 @@ class Bookmark(GopherResource.GopherResource):
             self.setLocator(res.getLocator())
             self.setType(res.getTypeCode())
 
-        return None
     def toXML(self, fp, indentlevel):
         """Returns an XML representation of the object.  Callers should use
         an indentlevel of 0 since this is called recursively.  fp is the file
@@ -56,8 +51,10 @@ class Bookmark(GopherResource.GopherResource):
                  self.getName() + "</title>\n")
         fp.write(utils.indent(indentlevel) + "</bookmark>\n")
         return 1
+
     def getURL(self):
         return self.toURL()
+
     def toData(self):
         return "%s !! gopher://%s:%s/%s" % (self.getName(),
                                             self.getHost(),
@@ -65,8 +62,10 @@ class Bookmark(GopherResource.GopherResource):
                                             self.getLocator())
     def __str__(self):
         return self.toString()
+
     def __repr__(self):
         return self.toString()
+
     def toString(self):
         if self.getName() != '':
             return "%s: %s" % (self.getHost(), self.getName())

@@ -67,9 +67,9 @@ class TkGui(Tk):
     BLUE            = '#0000FF'
     
     def __init__(self, URL=None):
-        """Create an instance of the gopher program."""        
+        """Create an instance of the gopher program."""
         Tk.__init__(self)
-        
+
         self.loadOptions()              # Load program options from disk
         self.loadBookmarks()            # Load program bookmarks from disk
         self.createAssociations()       # Load program associations
@@ -115,7 +115,7 @@ class TkGui(Tk):
                                command=self.reload)
         self.HOME     = Button(self.buttonBar, text='Home',
                                command=self.goHome)
-        
+
         self.BACKWARD.pack(side='left')
         self.FORWARD.pack(side='left')
         # self.STOP.pack(side='left')
@@ -126,7 +126,7 @@ class TkGui(Tk):
             self.urlLabel = Label(self.navBox, text="Location:")
             self.urlEntry = Entry(self.navBox)
             self.urlEntry.bind("<Return>", self.go)
-            
+
             self.urlLabel.pack(side='left')
             self.urlEntry.pack(side='left', expand=1, fill='x')
         else:
@@ -153,18 +153,17 @@ class TkGui(Tk):
         else:
             self.gobutton.grid(row=0, column=8, sticky=W)
 
-        if URL != None:
-            resource = GopherResource.GopherResource()
+        resource = GopherResource.GopherResource()
+
+        if URL is not None:
             resource.setURL(URL)
         else:
-            resource = GopherResource.GopherResource()
-            resource.setURL("gopher://gopher.quux.org/")
-            resource.setTitle("QUUX.org Root")
+            resource.setURL(Options.program_options.getOption('home'))
 
         self.CONTENT_BOX = forg.FORG(parent_widget=self.mainBox,
                                      parent_object=self,
                                      resource=resource)
-        
+
         self.messageBar = Pmw.MessageBar(self.mainBox,
                                          entry_width = 80,
                                          entry_relief='groove',
@@ -172,11 +171,11 @@ class TkGui(Tk):
                                          label_text = 'Status:')
 
         self.CONTENT_BOX.setMessageBar(self.messageBar)
-        
+
         self.CONTENT_BOX.pack(expand=1, fill='both')
         self.messageBar.pack(expand=0, fill='x')
         utils.msg(self.messageBar, "Ready")
-        
+
         # Call fn when the window is destroyed.
         self.protocol("WM_DELETE_WINDOW", self.destroy)
         self.setLocation(self.CONTENT_BOX.getResource())
