@@ -171,8 +171,8 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
         # that "everything's a reference" stuff.  :)
         default_filename = self.filename[:]
 
-        for char in ['/', ':', ' ', '\\']:
-            strtofind = "%" + "%d;" % ord(char)
+        for char in ['/', ':', ' ', r'\\']:
+            strtofind = "%" + "%d;" % ord(char[0])
             default_filename = re.sub(strtofind, char, default_filename)
 
         for separator in ['/', ':', '\\']:
