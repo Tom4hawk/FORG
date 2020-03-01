@@ -211,7 +211,23 @@ class BookmarkMenu(List.List):
 
         return m
 
-class BookmarkFactory(xmllib.XMLParser):
+class BookmarkFactory:
+    def __init__(self):
+        self.oldBookMarkFactory = BookmarkFactoryOld()
+
+    # Loading
+    def getMenu(self):
+        return self.oldBookMarkFactory.getMenu()
+
+    # Loading
+    def parseResource(self, fp):
+        self.oldBookMarkFactory.parseResource(fp)
+
+    # Adding bookmark/anything
+    def writeXML(self, fp, menu):
+        return self.oldBookMarkFactory.writeXML(fp, menu)
+
+class BookmarkFactoryOld(xmllib.XMLParser):
     verbose = None
     
     def __init__(self):
