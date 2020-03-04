@@ -191,9 +191,7 @@ class BookmarkEditor(Toplevel):
         factory = Bookmark.BookmarkFactory()
         
         try:
-            fp = open(filename, "w")
-            factory.writeXML(fp, bmarks)
-            fp.close()
+            factory.writeXML(filename, bmarks)
         except IOError, errstr:
             e = "Could not save bookmarks to\n%s:\n%s" % (filename, errstr)
             d = Dialogs.ErrorDialog(self, e, "Error Saving Bookmarks")

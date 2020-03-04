@@ -387,11 +387,8 @@ class TkGui(Tk):
         filename = self.getPrefsDirectory() + os.sep + "bookmarks"
 
         try:
-            fp = open(filename, "w")
-
             factory = Bookmark.BookmarkFactory()
-            factory.writeXML(fp, self.bookmarks)
-            fp.close()
+            factory.writeXML(filename, self.bookmarks)
         except IOError, errstr:
             print "****Couldn't save bookmarks to %s: %s" % (filename, errstr)
             return None

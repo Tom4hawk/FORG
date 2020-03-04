@@ -18,14 +18,16 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
-from string import *
+import xmllib
 from Tkinter import *
+from string import *
+import xml.etree.ElementTree as ETs
 
 import GopherResource
-import ListNode
 import List
+import ListNode
 import utils
-import xmllib
+
 
 class Bookmark(GopherResource.GopherResource):
     def __init__(self, res=None):
@@ -39,18 +41,14 @@ class Bookmark(GopherResource.GopherResource):
             self.setLocator(res.getLocator())
             self.setType(res.getTypeCode())
 
-    def toXML(self, fp, indentlevel):
-        """Returns an XML representation of the object.  Callers should use
-        an indentlevel of 0 since this is called recursively.  fp is the file
-        pointer the data should be stored in."""
-        if self.verbose:
-            print "Bookmark.toXML()"
-        fp.write(utils.indent(indentlevel) + "<bookmark href=\"" +
-                 self.getURL() + "\">\n")
-        fp.write(utils.indent(indentlevel+1) + "<title>" +
-                 self.getName() + "</title>\n")
-        fp.write(utils.indent(indentlevel) + "</bookmark>\n")
-        return 1
+    def toXML(self):
+        """Returns an XML representation of the object."""
+        bookmark = ETs.Element("bookmark", href=self.getURL())
+        title = ETs.Element("title")
+        title.text = self.getName()
+        bookmark.append(title)
+
+        return bookmark
 
     def getURL(self):
         return self.toURL()
@@ -139,34 +137,37 @@ class BookmarkMenu(List.List):
         if menu.__class__ != BookmarkMenu and menu.__class__ != Bookmark:
             raise Exception, "Cannot add a non-Bookmark/Menu as submenu"
         return self.insert(BookmarkMenuNode(menu))
-    
-    def toXML(self, fp, indentlevel):
+
+
+
+    def toXML(self):
         """Returns an XML representation of this object.  This is called
-        recursively, so if you are calling this for the first time, use an
-        indentlevel of 0.  fp holds the file pointer to write the data into"""
+        recursively"""
         
         if self.verbose:
             print "BookmarkMenu.toXML()"
-            
-        il = indentlevel
-        i  = utils.indent
-        fp.write(i(il) + "<folder>\n")
-        fp.write(i(il+1) + "<title>" + self.getName() + "</title>\n")
 
-        def fn(item, fp=fp, il=(il+1)):
+        folder = ETs.Element("folder")
+        title = ETs.Element("title")
+        title.text = self.getName()
+        folder.append(title)
+
+        def fn(item, parent=folder):
             data = item.getData()
             # It doesn't matter which kind it is, whether it's a
             # Bookmark or a BookmarkMenu since they both have toXML() methods
             # and they'll take it from here.  If it's a BookmarkMenu, this
             # will happen recursively.
-            data.toXML(fp, il)
+            node = data.toXML()
+            parent.append(node)
+
             return data.getName()
 
         # Apply the above function to each item in the menu
         self.traverse(fn)
-        
-        fp.write(i(il) + "</folder> <!-- End %s -->\n" % self.getName())
-        return None
+
+        return folder
+
     def getTkMenu(self, parent_widget, callback):
         """Return a Tk Menu object which is suitable for being added to other
         submenus.  parent_widget is the menu you will add it to, and callback
@@ -224,8 +225,16 @@ class BookmarkFactory:
         self.oldBookMarkFactory.parseResource(fp)
 
     # Adding bookmark/anything
-    def writeXML(self, fp, menu):
-        return self.oldBookMarkFactory.writeXML(fp, menu)
+    def writeXML(self, filename, menu):
+        """Writes an XML representation of bookmark menu to fp"""
+
+        xbel = ETs.Element("xbel")
+        bookmarks = menu.toXML()
+
+        xbel.append(bookmarks)
+
+        tree = ETs.ElementTree(xbel)
+        tree.write(filename, "UTF-8")
 
 class BookmarkFactoryOld(xmllib.XMLParser):
     verbose = None
@@ -239,20 +248,6 @@ class BookmarkFactoryOld(xmllib.XMLParser):
         self.currentBmrk = None
         self.folders     = []
         return None
-    
-    def writeXML(self, fp, menu):
-        """Writes an XML representation of menu to fp"""
-        # Header-type stuff.
-        fp.write("<?xml version=\"1.0\"?>\n")
-        fp.write("<!DOCTYPE xbel SYSTEM \"xbel-1.0.dtd\">\n\n")
-        fp.write("<!-- This file contains a listing of bookmarks for\n")
-        fp.write("     the FORG.  Please do not edit this unless you are\n")
-        fp.write("     familiar with the structure of the file. -->\n\n");
-        fp.write("<xbel>\n")
-        menu.toXML(fp, 1)
-        fp.write("</xbel>\n")
-        fp.flush()
-        return 1
     
     def getMenu(self):
         """Menu object accessor"""
