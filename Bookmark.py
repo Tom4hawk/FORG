@@ -18,7 +18,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
-import xmllib
 from Tkinter import *
 from string import *
 import xml.etree.ElementTree as ETs
@@ -26,7 +25,6 @@ import xml.etree.ElementTree as ETs
 import GopherResource
 import List
 import ListNode
-import utils
 
 
 class Bookmark(GopherResource.GopherResource):
@@ -213,20 +211,106 @@ class BookmarkMenu(List.List):
         return m
 
 class BookmarkFactory:
+    verbose = None
+
     def __init__(self):
-        self.oldBookMarkFactory = BookmarkFactoryOld()
+        self.menu        = None
+        self.currentMenu = None
+        self.currentBmrk = None
+        self.folders     = []
 
     # Loading
     def getMenu(self):
-        return self.oldBookMarkFactory.getMenu()
+        """Menu object accessor"""
+        return self.menu
 
     # Loading
-    def parseResource(self, fp):
-        self.oldBookMarkFactory.parseResource(fp)
+    def parseResource(self, filename):
+        #TODO: catch expat exception
+        bookmarksTree = ETs.parse(filename)
 
-    # Adding bookmark/anything
+        for element in bookmarksTree.getroot():
+            self.__create_element(element)
+
+    def __create_element(self, item):
+        if item.tag == 'folder':
+            # start_folder
+            self.currentMenu = BookmarkMenu()
+            self.folders.append(self.currentMenu)
+            self.lastTag = "folder"
+            if self.verbose:
+                print "Creating new folder"
+
+            # take care of the folder title
+            title = item.find('title')  # folder should have only one title
+            if self.verbose:
+                print 'Setting menu name: ', self.accumulator
+            self.currentMenu.setName(title.text)
+
+            # it folder so we have to go deep into the rabbit hole
+            for element in item:
+                self.__create_element(element)
+
+            # folder processed, let's finish it
+            # end_folder
+            try:
+                finished_folder = self.folders.pop()
+            except IndexError:
+                print "****Error parsing XML: </folder> without <folder>"
+                return None
+
+            if self.verbose:
+                print "Finishing up folder: %s" % finished_folder.getName()
+
+            if len(self.folders) > 0:
+                self.currentMenu = self.folders[len(self.folders) - 1]
+
+                if self.verbose:
+                    print("Adding submenu \"%s\" to \"%s\"" % (finished_folder.getName(), self.currentMenu.getName()))
+
+                self.currentMenu.addSubmenu(finished_folder)
+            else:
+                # The stack is empty - assign the main menu to be this item
+                # here.
+                if self.verbose:
+                    print "Finished toplevel folder."
+                self.menu = finished_folder
+        elif item.tag == 'bookmark':
+            # start_bookmark
+            self.currentBmrk = Bookmark()
+            self.lastTag = "bookmark"
+
+            if self.verbose:
+                print "Setting URL to be ", item.attrib['href']
+            try:
+                self.currentBmrk.setURL(item.attrib['href'])
+            except KeyError:
+                print "**** Error parsing XML: bookmark is missing 'href'"
+            except Exception, errstr:
+                print "**** Parse error:  Couldn't parse %s: %s" % (item.attrib['href'], errstr)
+                self.currentBmrk = None
+                return None
+
+            if self.verbose:
+                print "Creating new bookmark"
+
+            # Take care of the bookmark title
+            title = item.find('title') # bookmark should have only one title, we can ignore rest of them
+            if self.verbose:
+                print "Setting bmark name: ", self.accumulator
+            self.currentBmrk.setName(title.text)
+
+            # end_bookmaark
+            if self.verbose:
+                print "Inserting new bmark"
+
+            if self.currentBmrk:
+                self.currentMenu.insert(BookmarkMenuNode(self.currentBmrk))
+            else:
+                print "**** Error parsing XML: could not insert invalid bookmark."
+
     def writeXML(self, filename, menu):
-        """Writes an XML representation of bookmark menu to fp"""
+        """Writes an XML representation of bookmark menu to file"""
 
         xbel = ETs.Element("xbel")
         bookmarks = menu.toXML()
@@ -235,169 +319,3 @@ class BookmarkFactory:
 
         tree = ETs.ElementTree(xbel)
         tree.write(filename, "UTF-8")
-
-class BookmarkFactoryOld(xmllib.XMLParser):
-    verbose = None
-    
-    def __init__(self):
-        xmllib.XMLParser.__init__(self)
-        self.menu        = None
-        self.lastTag     = ''
-        self.accumulator = ''
-        self.currentMenu = None
-        self.currentBmrk = None
-        self.folders     = []
-        return None
-    
-    def getMenu(self):
-        """Menu object accessor"""
-        return self.menu
-    
-    def setMenu(self, menu):
-        """Menu object mutator"""
-        self.menu = menu
-        return self.menu
-    
-    def handle_data(self, data):
-        """Necessary overriden method for XML parsing - when a chunk of
-        data comes in, this is what is done with it."""
-        self.accumulator = self.accumulator + data
-        
-    def syntax_error(self, message):
-        """Necessary overridden method for XML parsing - handles syntax
-        errors when they occur"""
-        print "****Error parsing XML: ", message
-        return None
-    
-    def unknown_starttag(self, tag, attrs):
-        """Necessary overriden method for XML parsing - handles unknown
-        start tags"""
-        print "****Error parsing XML: Unknown tag \"%s\"" % tag
-        return None
-    
-    def unknown_endtag(self, tag):
-        """Necessary overridden method for XML parsing - handles unknown
-        end tags"""
-        print "****Error parsing XML: Unknown ending tag \"%s\"" % tag
-        return None
-    
-    def unknown_charref(self, ref):
-        """Necessary overridden method for XML parsing - handles unknown
-        charrefs"""
-        print "****Error parsing XML: uknown charref \"%s\"" % ref
-        return None
-    
-    def unknown_entityref(self, ref):
-        """Necessary overridden method for XML parsing - handles unknown
-        entity references"""
-        print "****Error parsing XML: unknown entityref \"%s\"" % ref
-        return None
-    
-    def start_xbel(self, attrs):
-        self.lastTag = "xbel"
-        if self.verbose:
-            print "<XBEL>"
-        return None
-    
-    def start_folder(self, attrs):
-        self.currentMenu = BookmarkMenu()
-        self.folders.append(self.currentMenu)
-        self.lastTag = "folder"
-        if self.verbose:
-            print "Creating new folder"
-        return None
-    
-    def start_bookmark(self, attrs):
-        self.currentBmrk = Bookmark()
-        self.lastTag = "bookmark"
-        
-        if self.verbose:
-            print "Setting URL to be ", attrs['href']
-        try:
-            self.currentBmrk.setURL(attrs['href'])
-        except KeyError:
-            print "**** Error parsing XML: bookmark is missing 'href'"
-        except Exception, errstr:
-            print "**** Parse error:  Couldn't parse %s: %s" % (attrs['href'],
-                                                                errstr)
-            self.currentBmrk = None
-            return None
-                
-        if self.verbose:
-            print "Creating new bookmark"
-
-        return None
-    def start_title(self, attrs):
-        if self.lastTag == 'xbel':
-            self.currentMenu.setName("Bookmarks")
-        else:
-            self.accumulator = ''
-        return None
-    def end_title(self):
-        self.accumulator = strip(self.accumulator)
-        
-        if self.lastTag == 'xbel' or self.lastTag == 'folder':
-            if self.verbose:
-                print 'Setting menu name: ', self.accumulator
-            self.currentMenu.setName(self.accumulator)
-        elif self.lastTag == 'bookmark':
-            if self.verbose:
-                print "Setting bmark name: ", self.accumulator
-            self.currentBmrk.setName(self.accumulator)
-        else:
-            if self.verbose:
-                print("****Error parsing XML: Unknown lastTag %s" %
-                      self.lastTag)
-        self.accumulator = ''
-        return None
-    def end_bookmark(self):
-        if self.verbose:
-            print "Inserting new bmark"
-
-        if self.currentBmrk:
-            self.currentMenu.insert(BookmarkMenuNode(self.currentBmrk))
-        else:
-            print "**** Error parsing XML: could not insert invalid bookmark."
-            
-        self.lastTag = "/bookmark"
-        return None
-    def end_folder(self):
-        try:
-            finished_folder = self.folders.pop()
-        except IndexError:
-            print "****Error parsing XML: </folder> without <folder>"
-            return None
-        
-        if self.verbose:
-            print "Finishing up folder: %s" % finished_folder.getName()
-
-        if len(self.folders) > 0:
-            self.currentMenu = self.folders[len(self.folders)-1]
-
-            if self.verbose:
-                print("Adding submenu \"%s\" to \"%s\"" %
-                      (finished_folder.getName(),
-                       self.currentMenu.getName()))
-            
-            self.currentMenu.addSubmenu(finished_folder)
-        else:
-            # The stack is empty - assign the main menu to be this item
-            # here.
-            if self.verbose:
-                print "Finished toplevel folder."
-            self.menu = finished_folder
-
-        return None
-    def end_xbel(self):
-        if self.verbose:
-            print "/XBEL"
-        
-        if len(self.folders) > 0:
-            print "**** Error parsing XML: premature </xbel> element."
-        
-    def parseResource(self, fp):
-        for line in fp.read():
-            self.feed(line)
-        self.close()
-        return self.menu
-

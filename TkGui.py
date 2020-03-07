@@ -371,10 +371,8 @@ class TkGui(Tk):
         filename = self.getPrefsDirectory() + os.sep + "bookmarks"
         
         try:
-            fp = open(filename, 'r')
-
             factory = Bookmark.BookmarkFactory()
-            factory.parseResource(fp)
+            factory.parseResource(filename)
             self.bookmarks = factory.getMenu()
         except IOError, errstr:
             print "****Couldn't load bookmarks at %s: %s" % (filename, errstr)
