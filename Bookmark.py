@@ -244,7 +244,7 @@ class BookmarkFactory:
             # take care of the folder title
             title = item.find('title')  # folder should have only one title
             if self.verbose:
-                print 'Setting menu name: ', self.accumulator
+                print 'Setting menu name: ', title.text
             self.currentMenu.setName(title.text)
 
             # it folder so we have to go deep into the rabbit hole
@@ -297,7 +297,7 @@ class BookmarkFactory:
             # Take care of the bookmark title
             title = item.find('title') # bookmark should have only one title, we can ignore rest of them
             if self.verbose:
-                print "Setting bmark name: ", self.accumulator
+                print "Setting bmark name: ", title.text
             self.currentBmrk.setName(title.text)
 
             # end_bookmaark
