@@ -24,8 +24,8 @@ from types import *
 from string import *
 import Pmw
 
-import GopherResource
-import Bookmark
+from Bookmarks.Bookmark import Bookmark
+
 
 class FindDialog:
     def __init__(self, parent, searchwidget, parentobj=None, *args):
@@ -139,7 +139,7 @@ class NewBookmarkDialog:
 
     def callback(self, button):
         if button and button != 'Cancel':
-            res = Bookmark.Bookmark()
+            res = Bookmark()
             res.setURL(self.URLEntry.get())            
             res.setName(self.nameEntry.get())
             self.cmd(res) # Do whatever our parent wants us to with this...

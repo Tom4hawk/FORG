@@ -1,6 +1,5 @@
 #!/usr/bin/python
-from Tkinter import *
-import BookmarkEditor
+from Bookmarks import BookmarkEditor
 
 x = BookmarkEditor.BookmarkEditor('foobar')
 x.mainloop()

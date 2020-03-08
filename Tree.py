@@ -25,14 +25,12 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
-            
-import os
-import string
+
 import Tkdnd
-import Bookmark
+
+from Bookmarks.BookmarkMenu import BookmarkMenu
+from Bookmarks.Bookmark import Bookmark
 import ListNode
-import List
-import BookmarkEditor
 import Dialogs
 from Tkinter import *
 
@@ -610,7 +608,7 @@ def display_information(node, parent_widget):
     # Pass this the original reference (in the tree) and the new resource
     # whose information matches what the stuff in the tree should be.
     def editReference(orig_reference, new_res, n=node):
-        if orig_reference.__class__ == Bookmark.Bookmark:
+        if orig_reference.__class__ == Bookmark:
             orig_reference.setURL(new_res.getURL())
             orig_reference.setName(new_res.getName())
             # Update the label on the widget
@@ -629,7 +627,7 @@ def display_information(node, parent_widget):
         return callback(orig_reference=ref,
                         new_res=res)
 
-    if data.__class__ == Bookmark.Bookmark:
+    if data.__class__ == Bookmark:
         # Create a new bookmark dialog.  Note this is the same that is used to
         # create new bookmarks, we're just specifying the callback to actually
         # change an existing one instead of create something new in the tree.
@@ -661,7 +659,7 @@ def get_contents(node):
         BookmarkMenu object.  See Bookmark.BookmarkMenu for information on
         how they are put together"""
         node = node.getData()
-        if node.__class__ == Bookmark.BookmarkMenu:
+        if node.__class__ == BookmarkMenu:
             node_name = node.getName()
             tuple = (node_name, node, Icons.SHUT_ICON, Icons.OPEN_ICON)
         else:
@@ -670,7 +668,7 @@ def get_contents(node):
 
         return tuple
     
-    if node.id.__class__ == Bookmark.BookmarkMenu:
+    if node.id.__class__ == BookmarkMenu:
         l = node.id.traverse(fn)
         return l
     else:   # It's a Bookmark.ListItem object

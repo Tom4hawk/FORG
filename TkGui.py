@@ -24,32 +24,23 @@
 # Python-wide modules not specific to this program
 import os
 import string
-import sys
-import re
-from threading import *
-import time
-import pickle
-import socket   # Just for errors 
 
 # Data structures, connections, and the like.
 import utils
 import Options
-import GopherObject
-import ResourceInformation
 import GopherResource
-import GopherResponse
-import GopherConnection
-import Bookmark
 import Associations
-import Cache
-from gopher import *
+
+from Bookmarks.BookmarkEditor import BookmarkEditor
+from Bookmarks.Bookmark import Bookmark
+from Bookmarks.BookmarkMenu import BookmarkMenu, BookmarkMenuNode
+from Bookmarks.BookmarkFactory import BookmarkFactory
+
 
 # GUI specific modules.
 from Tkinter import *
-import tkFileDialog               # File save/open dialog
 import AssociationsEditor         # GUI editor for association rules
 import forg                       # The guts of the entire application
-import BookmarkEditor             # Editing bookmarks window
 import Pmw                        # Python Mega Widgets
 import Dialogs                    # FORG specific dialogs
 
@@ -289,10 +280,10 @@ class TkGui(Tk):
         at the end of the bookmarks menu"""
 
         resource = self.CONTENT_BOX.getResource()
-        foo = Bookmark.Bookmark(resource)
+        foo = Bookmark(resource)
 
         # Save the bookmark...
-        self.bookmarks.insert(Bookmark.BookmarkMenuNode(foo))
+        self.bookmarks.insert(BookmarkMenuNode(foo))
         self.saveBookmarks()
 
         self.reloadBookmarks()
@@ -367,11 +358,11 @@ class TkGui(Tk):
         return None
 
     def loadBookmarks(self, *args):
-        self.bookmarks = Bookmark.BookmarkMenu("Bookmarks")
+        self.bookmarks = BookmarkMenu("Bookmarks")
         filename = self.getPrefsDirectory() + os.sep + "bookmarks"
         
         try:
-            factory = Bookmark.BookmarkFactory()
+            factory = BookmarkFactory()
             factory.parseResource(filename)
             self.bookmarks = factory.getMenu()
         except IOError, errstr:
@@ -385,7 +376,7 @@ class TkGui(Tk):
         filename = self.getPrefsDirectory() + os.sep + "bookmarks"
 
         try:
-            factory = Bookmark.BookmarkFactory()
+            factory = BookmarkFactory()
             factory.writeXML(filename, self.bookmarks)
         except IOError, errstr:
             print "****Couldn't save bookmarks to %s: %s" % (filename, errstr)
@@ -525,8 +516,7 @@ class TkGui(Tk):
         self.destroy()
 
     def editBookmarks(self, *args):
-        ed = BookmarkEditor.BookmarkEditor(self.bookmarks,
-                                           ondestroy=self.reloadBookmarks)
+        ed = BookmarkEditor(self.bookmarks, ondestroy=self.reloadBookmarks)
 
     def buildTkBookmarksMenu(self, parent_menu, bookmarks):
         def fn(item, self=self):

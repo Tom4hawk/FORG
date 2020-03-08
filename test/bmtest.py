@@ -1,7 +1,8 @@
 
 from Tkinter import *
 
-import Bookmark
+from Bookmarks import Bookmark
+
 f = Bookmark.BookmarkFactory()
 f.verbose = 1
 f.parseResource(open("bmarks.xml"))

@@ -18,13 +18,12 @@
 
 from Tkinter import *
 import Pmw
+
+import Bookmarks.BookmarkMenu
 import Tree
 import Dialogs
-import Bookmark
+from Bookmarks.BookmarkFactory import BookmarkFactory
 import os
-from string import *
-import GopherObject
-import GopherResource
 import Options
 
 def traversal_function(node):
@@ -34,8 +33,8 @@ def traversal_function(node):
     else:
         bm = node.id
     
-    if bm.__class__ == Bookmark.BookmarkMenu:
-        menu = Bookmark.BookmarkMenu()
+    if bm.__class__ == Bookmarks.BookmarkMenu.BookmarkMenu:
+        menu = Bookmarks.BookmarkMenu.BookmarkMenu()
         menu.setName(bm.getName())
 
         # Visit each of the children.  Note that this is children as in what
@@ -54,13 +53,13 @@ def traversal_function(node):
             # BookmarkMenuNode's.  Figure out which, and add it appropriately.
             # Note that you can't insert a submenu, you have to use addSubmenu
             # which is the reason for this conditional.
-            if rval.__class__ == Bookmark.BookmarkMenu:
+            if rval.__class__ == Bookmarks.BookmarkMenu.BookmarkMenu:
                 print "Adding submenu:  %s" % rval.getName()
                 menu.addSubmenu(rval)
             else:
                 # print "Adding ITEM: %s" % rval.__class__
                 # print "Adding ITEM: %s %s" % (rval.__class__, rval.getName())
-                menunode = Bookmark.BookmarkMenuNode(rval)
+                menunode = Bookmarks.BookmarkMenu.BookmarkMenuNode(rval)
                 menu.insert(menunode)
 
         # Return the generated menu to be added
@@ -188,7 +187,7 @@ class BookmarkEditor(Toplevel):
         bmarks = traversal_function(data_tree)
         prefs_dir = Options.program_options.getOption('prefs_directory')
         filename = prefs_dir + os.sep + "bookmarks"
-        factory = Bookmark.BookmarkFactory()
+        factory = BookmarkFactory()
         
         try:
             factory.writeXML(filename, bmarks)
@@ -238,7 +237,7 @@ class BookmarkEditor(Toplevel):
             return None
         
         original_cut_buffer = self.tree.getCutBuffer()
-        bmarkmenu = Bookmark.BookmarkMenu()
+        bmarkmenu = Bookmarks.BookmarkMenu.BookmarkMenu()
         bmarkmenu.setName(folderName)
 
         # We have to create a Node to insert into the tree, just like all other
