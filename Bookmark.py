@@ -75,11 +75,11 @@ class Bookmark(GopherResource.GopherResource):
 def parseBookmark(data):
     data = strip(data)
     items = split(data, "!! ", 2)
-    
+
     if len(items) < 2:
         print "***Bookmark parse error: Items is: %s" % join(items,"::")
         return None
-    
+
     bmark = Bookmark()
     try:
         items[1] = strip(items[1])
@@ -87,7 +87,7 @@ def parseBookmark(data):
     except Exception, estr:
         print "Returning NONE because I couldn't parse the URL: %s" % estr
         return None
-    
+
     bmark.setName(items[0])
     return bmark
 
@@ -111,25 +111,25 @@ class BookmarkMenu(List.List):
             self.setName("Bookmarks")
             return self.menuName
         return "Error fetching name"
-    
+
     def setName(self, newname):
         self.menuName = newname
         return self.menuName
-    
+
     def toString(self):
         return "BookmarkMenu: \"%s\"" % self.getName()
-    
+
     def __str__(self):
         return self.toString()
-    
+
     def __repr__(self):
         return self.toString()
-    
+
     def insert(self, item, truncate=0):
         """Overrides the insert method to always pass a truncate argument of
         0 so the list is never truncated on insertions."""
         return List.List.insert(self, item, 0)
-    
+
     def addSubmenu(self, menu):
         """Adds menu as a submenu of this menu"""
         if menu.__class__ != BookmarkMenu and menu.__class__ != Bookmark:
@@ -141,7 +141,7 @@ class BookmarkMenu(List.List):
     def toXML(self):
         """Returns an XML representation of this object.  This is called
         recursively"""
-        
+
         if self.verbose:
             print "BookmarkMenu.toXML()"
 
@@ -190,7 +190,7 @@ class BookmarkMenu(List.List):
                 the actual function that is bound to the action, which calls
                 the user defined function with the appropriate argument"""
                 return oldCallback(item)
-            
+
             try:
                 # If it's a menu, then add the submenu recursively.
                 if data.__class__ == BookmarkMenu:
@@ -219,99 +219,19 @@ class BookmarkFactory:
         self.currentBmrk = None
         self.folders     = []
 
-    # Loading
     def getMenu(self):
         """Menu object accessor"""
         return self.menu
 
-    # Loading
     def parseResource(self, filename):
         #TODO: catch expat exception
         bookmarksTree = ETs.parse(filename)
 
         for element in bookmarksTree.getroot():
-            self.__create_element(element)
-
-    def __create_element(self, item):
-        if item.tag == 'folder':
-            # start_folder
-            self.currentMenu = BookmarkMenu()
-            self.folders.append(self.currentMenu)
-            self.lastTag = "folder"
-            if self.verbose:
-                print "Creating new folder"
-
-            # take care of the folder title
-            title = item.find('title')  # folder should have only one title
-            if self.verbose:
-                print 'Setting menu name: ', title.text
-            self.currentMenu.setName(title.text)
-
-            # it folder so we have to go deep into the rabbit hole
-            for element in item:
-                self.__create_element(element)
-
-            # folder processed, let's finish it
-            # end_folder
-            try:
-                finished_folder = self.folders.pop()
-            except IndexError:
-                print "****Error parsing XML: </folder> without <folder>"
-                return None
-
-            if self.verbose:
-                print "Finishing up folder: %s" % finished_folder.getName()
-
-            if len(self.folders) > 0:
-                self.currentMenu = self.folders[len(self.folders) - 1]
-
-                if self.verbose:
-                    print("Adding submenu \"%s\" to \"%s\"" % (finished_folder.getName(), self.currentMenu.getName()))
-
-                self.currentMenu.addSubmenu(finished_folder)
-            else:
-                # The stack is empty - assign the main menu to be this item
-                # here.
-                if self.verbose:
-                    print "Finished toplevel folder."
-                self.menu = finished_folder
-        elif item.tag == 'bookmark':
-            # start_bookmark
-            self.currentBmrk = Bookmark()
-            self.lastTag = "bookmark"
-
-            if self.verbose:
-                print "Setting URL to be ", item.attrib['href']
-            try:
-                self.currentBmrk.setURL(item.attrib['href'])
-            except KeyError:
-                print "**** Error parsing XML: bookmark is missing 'href'"
-            except Exception, errstr:
-                print "**** Parse error:  Couldn't parse %s: %s" % (item.attrib['href'], errstr)
-                self.currentBmrk = None
-                return None
-
-            if self.verbose:
-                print "Creating new bookmark"
-
-            # Take care of the bookmark title
-            title = item.find('title') # bookmark should have only one title, we can ignore rest of them
-            if self.verbose:
-                print "Setting bmark name: ", title.text
-            self.currentBmrk.setName(title.text)
-
-            # end_bookmaark
-            if self.verbose:
-                print "Inserting new bmark"
-
-            if self.currentBmrk:
-                self.currentMenu.insert(BookmarkMenuNode(self.currentBmrk))
-            else:
-                print "**** Error parsing XML: could not insert invalid bookmark."
+            self.__parse_element(element)
 
     def writeXML(self, filename, menu):
         """Writes an XML representation of bookmark menu to file"""
-
         xbel = ETs.Element("xbel")
         bookmarks = menu.toXML()
 
@@ -319,3 +239,87 @@ class BookmarkFactory:
 
         tree = ETs.ElementTree(xbel)
         tree.write(filename, "UTF-8")
+
+    def __parse_element(self, item):
+        if item.tag == 'folder':
+            self.__parse_folder(item)
+        elif item.tag == 'bookmark':
+            self.__parse_bookmark(item)
+
+    def __parse_folder(self, item):
+        # start_folder
+        self.currentMenu = BookmarkMenu()
+        self.folders.append(self.currentMenu)
+        self.lastTag = "folder"
+        self.log_verbose("Creating new folder")
+
+        # take care of the folder title
+        title = item.find('title')  # folder should have only one title
+        self.log_verbose('Setting menu name: ' + title.text)
+        self.currentMenu.setName(title.text)
+
+        # it folder so we have to go deep into the rabbit hole
+        for element in item:
+            self.__parse_element(element)
+
+        # folder processed, let's finish it
+        # end_folder
+        try:
+            finished_folder = self.folders.pop()
+        except IndexError:
+            self.log_error("****Error parsing XML: </folder> without <folder>")
+            return None
+
+        if self.verbose:
+            self.log_error("Finishing up folder: %s" % finished_folder.getName())
+
+        if len(self.folders) > 0:
+            self.currentMenu = self.folders[len(self.folders) - 1]
+
+            self.log_verbose("Adding submenu \"%s\" to \"%s\"" % (finished_folder.getName(), self.currentMenu.getName()))
+
+            self.currentMenu.addSubmenu(finished_folder)
+        else:
+            # The stack is empty - assign the main menu to be this item
+            # here.
+            self.log_verbose("Finished toplevel folder.")
+            self.menu = finished_folder
+
+    def __parse_bookmark(self, item):
+        # start_bookmark
+        self.currentBmrk = Bookmark()
+        self.lastTag = "bookmark"
+
+        self.log_verbose("Setting URL to be " + item.attrib['href'])
+
+        try:
+            self.currentBmrk.setURL(item.attrib['href'])
+        except KeyError:
+            self.log_error("**** Error parsing XML: bookmark is missing 'href'")
+        except Exception, errstr:
+            self.log_error("**** Parse error:  Couldn't parse %s: %s" % (item.attrib['href'], errstr))
+            self.currentBmrk = None
+            return None
+
+        self.log_verbose("Creating new bookmark")
+
+        # Take care of the bookmark title
+        title = item.find('title')  # bookmark should have only one title, we can ignore rest of them
+        self.log_verbose("Setting bmark name: " + title.text)
+        self.currentBmrk.setName(title.text)
+
+        # end_bookmaark
+        self.log_verbose("Inserting new bmark")
+
+        if self.currentBmrk:
+            self.currentMenu.insert(BookmarkMenuNode(self.currentBmrk))
+        else:
+            self.log_error("**** Error parsing XML: could not insert invalid bookmark.")
+
+    #TODO: Create separate logger
+    def log_verbose(self, message):
+        if self.verbose:
+            print(message)
+
+    def log_error(self, message):
+        print(message)
