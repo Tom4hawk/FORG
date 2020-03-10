@@ -18,7 +18,6 @@ class BookmarkFactory:
         return self.menu
 
     def parseResource(self, filename):
-        #TODO: Catch expat exception
         bookmarksTree = ETs.parse(filename)
 
         for element in bookmarksTree.getroot():
@@ -52,23 +51,18 @@ class BookmarkFactory:
         self.log_verbose('Setting menu name: ' + title.text)
         self.currentMenu.setName(title.text)
 
-        # it folder so we have to go deep into the rabbit hole
+        # it's a folder so we have to go deep into the rabbit hole
         for element in item:
             self.__parse_element(element)
 
         # folder processed, let's finish it
         # end_folder
-        try:
-            finished_folder = self.folders.pop()
-        except IndexError:
-            self.log_error("****Error parsing XML: </folder> without <folder>")
-            return None
+        finished_folder = self.folders.pop()
 
-        if self.verbose:
-            self.log_error("Finishing up folder: %s" % finished_folder.getName())
+        self.log_verbose("Finishing up folder: %s" % finished_folder.getName())
 
-        if len(self.folders) > 0:
-            self.currentMenu = self.folders[len(self.folders) - 1]
+        if self.folders:
+            self.currentMenu = self.folders[-1]
 
             self.log_verbose("Adding submenu \"%s\" to \"%s\"" % (finished_folder.getName(), self.currentMenu.getName()))
 
@@ -93,7 +87,7 @@ class BookmarkFactory:
         except Exception, errstr:
             self.log_error("**** Parse error:  Couldn't parse %s: %s" % (item.attrib['href'], errstr))
             self.currentBmrk = None
-            return None
+            return
 
         self.log_verbose("Creating new bookmark")
 
