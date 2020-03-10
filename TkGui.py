@@ -35,6 +35,7 @@ from Bookmarks.BookmarkEditor import BookmarkEditor
 from Bookmarks.Bookmark import Bookmark
 from Bookmarks.BookmarkMenu import BookmarkMenu, BookmarkMenuNode
 from Bookmarks.BookmarkFactory import BookmarkFactory
+from xml.etree.ElementTree import ParseError
 
 
 # GUI specific modules.
@@ -60,6 +61,8 @@ class TkGui(Tk):
     def __init__(self, URL=None):
         """Create an instance of the gopher program."""
         Tk.__init__(self)
+
+        self.bookmarks = None
 
         self.loadOptions()              # Load program options from disk
         self.loadBookmarks()            # Load program bookmarks from disk
@@ -300,8 +303,7 @@ class TkGui(Tk):
         # Create a new Tk menu based off of them.
 
         # Destroy the old menu and insert the new.
-        self.bookmarkTkMenu = self.buildTkBookmarksMenu(self.menu,
-                                                        self.bookmarks)
+        self.bookmarkTkMenu = self.buildTkBookmarksMenu(self.menu, self.bookmarks)
 
         self.menu.delete(self.MENU_BOOKMARKS)
         self.menu.insert_cascade(index=self.MENU_BOOKMARKS,
@@ -365,7 +367,7 @@ class TkGui(Tk):
             factory = BookmarkFactory()
             factory.parseResource(filename)
             self.bookmarks = factory.getMenu()
-        except IOError, errstr:
+        except (IOError, ParseError) as errstr:
             print "****Couldn't load bookmarks at %s: %s" % (filename, errstr)
             return None
         
@@ -462,12 +464,9 @@ class TkGui(Tk):
         """Pop-up menu on right click on a message"""
         self.popup = Menu(self)
         self.popup['tearoff'] = FALSE
-        self.popup.add_command(label='Save',
-                               command=self.CONTENT_BOX.saveFile)
-        self.popup.add_command(label='Back',
-                               command=self.CONTENT_BOX.goBackward)
-        self.popup.add_command(label='Forward',
-                               command=self.CONTENT_BOX.goForward)
+        self.popup.add_command(label='Save', command=self.CONTENT_BOX.saveFile)
+        self.popup.add_command(label='Back', command=self.CONTENT_BOX.goBackward)
+        self.popup.add_command(label='Forward', command=self.CONTENT_BOX.goForward)
 
     def change_content_hook(self, resource):
         """This function is called by the child FORG instance whenever
@@ -524,10 +523,8 @@ class TkGui(Tk):
         
         newTkMenu = bookmarks.getTkMenu(parent_menu, fn)
         newTkMenu.insert_separator(index=1)
-        newTkMenu.insert_command(index=0, label="Edit Bookmarks",
-                                 command=self.editBookmarks)
-        newTkMenu.insert_command(index=1, label="Bookmark this page",
-                                 command=self.addBookmark)
+        newTkMenu.insert_command(index=0, label="Edit Bookmarks", command=self.editBookmarks)
+        newTkMenu.insert_command(index=1, label="Bookmark this page", command=self.addBookmark)
         return newTkMenu
 
     def goHome(self, *args):
@@ -557,38 +554,28 @@ class TkGui(Tk):
         self.filemenu = Menu(self.menu)
         self.filemenu.add_command(label='Open URL', command=self.showOpenURL)
         self.filemenu.add_command(label='Save', command=self.saveFile)
-        self.filemenu.add_command(label='Quit', 
-                                  underline=0, command=self.quit)
+        self.filemenu.add_command(label='Quit', underline=0, command=self.quit)
 
         self.editmenu = Menu(self.menu)
         self.editmenu.add_command(label="Find", command=self.find)
 
         self.navmenu = Menu(self.menu)
-        self.navmenu.add_command(label="Forward",
-                                 command=self.goForward)
-        self.navmenu.add_command(label="Backward",
-                                 command=self.goBackward)
-        self.navmenu.add_command(label="Reload",
-                                 command=self.reload)
+        self.navmenu.add_command(label="Forward", command=self.goForward)
+        self.navmenu.add_command(label="Backward", command=self.goBackward)
+        self.navmenu.add_command(label="Reload", command=self.reload)
 
         self.optionsmenu = Menu(self.menu)
-        self.optionsmenu.add_command(label='Associations',
-                                     command=self.editAssociations)
-        self.optionsmenu.add_command(label="Save Options/Associations",
-                                     command=self.saveOptions)
-        self.optionsmenu.add_command(label="Reload Options/Associations",
-                                     command=self.loadOptions)
-        self.optionsmenu.add_command(label="Set This Site as My Home",
-                                     command=self.setHome)
+        self.optionsmenu.add_command(label='Associations', command=self.editAssociations)
+        self.optionsmenu.add_command(label="Save Options/Associations", command=self.saveOptions)
+        self.optionsmenu.add_command(label="Reload Options/Associations", command=self.loadOptions)
+        self.optionsmenu.add_command(label="Set This Site as My Home", command=self.setHome)
 
         def purgeCacheWrapper(c=Options.program_options.cache, parent=self):
             c.emptyCache(parent)
             
         self.omenucache = Menu(self.optionsmenu)
-        self.omenucache.add_command(label="Purge Cache",
-                                    command=purgeCacheWrapper)
-        self.omenucache.add_command(label="Cache Statistics",
-                                    command=self.stats)
+        self.omenucache.add_command(label="Purge Cache",  command=purgeCacheWrapper)
+        self.omenucache.add_command(label="Cache Statistics", command=self.stats)
         
         self.optionsmenu.add_cascade(label="Cache", menu=self.omenucache)
         
