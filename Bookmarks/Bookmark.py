@@ -1,6 +1,6 @@
-# Bookmark.py
-# $Id: Bookmark.py,v 1.14 2001/07/11 22:43:09 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # This is a subclass of GopherResource and is used in the Bookmark
 # management system of the FORG.
 #
