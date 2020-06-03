@@ -26,7 +26,7 @@
 ##############################################################################
 import re
 from string              import *
-from urlparse            import *
+from urllib.parse            import *
 from gopher              import *
 import Connection
 import GopherConnection
@@ -34,6 +34,12 @@ import GopherObject
 import GopherResource
 import ResourceInformation
 import Options
+
+class GopherException(Exception):
+    pass
+
+class GopherConnectionException(Exception):
+    pass
 
 class GopherResponseException(Exception):
     def __init__(self, message):
@@ -52,7 +58,7 @@ class GopherResponse(GopherObject.GopherObject):
         if self.getData() == None:
             def protString(item):
                 return item.toProtocolString()
-            return join(map(protString, self.getResponses()), "")
+            return list(map(protString, self.getResponses())).join("")
         else:
             return self.getData()
 
@@ -125,19 +131,19 @@ class GopherResponse(GopherObject.GopherObject):
         incorrect, so cope.  :)"""
         
         def linefn(l):
-            return replace(l, "\r", "")
+            return l.replace("\r", "")
 
         # Some very strange non-standards compliant servers send \r on some
         # lines and not on others.  So split by newline and remove all
         # carriage returns as they occur.
-        lines = map(linefn, split(data, "\n", 10))
+        lines = list(map(linefn, data.split("\n", 10)))
 
         for line in lines:
-            d = strip(line)
+            d = line.strip()
             if not d or d == '' or d == '.':
                 continue
             
-            if count(line, "\t") < 2:
+            if line.count("\t") < 2:
                 return None               # Not enough tabs.  Bummer.
 
             isResponse = None
@@ -174,14 +180,14 @@ class GopherResponse(GopherObject.GopherObject):
         elif self.looksLikeDir(data):
             self.type = RESPONSE_DIR
         else:
-            raise GopherException, "This isn't a directory."
+            raise GopherException("This isn't a directory.")
 
         def stripCR(dat):
-            return replace(dat, "\r", "")
+            return dat.replace("\r", "")
 
         # This is done because \r may or may not be present, so we can't
         # split by \r\n because it fails for some misbehaved gopher servers.
-        self.lines = map(stripCR, split(data, "\n"))
+        self.lines = list(map(stripCR, data.split("\n")))
 
         for line in self.lines:
             if len(line) <= 1:
@@ -192,7 +198,7 @@ class GopherResponse(GopherObject.GopherObject):
             line = line[1:]
 
             # Gopher protocol uses tab delimited fields...
-            linedata = split(line, "\t")
+            linedata = line.split("\t")
             name    = "Unknown"              # Silly defaults
             locator = "Unknown"
             host    = "Unknown"
@@ -235,10 +241,10 @@ class GopherResponse(GopherObject.GopherObject):
                         conn = GopherConnection.GopherConnection()
                         info = conn.getInfo(newresource)
                         newresource.setInfo(info)
-                    except GopherConnectionException, estr:
-                        print "***(GCE) can't get info: %s" % estr
-                    except Exception, estr:
-                        print "***(unknown) Couldn't %s %s" % (Exception,estr)
+                    except GopherConnectionException as estr:
+                        print("***(GCE) can't get info: %s" % estr)
+                    except Exception as estr:
+                        print("***(unknown) Couldn't %s %s" % (Exception,estr))
 
             self.responses.append(newresource)
         return None

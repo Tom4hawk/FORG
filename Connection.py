@@ -137,8 +137,7 @@ class Connection:
         if not Options.program_options.GREEN_LIGHT:
             raise ConnectionException("Connection stopped")
 
-    def requestToData(self, resource, request,
-                      msgBar=None, grokLine=None):
+    def requestToData(self, resource, request, msgBar=None, grokLine=None):
         """Sends request to the host/port stored in resource, and returns
         any data returned by the server.  This may throw
         ConnectionException.  msgBar is optional.
@@ -149,7 +148,7 @@ class Connection:
         utils.msg(msgBar, "Creating socket...")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if not self.socket:
-            raise GopherConnectionException, "Cannot create socket."
+            raise ConnectionException("Cannot create socket.")
 
         self.checkStopped(msgBar)
         utils.msg(msgBar, "Looking up hostname...")
@@ -179,7 +178,7 @@ class Connection:
             #if retval != 0:
             #    errortype = errno.errorcode[retval]
             #    raise socket.error, errortype
-        except socket.error, err:
+        except socket.error as err:
             newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(),
                                                          resource.getPort(),
                                                          err)
@@ -200,12 +199,12 @@ class Connection:
                 self.checkStopped(msgBar)
                 byte = self.socket.recv(1)
                 if len(byte) <= 0:
-                    print "****************BROKE out of byte loop"
+                    print("****************BROKE out of byte loop")
                     break
                 line = line + byte
     
             bytesread = len(line)
-            line      = strip(line)
+            line      = line.strip()
 
             try:
                 if line[0] == '+':
@@ -217,7 +216,7 @@ class Connection:
                 else:
                     data = self.readloop(self.socket, -1, msgBar)
             except:
-                print "*** Couldn't read bytecount: skipping."
+                print("*** Couldn't read bytecount: skipping.")
                 data = self.readloop(self.socket, -1, msgBar)
         else:
             data = self.readloop(self.socket, -1, msgBar)
