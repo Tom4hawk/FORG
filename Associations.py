@@ -64,10 +64,10 @@ class Associations:
                  "so to launch a HTML file, you might use:",
                  ".html%s/usr/X11/bin/netscape $1" % self.DELIMITER]
 
-        map(lambda line,f=fp: f.write("# %s\n" % line),
-            lines)
+        list(map(lambda line,f=fp: f.write("# %s\n" % line),
+            lines))
 
-        for key in self.dict.keys():
+        for key in list(self.dict.keys()):
             fp.write("%s%s%s\n" % (key, self.DELIMITER, self.dict[key]))
         fp.flush()
         fp.close()
@@ -79,25 +79,25 @@ class Associations:
         self.dict = {}
         
         for line in fp.readlines():
-            line = strip(line)
+            line = line.strip()
             if len(line) > 0 and line[0] == '#':
                 continue  # Skip comments.
             
             try:
-                [key, value] = split(line, self.DELIMITER, 2)
+                [key, value] = line.split(self.DELIMITER, 2)
                 self.addAssociation(key, value)
             except:
-                print "Error parsing line in associations file: %s" % line
+                print("Error parsing line in associations file: %s" % line)
 
         fp.close()
         return 1
 
     def isEmpty(self):
-        return len(self.dict.keys()) == 0
+        return len(self.dict) == 0
     
     def getFileTypes(self):
         """Returns the file suffixes the Association list knows of"""
-        return self.dict.keys()
+        return list(self.dict.keys())
     
     def getProgramString(self, key):
         try:
@@ -106,10 +106,6 @@ class Associations:
         except KeyError:
             return None
         
-    def getTmpFilename(self, suffix, *args):
-        return foo + "." + suffix
-        return None
-    
     def removeAssociation(self, suffix):
         try:
             del(self.dict[suffix])
@@ -133,7 +129,7 @@ class Associations:
                 assoc = self.dict[str]
             except:
                 pass
-            ind = rfind(filename, ".", 0, ind)
+            ind = filename.rfind(".", 0, ind)
             if assoc:
                 matchFound = 1
 
@@ -157,17 +153,17 @@ class Associations:
         # Assoc holds the program name
         assoc = re.sub("$1", "\"" + filename + "\"", assoc, 1)
         fp = os.popen(assoc)
-        print "Process dump: %s" % assoc
+        print("Process dump: %s" % assoc)
         try:
             while 1:
                 line = fp.readline()
                 if line == '':
                     break;
-                print line
+                print(line)
         except:
-            print "Process %s exited with an exception." % assoc
+            print("Process %s exited with an exception." % assoc)
             return None
-        print "Process \"%s\" finished up and exited." % assoc
+        print("Process \"%s\" finished up and exited." % assoc)
         return 1
 
     

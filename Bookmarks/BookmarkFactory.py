@@ -17,7 +17,7 @@
 
 import xml.etree.ElementTree as ETs
 
-from Bookmark import Bookmark
+from .Bookmark import Bookmark
 from Bookmarks.BookmarkMenu import BookmarkMenuNode, BookmarkMenu
 
 
@@ -101,7 +101,7 @@ class BookmarkFactory:
             self.currentBmrk.setURL(item.attrib['href'])
         except KeyError:
             self.log_error("**** Error parsing XML: bookmark is missing 'href'")
-        except Exception, errstr:
+        except Exception as errstr:
             self.log_error("**** Parse error:  Couldn't parse %s: %s" % (item.attrib['href'], errstr))
             self.currentBmrk = None
             return

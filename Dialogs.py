@@ -19,7 +19,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
-from Tkinter import *
+from tkinter import *
 from types import *
 from string import *
 import Pmw
@@ -82,7 +82,7 @@ class FindDialog:
                                                 self.getCaseSensitive(),
                                                 self.lastMatch)
         
-        print "Last match is now ", self.lastMatch
+        print("Last match is now ", self.lastMatch)
         return self.lastMatch
 
 class OpenURLDialog:

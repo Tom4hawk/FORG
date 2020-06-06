@@ -36,7 +36,7 @@ class AskForm(GopherResponse.GopherResponse):
     def setAskFormData(self, data):
         self.data = data
 
-        print "ASKFORM:  Parsing data block:\n", data
+        print("ASKFORM:  Parsing data block:\n", data)
         self.lines = split(self.data, "\n")
 
         for line in self.lines:
@@ -45,8 +45,8 @@ class AskForm(GopherResponse.GopherResponse):
                 continue
             try:
                 q = Question.Question(line)
-            except Question.QuestionException, qstr:
-                print "Error parsing question \"%s\": %s" % (line, qstr)
+            except Question.QuestionException as qstr:
+                print("Error parsing question \"%s\": %s" % (line, qstr))
                 continue
             
             self.questions.append(q)

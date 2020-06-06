@@ -23,7 +23,7 @@
 #############################################################################
 import re
 from string           import *
-from urlparse         import *
+from urllib.parse         import *
 from gopher           import *
 import GopherConnection
 import GopherObject
@@ -39,11 +39,10 @@ class GopherResource(GopherObject.GopherObject):
                  locator    = "/",
                  stringName = "",
                  auxFields  = []):
-        GopherObject.GopherObject.__init__(self, type, host, port,
-                                           locator, stringName)
+        GopherObject.GopherObject.__init__(self, type, host, port, locator, stringName)
         self.__class = "GopherResource"
         if self.debugging:
-            print "NEW GOPHER RESOURCE: " + self.toString()
+            print("NEW GOPHER RESOURCE: " + self.toString())
         self.info = None
         self.setAuxFields(auxFields)
             
@@ -60,9 +59,9 @@ class GopherResource(GopherObject.GopherObject):
         if not self.info and shouldFetch:
             try:
                 self.setInfo(conn.getInfo(self))
-            except Exception, errstr:
-                print "**** GopherResource couldn't get info about itself:"
-                print errstr
+            except Exception as errstr:
+                print("**** GopherResource couldn't get info about itself:")
+                print(errstr)
                 # This is bad.
                 self.setInfo(None)
 
@@ -78,9 +77,9 @@ class GopherResource(GopherObject.GopherObject):
             
             try:
                 self.setInfo(conn.getInfo(self))
-            except Exception, errstr:
-                print "**** GopherResource couldn't get info about itself:"
-                print errstr
+            except Exception as errstr:
+                print("**** GopherResource couldn't get info about itself:")
+                print(errstr)
                 # This is bad.
                 self.setInfo(None)
         
@@ -93,7 +92,7 @@ class GopherResource(GopherObject.GopherObject):
         if not self.isGopherPlusResource():
             return None
 
-        if len(self.auxFields) > 0 and strip(self.auxFields[0]) == '?':
+        if len(self.auxFields) > 0 and self.auxFields[0].strip() == '?':
             return 1
         else:
             return None
@@ -112,7 +111,7 @@ class GopherResource(GopherObject.GopherObject):
                                              self.getName(),
                                              self.getLocator(),
                                              self.getHost(), self.getPort(),
-                                             join(self.getAuxFields(), "\t"))
+                                             "\t".join(self.getAuxFields()))
     
     def toXML(self):
         """Returns a small XML tree corresponding to this object.  The root
@@ -153,7 +152,7 @@ class GopherResource(GopherObject.GopherObject):
         type     = thingys[0]
         hostport = thingys[1]
         resource = thingys[2]
-        sublist  = split(hostport, ":", 2)
+        sublist  = hostport.split(":", 2)
         host     = sublist[0]
         
         try:

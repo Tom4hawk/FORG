@@ -25,7 +25,7 @@
 ############################################################################
 
 from string import *
-from Tkinter import *
+from tkinter import *
 import Pmw
 import os
 import re
@@ -49,9 +49,9 @@ class ResourceInformation:
         return self.toString()
     def toString(self):
         def fn(key, obj=self):
-            return "%s:\n%s\n" % (upper(key), obj.getBlock(key))
+            return "%s:\n%s\n" % (key.upper(), obj.getBlock(key))
         
-        return join(map(fn, self.getBlockNames()), "") + "\n"
+        return list(map(fn, self.getBlockNames())).join("") + "\n"
     
     def setData(self, data):
         self.data = data
@@ -63,8 +63,7 @@ class ResourceInformation:
         try:
             while 1:
                 # This will throw ValueError if not found.
-                newindex = index(self.data, "\n+",
-                                 (lastindex + 1), len(self.data))
+                newindex = index(self.data, "\n+", (lastindex + 1), len(self.data))
                 blocks.append(self.data[lastindex+1:newindex])
                 lastindex = newindex
         except ValueError:  # When no more "\n+" are found.
@@ -84,11 +83,11 @@ class ResourceInformation:
 
         # We now have a list of blocks.
         for block in blocks:
-            lines = split(block, "\n")
+            lines = block.split("\n")
             blocklabel = lines[0]
 
-            front = find(blocklabel, "+")   # This defines the start of a block
-            back  = find(blocklabel, ":")   # This may not be present
+            front = blocklabel.find("+")   # This defines the start of a block
+            back  = blocklabel.find(":")   # This may not be present
 
             if front != -1:
                 if back == -1:
@@ -96,16 +95,16 @@ class ResourceInformation:
 
                 # Get the name, which is like this: "+ADMIN:" => 'ADMIN'
                 blockname = blocklabel[front+1:back]
-                key = lower(blockname) # Lowercase so it hashes nicely.  :)
+                key = blockname.lower() # Lowercase so it hashes nicely.  :)
                 
                 # strip the leading space.  This is because in gopher+
                 # when it responds to info queries, each response line that
                 # isn't a block header is indented by one space.
-                data = re.sub("\n ", "\n", join(lines[1:], "\n"))
+                data = re.sub("\n ", "\n", lines[1:].join("\n"))
 
                 # Get the first space in the data.
                 if self.verbose:
-                    print "Data is %s" % data
+                    print("Data is %s" % data)
 
                 # Watch out for the case when data is ''.  This could be in
                 # particular if the server sends us a size packet like this:
@@ -116,20 +115,20 @@ class ResourceInformation:
 
                 # Assign it into the hash.
                 if self.verbose:
-                    print "Assigned data to key %s" % key
+                    print("Assigned data to key %s" % key)
 
                 if data != '' and not data is None:
                     # No sense in assigning nothing into a key.  The getBlock()
                     # handles when there is no data and returns ''
                     self.blockdict[key] = data
             else:
-                print "BLOCK ERROR: cannot find blockname in %s" % blocklabel
+                print("BLOCK ERROR: cannot find blockname in %s" % blocklabel)
 
         if self.verbose:
-            k = self.blockdict.keys()
-            print "Available block titles are:\n%s" % join(k, "\n")
+            k = list(self.blockdict.keys())
+            print("Available block titles are:\n%s" % k.join("\n"))
 
-        print "Keys are ", self.blockdict.keys()
+        print("Keys are ", list(self.blockdict.keys()))
         return self
 
     # Simple accessors/mutators.
@@ -137,8 +136,8 @@ class ResourceInformation:
     # but in some cultures, people are executed for such offenses against the
     # OOP paradigm.  :)
     def setBlock(self, blockname, blockval):
-        self.blockdict[lower(blockname)] = blockval
-        return self.getBlock(lower(blockname))
+        self.blockdict[blockname.lower()] = blockval
+        return self.getBlock(blockname.lower())
     def setInfo(self, newinfo):
         self.blockdict['info'] = newinfo
         return self.getInfo()
@@ -160,10 +159,10 @@ class ResourceInformation:
     def getAdmin(self):
         return self.blockdict['admin']
     def getBlockNames(self):
-        return self.blockdict.keys()
+        return list(self.blockdict.keys())
     def getBlock(self, blockname):
         try:
-            return self.blockdict[lower(blockname)]
+            return self.blockdict[blockname.lower()]
         except KeyError:
             return ''
 

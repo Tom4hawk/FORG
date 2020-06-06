@@ -85,7 +85,7 @@ class Connection:
             
             timesRead = timesRead + 1
             # print "Read %s: %s" % (CHUNKSIZE, timesRead * CHUNKSIZE)
-            data = data + chunk
+            data = data + chunk.decode("utf-8")
 
             if bytesToRead > 0 and len(data) >= bytesToRead:
                 # print "BTR=%s, len(data)=%s, breaking" % (bytesToRead,
@@ -179,15 +179,13 @@ class Connection:
             #    errortype = errno.errorcode[retval]
             #    raise socket.error, errortype
         except socket.error as err:
-            newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(),
-                                                         resource.getPort(),
-                                                         err)
+            newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(), resource.getPort(), err)
             raise ConnectionException(newestr)
         
         data = ""
 
         self.checkStopped(msgBar)
-        self.socket.send(request)    # Send full request - usually quite short
+        self.socket.send(request.encode())    # Send full request - usually quite short
         self.checkStopped(msgBar)
         self.sent(len(request))      # We've sent this many bytes so far...
 
@@ -201,7 +199,7 @@ class Connection:
                 if len(byte) <= 0:
                     print("****************BROKE out of byte loop")
                     break
-                line = line + byte
+                line = line + byte.decode("utf-8")
     
             bytesread = len(line)
             line      = line.strip()

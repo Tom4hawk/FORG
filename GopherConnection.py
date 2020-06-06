@@ -31,7 +31,8 @@ import ResourceInformation
 import AskForm
 from gopher import *
 
-GopherConnectionException = "Error: "
+class GopherConnectionException(Exception):
+    pass
 
 class GopherConnection(Connection.Connection):
     SNARFSIZE                 = 1024
@@ -120,9 +121,7 @@ class GopherConnection(Connection.Connection):
                                                    msgBar, 1)
             else:
                 request = resource.getLocator() + "\r\n"
-                self.response = self.requestToData(resource,
-                                                   request,
-                                                   msgBar, None)
+                self.response = self.requestToData(resource, request, msgBar, None)
         except Connection.ConnectionException as estr:
             error_resp = GopherResponse.GopherResponse()
             errstr = "Cannot fetch\n%s:\n%s" % (resource.toURL(), estr)

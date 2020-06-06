@@ -177,7 +177,7 @@ class FORG(Frame):
         try:
             self.response = self.conn.getResource(resource=self.resource, msgBar=self.mb)
         except GopherConnection.GopherConnectionException as estr:
-            raise FORGException(estr)
+            raise FORGException("Error: " + estr)
         except socket.error as err:
             try:
                 if len(err) >= 2:
@@ -280,9 +280,7 @@ class FORG(Frame):
             return None
             
         self.createResponseWidget()
-        self.navList.insert(ListNode.ListNode(State.State(self.response,
-                                                          self.resource,
-                                                          self.child)))
+        self.navList.insert(ListNode.ListNode(State.State(self.response, self.resource, self.child)))
         self.changeContent(self.child)
         return None
 

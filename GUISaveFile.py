@@ -28,11 +28,11 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 
-from Tkinter import *
+from tkinter import *
 from gopher import *
 from string import *
 import os
-import tkFileDialog
+import tkinter.filedialog
 import Pmw
 import re
 import Options
@@ -47,9 +47,9 @@ try:
     from PIL import Image
     from PIL import ImageTk
 except:
-    print "Bummer dude!  You don't have the PIL installed on your machine!"
-    print "That means that the \"Use PIL\" option is going to be irrelevant"
-    print "for you."
+    print("Bummer dude!  You don't have the PIL installed on your machine!")
+    print("That means that the \"Use PIL\" option is going to be irrelevant")
+    print("for you.")
 
 class PILImage(Label):
     # This was borrowed and adapted from the PIL programming examples.
@@ -83,11 +83,11 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
         if usePIL and self.canDisplay():
             try:
                 self.packImageContent()
-            except Exception, errstr:
+            except Exception as errstr:
                 self.packSaveContent()
         else:
             self.packSaveContent()
-            print "Packed save content"
+            print("Packed save content")
         return None
 
     def packImageContent(self, *args):
@@ -124,7 +124,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
                                                             size[0], size[1])
         info = "%s\nMode: %s" % (info, self.image.mode)
 
-        for key in self.image.info.keys():
+        for key in list(self.image.info.keys()):
             info = "%s\n%s = %s" % (info, key, self.image.info[key])
         
             d = Dialogs.ErrorDialog(self, errstr=info,
@@ -217,7 +217,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
     
     def browse(self, *args):
         dir = os.path.abspath(os.getcwd())
-        filename = tkFileDialog.asksaveasfilename(initialdir=dir)
+        filename = tkinter.filedialog.asksaveasfilename(initialdir=dir)
 
         if filename:
             self.filenameEntry.delete(0, 'end')
@@ -232,7 +232,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             fp.write(self.response.getData())
             fp.flush()
             fp.close()
-        except IOError, errstr:
+        except IOError as errstr:
             self.parent.genericError("Couldn't save file\n%s:\n%s" % (filename,
                                                                       errstr))
             return None

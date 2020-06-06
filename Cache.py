@@ -231,7 +231,7 @@ class Cache:
         # trailing filename info that shouldn't be part of the directories
         # we're creating.
         filenamecopy = basefilename[:]
-        ind = string.rfind(filenamecopy, os.sep)
+        ind = filenamecopy.rfind(os.sep)
         
         # Chop off extra info so "/home/x/foobar" becomes "/home/x/foobar"
         # this is because make_directories will otherwise create foobar as

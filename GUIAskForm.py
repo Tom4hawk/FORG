@@ -19,7 +19,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ########################################################################
 
-from Tkinter import *
+from tkinter import *
 from gopher import *
 import Pmw
 import ContentFrame
@@ -56,13 +56,13 @@ class GUIAskForm(ContentFrame.ContentFrame, Frame):
                 typename = questions_types["%s" % q.getType()]
             except KeyError:
                 typename = "(ERROR NO TYPE)"
-            print "PROCESSING Question %s %s %s" % (typename,
+            print("PROCESSING Question %s %s %s" % (typename,
                                                     q.getDefault(),
-                                                    q.getPromptString())
+                                                    q.getPromptString()))
             try:
                 wid = GUIQuestion.GUIQuestion(self.questionBox.interior(), q)
-            except Exception, errstr:
-                print "Couldn't make wid: %s" % errstr
+            except Exception as errstr:
+                print("Couldn't make wid: %s" % errstr)
                 continue
 
             wid.grid(row=x, column=0, sticky=W)
@@ -90,7 +90,7 @@ class GUIAskForm(ContentFrame.ContentFrame, Frame):
             values.append(widget.getResponse())
             retstr = "%s%s" % (retstr, widget.getResponse())
 
-        print "Retstr is:\n%s" % retstr
+        print("Retstr is:\n%s" % retstr)
         getMe = GopherResource.GopherResource()
 
         # Shouldn't cache this resource.

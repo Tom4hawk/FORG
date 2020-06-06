@@ -52,7 +52,7 @@ class Question:
     
     def getType(self):
         if self.verbose:
-            print "QTYPE is ", self.qtype
+            print("QTYPE is ", self.qtype)
         return self.qtype
     
     def setData(self, data):
@@ -64,15 +64,14 @@ class Question:
 
         ind = find(data, ":")
         if ind == -1:
-            raise QuestionException, "Cannot find \":\" on line"
+            raise QuestionException("Cannot find \":\" on line")
         qtype = strip(data[0:ind])
         data = data[ind+1:]
 
         try:
             self.qtype = questions[qtype]
         except KeyError:
-            raise(QuestionException,
-                  "Question type \"%s\" is not valid" % qtype)
+            raise QuestionException
         
         # Do the rest here...
         if (self.qtype    == QUESTION_ASK
@@ -82,11 +81,11 @@ class Question:
                 try:
                     [promptStr, default_val] = split(data, "\t")
                 except:
-                    raise QuestionException, "Too many tabs in line"
+                    raise QuestionException("Too many tabs in line")
                 self.promptString = strip(promptStr)
                 self.default = default_val
                 if self.verbose:
-                    print "Block has default of ", self.default
+                    print("Block has default of ", self.default)
             else:
                 self.promptString = strip(data)
         elif self.qtype == QUESTION_ASKP:
@@ -102,15 +101,15 @@ class Question:
                 prompt = data[0:ind]
                 opts = split(data[ind+1:], "\t")
             except :
-                raise QuestionException, "Too many tabs in line"
+                raise QuestionException("Too many tabs in line")
 
             self.promptString = strip(prompt)
             self.options = opts
             self.default = self.options[0]
         else:
-            raise QuestionException, "Unknown QType on parse"
+            raise QuestionException("Unknown QType on parse")
 
         if self.verbose:
-            print "Successfully parsed data line: ", self.linedata
+            print("Successfully parsed data line: ", self.linedata)
 
         return None

@@ -19,7 +19,7 @@
 ##########################################################################
 
 from gopher import *
-from Tkinter import *
+from tkinter import *
 import Pmw
 from string import *
 

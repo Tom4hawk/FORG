@@ -20,7 +20,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 
-from Tkinter import *
+from tkinter import *
 from gopher import *
 from string import *
 import Pmw
@@ -72,7 +72,7 @@ class GUIFile(ContentFrame.ContentFrame, Frame):
     def pack_content(self, *args):
         if Options.program_options.getOption('strip_carraige_returns'):
             # print "Stripping carriage returns..."
-            data = replace(self.resp.getData(), "\r", "")
+            data = self.resp.getData().replace("\r", "")
         else:
             data = self.resp.getData()
 
@@ -95,11 +95,11 @@ class GUIFile(ContentFrame.ContentFrame, Frame):
             # This will raise an exception if it's a 'save' type layout
             # where the data isn't displayed to the user.
             tw = self.textwid.component('text')
-            print "Component is ", tw
+            print("Component is ", tw)
         except:
             # Don't mess with this.  The user can read the entire label, all
             # big bad few lines of it.
-            raise Exception, "This window is not searchable."
+            raise Exception("This window is not searchable.")
 
         if lastIdentifier is None:
             lastIdentifier = '0.0'
@@ -119,7 +119,7 @@ class GUIFile(ContentFrame.ContentFrame, Frame):
         else:
             found_index = None
 
-        print "Found index is \"%s\"" % found_index
+        print("Found index is \"%s\"" % found_index)
 
         if found_index:
             tw.yview(found_index)

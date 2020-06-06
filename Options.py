@@ -174,7 +174,7 @@ class Options:
     def getOption(self, optionname):
         """Get an option named optionname."""
         try:
-            optionname = lower(optionname)
+            optionname = optionname.lower()
             return self.opts[optionname]
         except KeyError:
             return None
@@ -192,7 +192,7 @@ class Options:
         comments = "%s%s%s" % ("# Options for the FORG\n",
                                "# Please don't edit me unless you know what\n",
                                "# you're doing.\n")
-        return comments + lines.join("\n") + "\n"
+        return comments + "\n".join(lines) + "\n"
     
     def parseFile(self, filename):
         """Parse filename into a set of options.  Caller is responsible

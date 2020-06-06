@@ -24,7 +24,7 @@
 
 import Associations
 from gopher       import *
-from Tkinter      import *
+from tkinter      import *
 import Pmw
 from string import *
 
@@ -161,7 +161,7 @@ class AssociationsEditor:
             item = items[x]
             # If they have the same extension...
             if extension == item[0:len(extension)]:
-                print "Replacing \"%s\"" % item
+                print("Replacing \"%s\"" % item)
                 # Remove it from the list.
                 items = items[0:x-1] + (str,) + items[x+1:]
                 addItem = None
@@ -191,7 +191,7 @@ class AssociationsEditor:
         self.assoc = Associations.Associations()
 
         for item in self.associationList.get():
-            print "Got item %s" % item
+            print("Got item %s" % item)
             index = find(item, self.DELIMITER)
             extension = item[0:index]
             pgm = item[index+len(self.DELIMITER):]
