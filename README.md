@@ -76,14 +76,23 @@ Original program is no longer maintained (latest release is from 2001) and doesn
 
 To do
 =====
-- [x] Port to newest Python 2.x __Work in progress__
+- [x] Port to newest Python 2.x
 - [ ] Port to Python 3.x
 	- [x] Remove dependency on _xmllib_
-	- [ ] Move as much as possible to syntax compatible with both Python 2 and 3
 - [ ] Change name
 - [ ] Stop using [PMW](http://pmw.sourceforge.net/) (library doesn't look alive)
 - [ ] Scrolling with mouse wheel
 - [ ] Start using _[flake8](http://flake8.pycqa.org/)_
+- [ ] Add Gemini protocol support
+- [ ] Gtk Gui
+- [ ] Ncurses Gui
+- [ ] QT Gui
+- [ ] Mobile version for Phosh
+- [ ] Mobile version for UBPorts
+- [ ] Mobile version for Plasma Mobile
+- [ ] AppImage package
+- [ ] Support for XDG Base Directory Specification
+- [ ] Clean directory structure 
 
 License
 =======
