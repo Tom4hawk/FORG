@@ -1,6 +1,6 @@
-# GopherConnection.py
-# $Id: GopherConnection.py,v 1.16 2001/07/14 22:51:57 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # This object handles connections and sending requests to gopher servers.
@@ -22,7 +22,6 @@
 import socket
 import re
 import utils
-from string import *
 import GopherResponse
 import Connection
 import GopherObject

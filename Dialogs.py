@@ -1,6 +1,5 @@
-# Dialogs.py
-# $Id: Dialogs.py,v 1.5 2001/09/01 17:39:39 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Contains many different program dialogs used for information and data
 # entry purposes.
@@ -21,7 +20,6 @@
 ############################################################################
 from tkinter import *
 from types import *
-from string import *
 import Pmw
 
 from Bookmarks.Bookmark import Bookmark

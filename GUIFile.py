@@ -1,6 +1,5 @@
-# GUIFile.py
-# $Id: GUIFile.py,v 1.12 2001/07/05 17:16:53 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This is the class that describes how files behave when loaded into
 # the FORG.
@@ -22,7 +21,6 @@
 
 from tkinter import *
 from gopher import *
-from string import *
 import Pmw
 import re
 import Options

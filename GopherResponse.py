@@ -1,7 +1,6 @@
-# GopherResponse.py
-# $Id: GopherResponse.py,v 1.15 2001/07/09 22:32:14 s2mdalle Exp $
-# Contains GopherResource and GopherResponse objects
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # This object holds the data corresponding to how a gopher server responded
@@ -25,9 +24,8 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 import re
-from string              import *
-from urllib.parse            import *
-from gopher              import *
+from urllib.parse import *
+from gopher import *
 import Connection
 import GopherConnection
 import GopherObject

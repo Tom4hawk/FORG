@@ -1,6 +1,6 @@
-# GopherObject.py
-# $Id: GopherObject.py,v 1.17 2001/07/09 22:31:32 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # Base class for GopherResource, GopherResponse
@@ -23,7 +23,7 @@
 import re
 import os
 import utils
-from string import *
+
 from gopher import *
 
 class GopherObject:

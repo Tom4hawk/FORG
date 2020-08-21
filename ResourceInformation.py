@@ -1,6 +1,6 @@
-# ResourceInformation.py
-# $Id: ResourceInformation.py,v 1.6 2001/07/05 17:16:53 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # When dealing with a Gopher+ server, information about a document can be
@@ -24,7 +24,6 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
 
-from string import *
 from tkinter import *
 import Pmw
 import os

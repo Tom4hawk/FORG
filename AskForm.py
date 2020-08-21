@@ -1,5 +1,5 @@
-# AskForm.py
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 # Released under the terms of the GNU General Public License
 # $Id: AskForm.py,v 1.6 2001/04/07 19:12:44 s2mdalle Exp $
 # An AskForm is essentially a conglomeration of Question objects.
@@ -19,7 +19,6 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #########################################################################
 
-from string import *
 import GopherResponse
 import Question
 
@@ -37,10 +36,10 @@ class AskForm(GopherResponse.GopherResponse):
         self.data = data
 
         print("ASKFORM:  Parsing data block:\n", data)
-        self.lines = split(self.data, "\n")
+        self.lines = self.data.split("\n")
 
         for line in self.lines:
-            line = strip(line)
+            line = line.split()
             if line == '' or line == '.':
                 continue
             try:

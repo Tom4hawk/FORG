@@ -1,6 +1,6 @@
-# utils.py
-# Written by David Allen <mda@idatar.com>
-# $Id: utils.py,v 1.12 2001/07/05 17:16:53 s2mdalle Exp $
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Random functions used in many places that don't belong together in an
 # object.
 #
@@ -18,7 +18,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
-from string import *
 import os
 import stat
 

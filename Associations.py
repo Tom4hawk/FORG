@@ -1,5 +1,5 @@
-# Associations.py
-# $Id: Associations.py,v 1.8 2001/07/11 22:43:09 s2mdalle Exp $
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Handles associations between file types and programs.
 #
@@ -19,7 +19,6 @@
 ########################################################################
 import re
 import os
-from string import *
 
 
 class AssociationsException(Exception):

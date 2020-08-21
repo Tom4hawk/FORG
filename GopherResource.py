@@ -1,6 +1,5 @@
-# GopherResource.py
-# $Id: GopherResource.py,v 1.13 2001/07/11 22:43:09 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This class defines the information needed for a gopher resource.  That
 # usually contains all the needed information about one instance of a file,
@@ -22,9 +21,8 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
 import re
-from string           import *
-from urllib.parse         import *
-from gopher           import *
+from urllib.parse import *
+from gopher import *
 import GopherConnection
 import GopherObject
 # import Options

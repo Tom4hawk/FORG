@@ -1,6 +1,6 @@
-# GUIQuestion.py
-# $Id: GUIQuestion.py,v 1.13 2001/07/02 22:50:39 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # A GUI representation of a question.  It should provide all methods needed
@@ -24,7 +24,7 @@
 from tkinter import *
 import Pmw
 import tkinter.filedialog
-from string import *
+
 from gopher import *
 import GopherResource
 import GopherResponse

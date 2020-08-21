@@ -1,6 +1,5 @@
-# Connection.py
-# $Id: Connection.py,v 1.18 2001/09/02 17:02:23 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Base class for socket connections.
 #
@@ -20,7 +19,6 @@
 #############################################################################
 import socket
 import Options
-from string import *
 import utils
 import errno
 

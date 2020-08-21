@@ -1,6 +1,5 @@
-# AssociationsEditor.py
-# $Id: AssociationsEditor.py,v 1.8 2001/07/06 03:06:41 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 # This pops up a dialog box and allows the user to associate file name
 # extensions with various programs to run.
 #
@@ -26,7 +25,6 @@ import Associations
 from gopher       import *
 from tkinter      import *
 import Pmw
-from string import *
 
 class AssociationsEditor:
     DELIMITER = Associations.Associations.DELIMITER

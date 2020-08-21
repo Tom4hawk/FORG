@@ -1,6 +1,5 @@
-# Options.py
-# $Id: Options.py,v 1.18 2001/07/14 23:26:27 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Eventually this will hold all program options, and maybe be incorporated
 # into some sort of options editor.  (Hopefully)
@@ -23,7 +22,6 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
 import os
-from string import *
 import Cache
 import Associations
 

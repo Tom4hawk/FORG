@@ -1,6 +1,5 @@
-# GUISaveFile.py
-# $Id: GUISaveFile.py,v 1.15 2001/07/05 17:16:53 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This class asks users graphically which filename they'd like to save certain
 # files into.  This is generally used for downloaded files that don't have
@@ -30,7 +29,6 @@
 
 from tkinter import *
 from gopher import *
-from string import *
 import os
 import tkinter.filedialog
 import Pmw

@@ -1,7 +1,6 @@
-#!/usr/bin/python2.7
-# FORG.py
-# $Id: forg.py,v 1.15 2001/09/02 17:01:42 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+#!/usr/bin/python3
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This file contains the core FORG class, which handles most of the logic
 # and content.  The actual GUI around it is handled by TkGui.py.
@@ -36,7 +35,6 @@
 ##############################################################################
 # System wide imports
 from tkinter   import *                # Tk interface
-from string    import *                # String manipulation
 from threading import *                # Threads
 import Pmw                             # Python Mega Widgets
 import os                              # Operating system stuff
