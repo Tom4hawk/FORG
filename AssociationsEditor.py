@@ -120,7 +120,7 @@ class AssociationsEditor:
     def reIns(self, *args):
         selected = self.associationList.getcurselection()
         selected = selected[0]
-        index = find(selected, self.DELIMITER)
+        index = selected.find(self.DELIMITER)
         extension = selected[0:index]
         pgm = selected[index+len(self.DELIMITER):]
 
@@ -190,7 +190,7 @@ class AssociationsEditor:
 
         for item in self.associationList.get():
             print("Got item %s" % item)
-            index = find(item, self.DELIMITER)
+            index = item.find(self.DELIMITER)
             extension = item[0:index]
             pgm = item[index+len(self.DELIMITER):]
             self.assoc.addAssociation(extension, pgm)

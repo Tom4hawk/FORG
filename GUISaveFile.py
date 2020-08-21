@@ -26,7 +26,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
-
 from tkinter import *
 from gopher import *
 import os
@@ -149,10 +148,10 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             return None
             
         s = self.filename
-        ind = rfind(s, ".")
+        ind = s.rfind(".")
         
         if ind != -1 and ind != (len(s)-1):
-            fileExtension = lower(s[ind:])
+            fileExtension = s[ind:].lower()
 
         return 1
             
@@ -174,7 +173,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             default_filename = re.sub(strtofind, char, default_filename)
 
         for separator in ['/', ':', '\\']:
-            ind = rfind(default_filename, separator)
+            ind = default_filename.rfind(separator)
             if ind != -1:
                 default_filename = default_filename[ind+len(separator):]
                 break

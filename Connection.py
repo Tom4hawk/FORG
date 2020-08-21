@@ -56,7 +56,7 @@ class Connection:
         bytesToRead < 0.  Optionally uses msgBar to log information to the
         user."""
         timesRead = 0
-        data      = ''
+        data      = b""
         CHUNKSIZE = 1024  # Default read block size.
                           # This may get overridden depending on how much data
                           # we have to read.  Optimally we want to read all of
@@ -83,7 +83,7 @@ class Connection:
             
             timesRead = timesRead + 1
             # print "Read %s: %s" % (CHUNKSIZE, timesRead * CHUNKSIZE)
-            data = data + chunk.decode("utf-8")
+            data = data + chunk
 
             if bytesToRead > 0 and len(data) >= bytesToRead:
                 # print "BTR=%s, len(data)=%s, breaking" % (bytesToRead,
@@ -125,9 +125,9 @@ class Connection:
         # expected behavior, but it disregards content lenghts in gopher+
         if bytesToRead > 0:
             # return data[0:bytesToRead]
-            return data
+            return data.decode(encoding="utf-8", errors="ignore")
         else:
-            return data
+            return data.decode(encoding="utf-8", errors="ignore")
 
     def checkStopped(self, msgBar):
         """Issue a message to the user and jump out if greenlight
@@ -188,7 +188,7 @@ class Connection:
         self.sent(len(request))      # We've sent this many bytes so far...
 
         if grokLine:   # Read the first line...this is for Gopher+ retrievals
-            line = ""  # and usually tells us how many bytes to read later
+            line = b""  # and usually tells us how many bytes to read later
             byte = ""
             
             while byte != "\n":
@@ -197,10 +197,11 @@ class Connection:
                 if len(byte) <= 0:
                     print("****************BROKE out of byte loop")
                     break
-                line = line + byte.decode("utf-8")
+                line = line + byte
     
             bytesread = len(line)
-            line      = line.strip()
+            line = line.decode(encoding="utf-8", errors="ignore")  # str() should be enough but you never know...
+            line = line.strip()
 
             try:
                 if line[0] == '+':
