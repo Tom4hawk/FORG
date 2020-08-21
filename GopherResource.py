@@ -28,24 +28,17 @@ import GopherObject
 # import Options
 
 class GopherResource(GopherObject.GopherObject):
-    verbose   = None
+    verbose = None
     debugging = None  # Set to true for messages at the prompt, etc.
-    def __init__(self,
-                 type       = RESPONSE_DIR,
-                 host       = "gopher.floodgap.com",
-                 port       = 70,
-                 locator    = "/",
-                 stringName = "",
-                 auxFields  = []):
+
+    def __init__(self, type=RESPONSE_DIR, host="gopher.floodgap.com", port=70, locator="/", stringName = "", auxFields=[]):
         GopherObject.GopherObject.__init__(self, type, host, port, locator, stringName)
         self.__class = "GopherResource"
         if self.debugging:
             print("NEW GOPHER RESOURCE: " + self.toString())
         self.info = None
         self.setAuxFields(auxFields)
-            
-        return None
-    
+
     def setInfo(self, newinfo):
         self.info = newinfo
         return self.info

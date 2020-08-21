@@ -63,13 +63,12 @@ class PILImage(Label):
 class GUISaveFile(ContentFrame.ContentFrame, Frame):
     verbose = None
     
-    def __init__(self, parent_widget, parent_object, resp,
-                 resource, filename):
+    def __init__(self, parent_widget, parent_object, resp, resource, filename):
         Frame.__init__(self, parent_widget)  # Superclass constructor
         self.r1 = None
         self.r2 = None
         self.filename = filename[:]
-        self.parent   = parent_object
+        self.parent = parent_object
         self.response = resp
         self.resource = resource
 
@@ -115,7 +114,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
         except:
             return None
         
-        info = "Bands: %s" % join(self.image.getbands(), ", ")
+        info = "Bands: %s" % self.image.getbands().join(", ")
         size = self.image.size
         info = "%s\nWidth: %d pixels\nHeight: %d pixels" % (info,
                                                             size[0], size[1])
@@ -179,11 +178,11 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
                 break
 
         if self.useStatusLabels:
-            labeltext = "%s:%d" % (resource.getHost(), int(resource.getPort()))
+            labeltext = "%s:%d" % (self.resource.getHost(), int(self.resource.getPort()))
         
-            if resource.getName() != '' and resource.getLocator() != '':
-                label2 = "\"%s\" ID %s" % (resource.getName(),
-                                           resource.getLocator())
+            if self.resource.getName() != '' and self.resource.getLocator() != '':
+                label2 = "\"%s\" ID %s" % (self.resource.getName(),
+                                           self.resource.getLocator())
             else:
                 label2 = "    "
 
