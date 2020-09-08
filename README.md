@@ -38,7 +38,7 @@ Requirements
 ============
 Python & Libraries
 ------------------
-You will need 4 things. Python 2.7.x, Tkinter (should be bundled with Python), Pmw and Pillow. There is a good chance that your distribution has all of them in official repository. You can use _pip_ if you cannot/don't want to use official repository.
+You will need 4 things. Python 3.4 or newer, Tkinter (should be bundled with Python), Pmw and Pillow. There is a good chance that your distribution has all of them in official repository. You can use _pip_ if you cannot/don't want to use official repository.
 
 Windows/MacOSX support
 ----------------------
@@ -77,7 +77,7 @@ Original program is no longer maintained (latest release is from 2001) and doesn
 To do
 =====
 - [x] Port to newest Python 2.x
-- [ ] Port to Python 3.x
+- [x] Port to Python 3.x
 	- [x] Remove dependency on _xmllib_
 - [ ] Change name
 - [ ] Stop using [PMW](http://pmw.sourceforge.net/) (library doesn't look alive)
