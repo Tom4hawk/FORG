@@ -1,6 +1,5 @@
-# GUISaveFile.py
-# $Id: GUISaveFile.py,v 1.15 2001/07/05 17:16:53 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This class asks users graphically which filename they'd like to save certain
 # files into.  This is generally used for downloaded files that don't have
@@ -27,12 +26,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
-
-from Tkinter import *
+from tkinter import *
 from gopher import *
-from string import *
 import os
-import tkFileDialog
+import tkinter.filedialog
 import Pmw
 import re
 import Options
@@ -47,9 +44,9 @@ try:
     from PIL import Image
     from PIL import ImageTk
 except:
-    print "Bummer dude!  You don't have the PIL installed on your machine!"
-    print "That means that the \"Use PIL\" option is going to be irrelevant"
-    print "for you."
+    print("Bummer dude!  You don't have the PIL installed on your machine!")
+    print("That means that the \"Use PIL\" option is going to be irrelevant")
+    print("for you.")
 
 class PILImage(Label):
     # This was borrowed and adapted from the PIL programming examples.
@@ -66,13 +63,12 @@ class PILImage(Label):
 class GUISaveFile(ContentFrame.ContentFrame, Frame):
     verbose = None
     
-    def __init__(self, parent_widget, parent_object, resp,
-                 resource, filename):
+    def __init__(self, parent_widget, parent_object, resp, resource, filename):
         Frame.__init__(self, parent_widget)  # Superclass constructor
         self.r1 = None
         self.r2 = None
         self.filename = filename[:]
-        self.parent   = parent_object
+        self.parent = parent_object
         self.response = resp
         self.resource = resource
 
@@ -83,11 +79,11 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
         if usePIL and self.canDisplay():
             try:
                 self.packImageContent()
-            except Exception, errstr:
+            except Exception as errstr:
                 self.packSaveContent()
         else:
             self.packSaveContent()
-            print "Packed save content"
+            print("Packed save content")
         return None
 
     def packImageContent(self, *args):
@@ -118,13 +114,13 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
         except:
             return None
         
-        info = "Bands: %s" % join(self.image.getbands(), ", ")
+        info = "Bands: %s" % self.image.getbands().join(", ")
         size = self.image.size
         info = "%s\nWidth: %d pixels\nHeight: %d pixels" % (info,
                                                             size[0], size[1])
         info = "%s\nMode: %s" % (info, self.image.mode)
 
-        for key in self.image.info.keys():
+        for key in list(self.image.info.keys()):
             info = "%s\n%s = %s" % (info, key, self.image.info[key])
         
             d = Dialogs.ErrorDialog(self, errstr=info,
@@ -151,10 +147,10 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             return None
             
         s = self.filename
-        ind = rfind(s, ".")
+        ind = s.rfind(".")
         
         if ind != -1 and ind != (len(s)-1):
-            fileExtension = lower(s[ind:])
+            fileExtension = s[ind:].lower()
 
         return 1
             
@@ -176,17 +172,17 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             default_filename = re.sub(strtofind, char, default_filename)
 
         for separator in ['/', ':', '\\']:
-            ind = rfind(default_filename, separator)
+            ind = default_filename.rfind(separator)
             if ind != -1:
                 default_filename = default_filename[ind+len(separator):]
                 break
 
         if self.useStatusLabels:
-            labeltext = "%s:%d" % (resource.getHost(), int(resource.getPort()))
+            labeltext = "%s:%d" % (self.resource.getHost(), int(self.resource.getPort()))
         
-            if resource.getName() != '' and resource.getLocator() != '':
-                label2 = "\"%s\" ID %s" % (resource.getName(),
-                                           resource.getLocator())
+            if self.resource.getName() != '' and self.resource.getLocator() != '':
+                label2 = "\"%s\" ID %s" % (self.resource.getName(),
+                                           self.resource.getLocator())
             else:
                 label2 = "    "
 
@@ -217,7 +213,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
     
     def browse(self, *args):
         dir = os.path.abspath(os.getcwd())
-        filename = tkFileDialog.asksaveasfilename(initialdir=dir)
+        filename = tkinter.filedialog.asksaveasfilename(initialdir=dir)
 
         if filename:
             self.filenameEntry.delete(0, 'end')
@@ -232,7 +228,7 @@ class GUISaveFile(ContentFrame.ContentFrame, Frame):
             fp.write(self.response.getData())
             fp.flush()
             fp.close()
-        except IOError, errstr:
+        except IOError as errstr:
             self.parent.genericError("Couldn't save file\n%s:\n%s" % (filename,
                                                                       errstr))
             return None

@@ -1,6 +1,5 @@
-# Connection.py
-# $Id: Connection.py,v 1.18 2001/09/02 17:02:23 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Base class for socket connections.
 #
@@ -20,7 +19,6 @@
 #############################################################################
 import socket
 import Options
-from string import *
 import utils
 import errno
 
@@ -58,7 +56,7 @@ class Connection:
         bytesToRead < 0.  Optionally uses msgBar to log information to the
         user."""
         timesRead = 0
-        data      = ''
+        data      = b""
         CHUNKSIZE = 1024  # Default read block size.
                           # This may get overridden depending on how much data
                           # we have to read.  Optimally we want to read all of
@@ -127,9 +125,9 @@ class Connection:
         # expected behavior, but it disregards content lenghts in gopher+
         if bytesToRead > 0:
             # return data[0:bytesToRead]
-            return data
+            return data.decode(encoding="utf-8", errors="ignore")
         else:
-            return data
+            return data.decode(encoding="utf-8", errors="ignore")
 
     def checkStopped(self, msgBar):
         """Issue a message to the user and jump out if greenlight
@@ -137,8 +135,7 @@ class Connection:
         if not Options.program_options.GREEN_LIGHT:
             raise ConnectionException("Connection stopped")
 
-    def requestToData(self, resource, request,
-                      msgBar=None, grokLine=None):
+    def requestToData(self, resource, request, msgBar=None, grokLine=None):
         """Sends request to the host/port stored in resource, and returns
         any data returned by the server.  This may throw
         ConnectionException.  msgBar is optional.
@@ -149,7 +146,7 @@ class Connection:
         utils.msg(msgBar, "Creating socket...")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if not self.socket:
-            raise GopherConnectionException, "Cannot create socket."
+            raise ConnectionException("Cannot create socket.")
 
         self.checkStopped(msgBar)
         utils.msg(msgBar, "Looking up hostname...")
@@ -179,33 +176,32 @@ class Connection:
             #if retval != 0:
             #    errortype = errno.errorcode[retval]
             #    raise socket.error, errortype
-        except socket.error, err:
-            newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(),
-                                                         resource.getPort(),
-                                                         err)
+        except socket.error as err:
+            newestr = "Cannot connect to\n%s:%s:\n%s" % (resource.getHost(), resource.getPort(), err)
             raise ConnectionException(newestr)
         
         data = ""
 
         self.checkStopped(msgBar)
-        self.socket.send(request)    # Send full request - usually quite short
+        self.socket.send(request.encode())    # Send full request - usually quite short
         self.checkStopped(msgBar)
         self.sent(len(request))      # We've sent this many bytes so far...
 
         if grokLine:   # Read the first line...this is for Gopher+ retrievals
-            line = ""  # and usually tells us how many bytes to read later
+            line = b""  # and usually tells us how many bytes to read later
             byte = ""
             
             while byte != "\n":
                 self.checkStopped(msgBar)
                 byte = self.socket.recv(1)
                 if len(byte) <= 0:
-                    print "****************BROKE out of byte loop"
+                    print("****************BROKE out of byte loop")
                     break
                 line = line + byte
     
             bytesread = len(line)
-            line      = strip(line)
+            line = line.decode(encoding="utf-8", errors="ignore")  # str() should be enough but you never know...
+            line = line.strip()
 
             try:
                 if line[0] == '+':
@@ -217,7 +213,7 @@ class Connection:
                 else:
                     data = self.readloop(self.socket, -1, msgBar)
             except:
-                print "*** Couldn't read bytecount: skipping."
+                print("*** Couldn't read bytecount: skipping.")
                 data = self.readloop(self.socket, -1, msgBar)
         else:
             data = self.readloop(self.socket, -1, msgBar)

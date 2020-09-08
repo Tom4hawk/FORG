@@ -1,6 +1,5 @@
-# Options.py
-# $Id: Options.py,v 1.18 2001/07/14 23:26:27 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Eventually this will hold all program options, and maybe be incorporated
 # into some sort of options editor.  (Hopefully)
@@ -23,7 +22,6 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
 import os
-from string import *
 import Cache
 import Associations
 
@@ -83,13 +81,13 @@ class Options:
             val = self.opts[key]
 
             if val:
-                print "Toggle(%s): FALSE" % key
+                print("Toggle(%s): FALSE" % key)
                 self.opts[key] = None
             else:
-                print "Toggle(%s): TRUE" % key
+                print("Toggle(%s): TRUE" % key)
                 self.opts[key] = 1
         except:
-            print "Toggle(%s): TRUE" % key
+            print("Toggle(%s): TRUE" % key)
             self.opts[key] = 1
         return self.opts[key]
             
@@ -174,7 +172,7 @@ class Options:
     def getOption(self, optionname):
         """Get an option named optionname."""
         try:
-            optionname = lower(optionname)
+            optionname = optionname.lower()
             return self.opts[optionname]
         except KeyError:
             return None
@@ -188,17 +186,16 @@ class Options:
     
     def __str__(self):
         # God I love the map() function.
-        lines = map(lambda x, self=self: "%s = %s" % (x, self.opts[x]),
-                    self.opts.keys())
+        lines = list(map(lambda x, self=self: "%s = %s" % (x, self.opts[x]), list(self.opts.keys())))
         comments = "%s%s%s" % ("# Options for the FORG\n",
                                "# Please don't edit me unless you know what\n",
                                "# you're doing.\n")
-        return comments + join(lines, "\n") + "\n"
+        return comments + "\n".join(lines) + "\n"
     
     def parseFile(self, filename):
         """Parse filename into a set of options.  Caller is responsible
         for catching IOError related to reading files."""
-        print "Previously had %d keys" % len(self.opts.keys())
+        print("Previously had %d keys" % len(list(self.opts.keys())))
         self.setDefaultOpts()
         fp = open(filename, "r")
 
@@ -206,29 +203,29 @@ class Options:
         line_num = 0
         while line != '':
             line_num = line_num + 1
-            commentIndex = find(line, "#")
+            commentIndex = line.find("#")
             if commentIndex != -1:
                 line = line[0:commentIndex]
 
-            line = strip(line)
+            line = line.strip()
             
             if line == '':             # Nothing to grokk
                 line = fp.readline()   # Get next line...
                 continue
             
-            items = split(line, "=")
+            items = line.split("=")
             if len(items) < 2:
-                print "Options::parseFile: no '=' on line number %d" % line_num
+                print("Options::parseFile: no '=' on line number %d" % line_num)
                 line = fp.readline()   # Get next line...
                 continue
             if len(items) > 2:
-                print("Options::parseFile: too many '=' on line number %d" %
-                      line_num)
+                print(("Options::parseFile: too many '=' on line number %d" %
+                      line_num))
                 line = fp.readline()   # Get next line...
                 continue
             
-            key = lower(strip(items[0]))       # Normalize and lowercase
-            val = lower(strip(items[1]))
+            key = items[0].strip().lower()       # Normalize and lowercase
+            val = items[1].strip().lower()
 
             # Figure out what the hell val should be
             if val == 'no' or val == 'none' or val == 0 or val == '0':

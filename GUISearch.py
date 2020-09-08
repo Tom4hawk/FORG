@@ -22,7 +22,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 
-from Tkinter import *
+from tkinter import *
 from gopher import *
 import Pmw
 import ContentFrame
@@ -69,7 +69,7 @@ class GUISearch(ContentFrame.ContentFrame, Frame):
     def submit(self, *args):
         terms = self.entryBox.get()
 
-        print "Terms are \"%s\"" % terms
+        print("Terms are \"%s\"" % terms)
 
         if self.bottom_label:
             self.bottom_label.destroy()

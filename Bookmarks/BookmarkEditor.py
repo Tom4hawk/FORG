@@ -16,7 +16,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
 
-from Tkinter import *
+from tkinter import *
 import Pmw
 
 import Bookmarks.BookmarkMenu
@@ -28,7 +28,7 @@ import Options
 
 def traversal_function(node):
     if node.__class__ != Tree.Node:
-        print "NODE CLASS: %s" % node.__class__
+        print("NODE CLASS: %s" % node.__class__)
         return None
     else:
         bm = node.id
@@ -46,7 +46,7 @@ def traversal_function(node):
             rval = traversal_function(subnode)
 
             if not rval:
-                print "**** That's weird.  rval ain't."
+                print("**** That's weird.  rval ain't.")
                 continue
 
             # The items are one of two things - BookmarkMenu's or
@@ -54,7 +54,7 @@ def traversal_function(node):
             # Note that you can't insert a submenu, you have to use addSubmenu
             # which is the reason for this conditional.
             if rval.__class__ == Bookmarks.BookmarkMenu.BookmarkMenu:
-                print "Adding submenu:  %s" % rval.getName()
+                print("Adding submenu:  %s" % rval.getName())
                 menu.addSubmenu(rval)
             else:
                 # print "Adding ITEM: %s" % rval.__class__
@@ -118,10 +118,10 @@ class BookmarkEditor(Toplevel):
         """User closed the window.  Prompt for saving the bookmarks to
         disk."""
 
-        print "BookmarkEditor::destroy()"
+        print("BookmarkEditor::destroy()")
         
         def cb(buttonName, self=self):
-            print "Confirm callback: ", buttonName
+            print("Confirm callback: ", buttonName)
 
             if buttonName == 'OK':
                 self.save()
@@ -146,7 +146,7 @@ class BookmarkEditor(Toplevel):
     
     def getActive(self):
         i = self.tree.getActive()
-        print "Active is %s class %s" % (i, i.__class__) 
+        print("Active is %s class %s" % (i, i.__class__)) 
 
     def make_menus(self, *args):
         self.menu = Menu(self)
@@ -191,7 +191,7 @@ class BookmarkEditor(Toplevel):
         
         try:
             factory.writeXML(filename, bmarks)
-        except IOError, errstr:
+        except IOError as errstr:
             e = "Could not save bookmarks to\n%s:\n%s" % (filename, errstr)
             d = Dialogs.ErrorDialog(self, e, "Error Saving Bookmarks")
 

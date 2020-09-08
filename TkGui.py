@@ -39,7 +39,7 @@ from xml.etree.ElementTree import ParseError
 
 
 # GUI specific modules.
-from Tkinter import *
+from tkinter import *
 import AssociationsEditor         # GUI editor for association rules
 import forg                       # The guts of the entire application
 import Pmw                        # Python Mega Widgets
@@ -74,12 +74,12 @@ class TkGui(Tk):
         try:
             if utils.file_exists(self.options_filename):
                 self.option_readfile(self.options_filename)
-        except Exception, errstr:
-            print("***Error loading options from %s: %s" %
-                  (self.options_filename, errstr))
+        except Exception as errstr:
+            print(("***Error loading options from %s: %s" %
+                  (self.options_filename, errstr)))
 
         if self.verbose:
-            print "OPTIONS:\n%s" % Options.program_options.toString()
+            print("OPTIONS:\n%s" % Options.program_options.toString())
 
         self.minsize(550, 550)
         self.title("FORG v. %s" % forg.getVersion())
@@ -99,16 +99,12 @@ class TkGui(Tk):
         self.buttonBar.pack(fill='x', expand=0)
         self.navBox.pack(fill='x', expand=0)
 
-        self.BACKWARD = Button(self.buttonBar, text='Back',
-                               command=self.goBackward)
-        self.FORWARD  = Button(self.buttonBar, text='Forward',
-                               command=self.goForward)
+        self.BACKWARD = Button(self.buttonBar, text='Back', command=self.goBackward)
+        self.FORWARD  = Button(self.buttonBar, text='Forward', command=self.goForward)
         # self.STOP   = Button(self.buttonBar, text='Stop',
         #                      command=self.stop)
-        self.RELOAD   = Button(self.buttonBar, text='Reload',
-                               command=self.reload)
-        self.HOME     = Button(self.buttonBar, text='Home',
-                               command=self.goHome)
+        self.RELOAD   = Button(self.buttonBar, text='Reload', command=self.reload)
+        self.HOME     = Button(self.buttonBar, text='Home', command=self.goHome)
 
         self.BACKWARD.pack(side='left')
         self.FORWARD.pack(side='left')
@@ -194,15 +190,15 @@ class TkGui(Tk):
 
         if Options.program_options.getOption('save_options_on_exit'):
             # self.messageBar.message('state', "Saving program options...")
-            print "Saving options on exit..."
+            print("Saving options on exit...")
             self.saveOptions()
 
         if Options.program_options.getOption('delete_cache_on_exit'):
-            print "Deleting cache on exit..."
+            print("Deleting cache on exit...")
             Options.program_options.cache.deleteCacheNoPrompt()
         
         Tk.destroy(self)
-        print "MT:  Exit"
+        print("MT:  Exit")
 
     def editAssociations(self, *args):
         """Callback: opens the associations editor and lets the users change
@@ -237,24 +233,20 @@ class TkGui(Tk):
         self.loadAssociations(filename)
 
         if Options.program_options.getAssociations().isEmpty():
-            print "ADDING DEFAULT ASSOCIATIONS"
+            print("ADDING DEFAULT ASSOCIATIONS")
             # Add defaults if there isn't anything in the association list.
-            images = [".gif", ".jpg", ".bmp", ".xpm", ".xbm",
-                      ".png", ".jpeg", ".tif", ".tiff" ]
+            images = [".gif", ".jpg", ".bmp", ".xpm", ".xbm", ".png", ".jpeg", ".tif", ".tiff"]
 
             for item in images:
-                Options.program_options.associations.addAssociation(item,
-                                                                    "eeyes $1")
+                Options.program_options.associations.addAssociation(item, "eeyes $1")
 
             browser_stuff = [".html", ".htm", ".css"]
             for item in browser_stuff:
                 cmd = "netscape $1"
                 Options.program_options.associations.addAssociation(item, cmd)
 
-            Options.program_options.associations.addAssociation(".pdf",
-                                                                "xpdf $1")
-            Options.program_options.associations.addAssociation(".ps",
-                                                                "gv $1")
+            Options.program_options.associations.addAssociation(".pdf", "xpdf $1")
+            Options.program_options.associations.addAssociation(".ps", "gv $1")
         return None
 
     def genericMessage(self, str, title='Information:'):
@@ -296,7 +288,7 @@ class TkGui(Tk):
         """Reloads bookmarks from disk, and replaces the current Bookmark
         menu with the new one loaded from disk."""
         
-        print "*** Reloading bookmarks from disk after edit."
+        print("*** Reloading bookmarks from disk after edit.")
         self.loadBookmarks()
 
         # self.bookmarks now holds the freshly edited copy of the bookmarks.
@@ -320,8 +312,8 @@ class TkGui(Tk):
 
         try:
             Options.program_options.associations.loadFromFile(filename)
-        except IOError, errstr:
-            print "****Cannot load associations from %s: %s" % (filename, str)
+        except IOError as errstr:
+            print("****Cannot load associations from %s: %s" % (filename, str))
             return 0 # Failure
         return 1  # Success
 
@@ -331,11 +323,11 @@ class TkGui(Tk):
 
         try:
             Options.program_options.parseFile(filename)
-        except IOError, errstr:
-            print "**** Couldn't parse options at %s: %s" % (filename, errstr)
+        except IOError as errstr:
+            print("**** Couldn't parse options at %s: %s" % (filename, errstr))
             return None
         
-        print "****Successfully loaded options from disk."
+        print("****Successfully loaded options from disk.")
         return 1
     
     def saveOptions(self, *args):
@@ -346,14 +338,14 @@ class TkGui(Tk):
 
         try:
             Options.program_options.associations.writeToFile(filename)
-        except IOError, str:
-            print "***Error saving associations to disk: %s" % str
+        except IOError as str:
+            print("***Error saving associations to disk: %s" % str)
 
         ofilename = self.getPrefsDirectory() + os.sep + "forgrc"
         
         try:
             Options.program_options.save()
-        except IOError, str:
+        except IOError as str:
             self.genericError("Couldn't write options to file:\n%s" % str)
 
         utils.msg(self.messageBar, "Finished saving options.")
@@ -368,10 +360,10 @@ class TkGui(Tk):
             factory.parseResource(filename)
             self.bookmarks = factory.getMenu()
         except (IOError, ParseError) as errstr:
-            print "****Couldn't load bookmarks at %s: %s" % (filename, errstr)
+            print("****Couldn't load bookmarks at %s: %s" % (filename, errstr))
             return None
         
-        print "****Bookmarks successfully loaded from disk."
+        print("****Bookmarks successfully loaded from disk.")
         return 1
     
     def saveBookmarks(self, *args):
@@ -380,10 +372,10 @@ class TkGui(Tk):
         try:
             factory = BookmarkFactory()
             factory.writeXML(filename, self.bookmarks)
-        except IOError, errstr:
-            print "****Couldn't save bookmarks to %s: %s" % (filename, errstr)
+        except IOError as errstr:
+            print("****Couldn't save bookmarks to %s: %s" % (filename, errstr))
             return None
-        print "****Bookmarks successfully saved to %s" % filename
+        print("****Bookmarks successfully saved to %s" % filename)
         return 1
 
     def stop(self, *args):
@@ -405,22 +397,21 @@ class TkGui(Tk):
         the program goes there.  (Or tries, anyway)"""
 
         if Options.program_options.getOption('use_url_format'):
-            url = string.strip(self.urlEntry.get())
+            url = self.urlEntry.get().strip()
 
-            ind = string.find(url, "://")
+            ind = url.find("://")
             if ind != -1:
                 proto = url[0:ind]
-                if string.lower(proto) != "gopher":
-                    self.genericError("Protocol\n\"%s\"\nnot supported." %
-                                      proto)
+                if proto.lower() != "gopher":
+                    self.genericError("Protocol\n\"%s\"\nnot supported." % proto)
                     return None
-            elif string.lower(url[0:9]) != "gopher://":
+            elif url[0:9].lower() != "gopher://":
                 url = "gopher://" + url
                     
             res = GopherResource.GopherResource()
             try:
                 res.setURL(url)
-            except Exception, estr:
+            except Exception as estr:
                 self.genericError("Invalid gopher URL:\n%s\n%s" % url, estr)
                 return None
         else:
@@ -434,8 +425,7 @@ class TkGui(Tk):
             if port == '' or port < 0:
                 port = 70
         
-            res  = GopherResource.GopherResource('1', host, port,
-                                                 locator, "%s Root" % host)
+            res  = GopherResource.GopherResource('1', host, port, locator, "%s Root" % host)
 
         # Either way, go there.
         self.goElsewhere(res)
@@ -654,7 +644,7 @@ class TkGui(Tk):
         self.hdebug = Menu(self.helpmenu)
         
         def printopts(opts=Options.program_options):
-            print opts
+            print(opts)
             
         self.hdebug.add_command(label="Dump Options", command=printopts)
         self.hdebug.add_command(label="Dump Queue", command=self.dumpQueue)

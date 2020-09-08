@@ -1,6 +1,6 @@
-# utils.py
-# Written by David Allen <mda@idatar.com>
-# $Id: utils.py,v 1.12 2001/07/05 17:16:53 s2mdalle Exp $
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Random functions used in many places that don't belong together in an
 # object.
 #
@@ -18,7 +18,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
-from string import *
 import os
 import stat
 
@@ -75,10 +74,10 @@ def recursive_delete(dirname):
         if os.path.isdir(path):
             recursive_delete(path)
         else:
-            print 'Removing file: "%s"' % path
+            print('Removing file: "%s"' % path)
             retval = os.unlink(path)
 
-    print 'Removing directory:', dirname
+    print('Removing directory:', dirname)
     os.rmdir(dirname)
     return 1
 
@@ -86,13 +85,13 @@ def character_replace(str, findchar, replacechar):
 
     if findchar is replacechar or findchar == replacechar:
         # That's a no-no...
-        raise Exception, "character_replace: findchar == replacechar"
+        raise Exception("character_replace: findchar == replacechar")
 
-    ind = find(str, findchar)
+    ind = str.find(findchar)
 
     while ind != -1:
         str = str[0:ind] + "%s" % replacechar + str[ind+1:]
-        ind = find(str, findchar)
+        ind = str.find(findchar)
     return str
 
 def dir_exists(dirname):
@@ -107,7 +106,7 @@ def make_directories(path, basedir):
     and basedir is an absolute path.  Example of invocation:
     make_directories('foo/bar/baz/quux', '/home/user/') will ensure that
     the path /home/user/foo/bar/baz/quux exists"""
-    arr = split(path, os.sep)
+    arr = path.split(os.sep)
 
     if basedir[len(basedir)-1] == os.sep:
         # Trim tailing dir separator
@@ -129,7 +128,7 @@ def make_directories(path, basedir):
 
 def msg(msgBar, msgtxt):
     """Puts msgtext into the msgBar.  Does nothing if msgBar is None"""
-    if msgBar != None:
+    if msgBar is not None:
         msgBar.message('state', msgtxt)
     #else:
     #    print "=> msgbar: %s" % msgtxt
@@ -137,7 +136,7 @@ def msg(msgBar, msgtxt):
 def indent(indentlevel=1):
     str = ""
     if indentlevel < 0:
-        raise Exception, "Indentlevel < 0 - you can't do that!  :)"
+        raise Exception("Indentlevel < 0 - you can't do that!  :)")
     while indentlevel > 0:
         str = str + "  "
         indentlevel = indentlevel - 1

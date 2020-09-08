@@ -1,5 +1,5 @@
-# GUIError.py
-# $Id: GUIError.py,v 1.3 2001/02/22 03:01:03 s2mdalle Exp $
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Displays errors similar to "Cannot Load Page" in the main window.
 #
@@ -19,9 +19,8 @@
 ##########################################################################
 
 from gopher import *
-from Tkinter import *
+from tkinter import *
 import Pmw
-from string import *
 
 import GopherResource
 import GopherResponse

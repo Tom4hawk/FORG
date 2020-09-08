@@ -1,6 +1,6 @@
-# GopherObject.py
-# $Id: GopherObject.py,v 1.17 2001/07/09 22:31:32 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # Base class for GopherResource, GopherResponse
@@ -23,7 +23,7 @@
 import re
 import os
 import utils
-from string import *
+
 from gopher import *
 
 class GopherObject:
@@ -101,10 +101,10 @@ class GopherObject:
         self.locator = newlocator
         return self.locator
     def getName(self):
-        if strip(self.name) == '/':
+        if self.name.strip() == '/':
             self.setName("%s root" % self.getHost())
         elif self.name == '' or self.name is None:
-            loc = strip(self.getLocator())
+            loc = self.getLocator().strip()
             if loc == '' or loc == '/':
                 self.setName("%s root" % self.getHost())
             else:
@@ -183,7 +183,7 @@ class GopherObject:
         # Cut out the port portion of the filename.  This is because some
         # OS's throw up with ':' in filenames.  Bummer, but this will make it
         # hard to translate a filename/path -> URL
-        ind = find(filename, str_to_find)
+        ind = filename.find(str_to_find)
         if ind != -1:
             filename = "%s%s" % (filename[0:ind],
                                  filename[ind+len(str_to_find):])
@@ -205,7 +205,7 @@ class GopherObject:
         replaceables = ['\t', '\n', '\\', '/']
         data = self.toURL()
 
-        if find(lstrip(lower(data)), "gopher://") == 0:
+        if data.lower().lstrip().find("gopher://") == 0:
             # Chomp the "gopher://" part
             data = data[len("gopher://"):]
         

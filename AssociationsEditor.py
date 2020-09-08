@@ -1,6 +1,5 @@
-# AssociationsEditor.py
-# $Id: AssociationsEditor.py,v 1.8 2001/07/06 03:06:41 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 # This pops up a dialog box and allows the user to associate file name
 # extensions with various programs to run.
 #
@@ -24,9 +23,8 @@
 
 import Associations
 from gopher       import *
-from Tkinter      import *
+from tkinter      import *
 import Pmw
-from string import *
 
 class AssociationsEditor:
     DELIMITER = Associations.Associations.DELIMITER
@@ -122,7 +120,7 @@ class AssociationsEditor:
     def reIns(self, *args):
         selected = self.associationList.getcurselection()
         selected = selected[0]
-        index = find(selected, self.DELIMITER)
+        index = selected.find(self.DELIMITER)
         extension = selected[0:index]
         pgm = selected[index+len(self.DELIMITER):]
 
@@ -161,7 +159,7 @@ class AssociationsEditor:
             item = items[x]
             # If they have the same extension...
             if extension == item[0:len(extension)]:
-                print "Replacing \"%s\"" % item
+                print("Replacing \"%s\"" % item)
                 # Remove it from the list.
                 items = items[0:x-1] + (str,) + items[x+1:]
                 addItem = None
@@ -191,8 +189,8 @@ class AssociationsEditor:
         self.assoc = Associations.Associations()
 
         for item in self.associationList.get():
-            print "Got item %s" % item
-            index = find(item, self.DELIMITER)
+            print("Got item %s" % item)
+            index = item.find(self.DELIMITER)
             extension = item[0:index]
             pgm = item[index+len(self.DELIMITER):]
             self.assoc.addAssociation(extension, pgm)

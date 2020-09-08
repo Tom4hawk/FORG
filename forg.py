@@ -1,7 +1,6 @@
-#!/usr/bin/python2.7
-# FORG.py
-# $Id: forg.py,v 1.15 2001/09/02 17:01:42 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+#!/usr/bin/python3
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This file contains the core FORG class, which handles most of the logic
 # and content.  The actual GUI around it is handled by TkGui.py.
@@ -35,14 +34,13 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 # System wide imports
-from Tkinter   import *                # Tk interface
-from string    import *                # String manipulation
+from tkinter   import *                # Tk interface
 from threading import *                # Threads
 import Pmw                             # Python Mega Widgets
 import os                              # Operating system stuff
 import socket                          # Socket communication
 import sys
-import tkFileDialog
+import tkinter.filedialog
 
 # Non-GUI FORG specific imports
 from gopher import *
@@ -119,10 +117,10 @@ class FORG(Frame):
         return self.getMessageBar()
 
     def dumpQueue(self, *args):
-        print "QUEUE IS:"
+        print("QUEUE IS:")
         def fn(node, s=self):
             r = node.getData().getResource()
-            print r.toURL()
+            print(r.toURL())
             
         self.navList.traverse(fn)
 
@@ -131,10 +129,10 @@ class FORG(Frame):
         buffer = buffer + Options.program_options.cache.getCacheStats() + "\n"
 
         if self.verbose:
-            print "QUEUE IS:"
+            print("QUEUE IS:")
             def fn(node, s=self):
                 r = node.getData().getResource()
-                print r.toURL()
+                print(r.toURL())
             
         self.navList.traverse(fn)
             
@@ -175,11 +173,10 @@ class FORG(Frame):
         self.conn = GopherConnection.GopherConnection()
         msg = "Done"
         try:
-            self.response = self.conn.getResource(resource=self.resource,
-                                                  msgBar=self.mb)
-        except GopherConnection.GopherConnectionException, estr:
-            raise FORGException(estr)
-        except socket.error, err:
+            self.response = self.conn.getResource(resource=self.resource, msgBar=self.mb)
+        except GopherConnection.GopherConnectionException as estr:
+            raise FORGException("Error: " + estr)
+        except socket.error as err:
             try:
                 if len(err) >= 2:
                     msg = "Can't fetch: errcode %d: %s" % (err[0], err[1])
@@ -205,7 +202,7 @@ class FORG(Frame):
         """Pop up a dialog box telling the user to choose a filename to save
         the file as."""
         dir = os.path.abspath(os.getcwd())
-        filename = tkFileDialog.asksaveasfilename(initialdir=dir)
+        filename = tkinter.filedialog.asksaveasfilename(initialdir=dir)
         
         listNode = self.navList.getCurrent()
         response = listNode.getData().getResponse()
@@ -213,9 +210,8 @@ class FORG(Frame):
         if filename and filename != "":
             try:
                 response.writeToFile(filename)
-            except IOError, errstr:
-                self.genericError("Couldn't write data to\n%s:\n%s" %
-                                  (filename, errstr))
+            except IOError as errstr:
+                self.genericError("Couldn't write data to\n%s:\n%s" % (filename, errstr))
 
         return None
 
@@ -243,9 +239,9 @@ class FORG(Frame):
 
             self.createResponseWidget()
             self.changeContent(self.child)
-        except List.ListException, errstr:
+        except List.ListException as errstr:
             if self.verbose:
-                print "Couldn't get next: %s" % errstr
+                print("Couldn't get next: %s" % errstr)
         return None
 
     def goBackward(self, *rest):
@@ -267,9 +263,9 @@ class FORG(Frame):
             self.createResponseWidget()
             node.setData(State.State(self.response, self.resource, self.child))
             self.changeContent(self.child)
-        except List.ListException, errstr:
+        except List.ListException as errstr:
             if self.verbose:
-                print "Couldn't get prev: %s" % errstr
+                print("Couldn't get prev: %s" % errstr)
 
     def downloadResource(self, res):
         """Downloads the resource from the network and redisplays"""
@@ -282,9 +278,7 @@ class FORG(Frame):
             return None
             
         self.createResponseWidget()
-        self.navList.insert(ListNode.ListNode(State.State(self.response,
-                                                          self.resource,
-                                                          self.child)))
+        self.navList.insert(ListNode.ListNode(State.State(self.response, self.resource, self.child)))
         self.changeContent(self.child)
         return None
 
@@ -420,15 +414,15 @@ class FORG(Frame):
                                                    resp=self.response,
                                                    resource=self.resource,
                                                    filename=cfilename)
-            except Exception, errstr:
-                print "******************************************************"
-                print "Caught ", Exception, " with error ", errstr, " ASK"
+            except Exception as errstr:
+                print("******************************************************")
+                print("Caught ", Exception, " with error ", errstr, " ASK")
                 self.child = Label(self, text="Congrats!  You've found a bug!")
-        elif r.getData() != None and not r.looksLikeDir(r.getData()):
-            if cfilename != None:
+        elif r.getData() is not None and not r.looksLikeDir(r.getData()):
+            if cfilename is not None:
                 assoc = self.opts.associations.getAssociation(cfilename)
                 
-                if assoc != None:
+                if assoc is not None:
                     self.LAUNCH_ME = [cfilename, assoc]
                     
             if self.response.getTypeCode() == RESPONSE_FILE:
@@ -476,7 +470,7 @@ if __name__ == '__main__':
     # Require TkGui only if we are running the application stand-alone.
     from TkGui import *
 
-    print "Starting the FORG"
+    print("Starting the FORG")
 
     arr = sys.argv
     
@@ -492,13 +486,13 @@ if __name__ == '__main__':
 
     try:
         url = arr[1]
-        if find(lower(url[:]), "gopher://") == -1:
+        if (url[:]).lower().find("gopher://") == -1:
             url = "gopher://" + url
     except:
         url = None
 
 
     # Start the program
-    print "Starting program with \"%s\"" % url
+    print("Starting program with \"%s\"" % url)
     main(url)
 

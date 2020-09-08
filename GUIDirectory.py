@@ -1,6 +1,5 @@
-# GUIDirectory.py
-# $Id: GUIDirectory.py,v 1.27 2001/07/11 22:43:09 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Graphical representation of directory views.
 #
@@ -20,9 +19,8 @@
 ########################################################################
 
 from gopher import *
-from Tkinter import *
+from tkinter import *
 import Pmw
-from string import *
 
 import GopherResource
 import GopherResponse
@@ -138,7 +136,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                 # Some servers prefix blurbs that are not meant to be displayed
                 # with (NULL).  Ferret these out, and just display a blank
                 # line.
-                if find(rname, "(NULL)") == 0:
+                if rname.find("(NULL)") == 0:
                     rname = " "
                 
                 blurb_label = Label(self.sbox, foreground=self.DEFAULT_COLOR,
@@ -279,7 +277,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
         self.popup.add_command(label='Info', command=self.infoPopup)
         self.popup.add_command(label='Cache Status', command=self.cacheStatus)
 
-        kz = self.menuAssocs.keys()
+        kz = list(self.menuAssocs.keys())
         kz.sort()
         
         for key in kz:
@@ -291,7 +289,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
         self.framePopup.add_command(label='View Directory Source',
                                     command=self.viewSource)
 
-        for key in self.menuAssocs.keys():
+        for key in list(self.menuAssocs.keys()):
             self.framePopup.add_command(label=key,
                                         command=self.menuAssocs[key])
 
@@ -343,7 +341,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                 conn = GopherConnection.GopherConnection()
                 info = conn.getInfo(resource)
                 resource.setInfo(info)
-            except Exception, errstr:
+            except Exception as errstr:
                 url = resource.toURL()
                 str = "Cannot display information about\n%s:\n%s" % (url,
                                                                      errstr)
@@ -368,15 +366,14 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
         try:
             self.lastIndex = int(self.lastIndex) # Unstringify
         except:
-            raise(Exception,
-                  "Illegal last ID passed to %s.find()" % self.__class__)
+            raise Exception("Illegal last ID passed to %s.find()" % self.__class__)
 
         if self.verbose:
-            print "LAST FOUND INDEX was %s." % self.lastIndex
+            print("LAST FOUND INDEX was %s." % self.lastIndex)
         
         # Bounds checking on lastIndex...
         if self.lastIndex < -1 or self.lastIndex > len(self.searchlist):
-            print "*****Something's messed up.  Bad lastIdentifier."
+            print("*****Something's messed up.  Bad lastIdentifier.")
         elif self.lastIndex >= 0:
             [old_label, old_widget, color] = self.searchlist[self.lastIndex]
             old_widget.configure(foreground=color)
@@ -388,15 +385,15 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
             [label, label_widget, color] = self.searchlist[x]
             
             if self.verbose:
-                print "Looking at index %d through \"%s\"..." % (x, label)
+                print("Looking at index %d through \"%s\"..." % (x, label))
                 
             if not caseSensitive:
                 # If we're not doing case-sensitive compares, convert them
                 # both to lower case and we'll compare them that way.
-                label = lower(label)
-                term  = lower(term)
+                label = label.lower()
+                term  = term.lower()
                 
-            if find(label, term) != -1:
+            if label.find(term) != -1:
                 # Term was found in this label
                 foundIndex = x
                 found = 1
@@ -415,10 +412,10 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
             scrlratio = float(foundIndex) / float(len(self.searchlist))
 
             if self.verbose:
-                print "Scrlratio is: \"%s\"" % scrlratio
-                print "Found \"%s\" in \"%s\" at index %d" % (term,
+                print("Scrlratio is: \"%s\"" % scrlratio)
+                print("Found \"%s\" in \"%s\" at index %d" % (term,
                                                               found_label,
-                                                              foundIndex)
+                                                              foundIndex))
                 
             # Turn the one that was found into FOUND_COLOR
             found_widget.configure(foreground=self.FOUND_COLOR)
@@ -428,7 +425,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
             self.scrolled_window.yview('moveto', scrlratio)
             
             if self.verbose:
-                print "RETURNING NEW FOUND INDEX: %s" % foundIndex
+                print("RETURNING NEW FOUND INDEX: %s" % foundIndex)
                 
             return foundIndex
         else:

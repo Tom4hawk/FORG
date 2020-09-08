@@ -26,13 +26,13 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
 
-import Tkdnd
+import tkinter.dnd
 
 from Bookmarks.BookmarkMenu import BookmarkMenu
 from Bookmarks.Bookmark import Bookmark
 import ListNode
 import Dialogs
-from Tkinter import *
+from tkinter import *
 
 # this is initialized later, after Tkinter is started
 class Icons:
@@ -319,7 +319,7 @@ class Node:
             
             for i in contents:
                 try:
-                    print "CONTENTS: i is %s class %s" % (i, i.__class__)
+                    print("CONTENTS: i is %s class %s" % (i, i.__class__))
                 except:
                     pass
                 # add new subnodes, they'll draw themselves
@@ -564,7 +564,7 @@ class Node:
             n.expand(co.state)
 
     # return next lower visible node
-    def next(self):
+    def __next__(self):
         n = self
         if n.subnodes:
             # if you can go right, do so
@@ -687,7 +687,7 @@ class Tree(Canvas):
         self.cutbuffer = None
         
         # pass args to superclass
-        apply(Canvas.__init__, (self, master), kw_args)
+        Canvas.__init__(*(self, master), **kw_args)
         
         # default images (BASE64-encoded GIF files)
         # we have to delay initialization until Tk starts up or PhotoImage()
@@ -708,7 +708,7 @@ class Tree(Canvas):
             
         # function to return subnodes (not very much use w/o this)
         if not getcontents:
-            raise ValueError, 'must have "get_contents" function'
+            raise ValueError('must have "get_contents" function')
         
         self.get_contents = getcontents
         
@@ -787,7 +787,7 @@ class Tree(Canvas):
         self.bind('<Prior>', self.pageup)
 
         # arrow-up/arrow-down
-        self.bind('<Down>', self.next)
+        self.bind('<Down>', self.__next__)
         self.bind('<Up>', self.prev)
 
         # arrow-left/arrow-right
@@ -819,7 +819,7 @@ class Tree(Canvas):
 
     # scroll (in a series of nudges) so items are visible
     def see(self, *items):
-        x1, y1, x2, y2 = apply(self.bbox, items)
+        x1, y1, x2, y2 = self.bbox(*items)
         while x2 > self.canvasx(0)+self.winfo_width():
             old = self.canvasx(0)
             self.xview('scroll', 1, 'units')
@@ -914,7 +914,7 @@ class Tree(Canvas):
 
     # move to next lower visible node
     def next(self, event=None):
-        self.move_cursor(self.pos.next())
+        self.move_cursor(next(self.pos))
             
     # move to next higher visible node
     def prev(self, event=None):
@@ -934,7 +934,7 @@ class Tree(Canvas):
             self.move_cursor(self.pos.subnodes[0])
         else:
             # if no subnodes, move to next sibling
-            self.next()
+            next(self)
 
     # go to root
     def first(self, event=None):
@@ -963,14 +963,14 @@ class Tree(Canvas):
         n = self.pos
         j = self.winfo_height()/self.disty
         for i in range(j-3):
-            n = n.next()
+            n = next(n)
         self.yview('scroll', 1, 'pages')
         self.move_cursor(n)
 
     # drag'n'drop support using Tkdnd
     # start drag'n'drop
     def dnd_click(self, event, node):
-        Tkdnd.dnd_start(self, event)
+        tkinter.dnd.dnd_start(self, event)
         self.dnd_source = node
 
     # remember node we just entered, and save it as target

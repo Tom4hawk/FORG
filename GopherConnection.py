@@ -1,6 +1,6 @@
-# GopherConnection.py
-# $Id: GopherConnection.py,v 1.16 2001/07/14 22:51:57 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # This object handles connections and sending requests to gopher servers.
@@ -22,7 +22,6 @@
 import socket
 import re
 import utils
-from string import *
 import GopherResponse
 import Connection
 import GopherObject
@@ -31,7 +30,8 @@ import ResourceInformation
 import AskForm
 from gopher import *
 
-GopherConnectionException = "Error: "
+class GopherConnectionException(Exception):
+    pass
 
 class GopherConnection(Connection.Connection):
     SNARFSIZE                 = 1024
@@ -49,15 +49,15 @@ class GopherConnection(Connection.Connection):
         self.response = None
         return self.response
     def stripTail(self, data):
-        ind = rfind(data, "\r\n.\r\n")
+        ind = data.rfind("\r\n.\r\n")
         
         if ind != -1:
             if self.verbose:
-                print "Stripping protocol footer at index %d" % int(ind)
+                print("Stripping protocol footer at index %d" % int(ind))
             return data[0:ind]
 
         if self.verbose:
-            print "No protocol footer found."
+            print("No protocol footer found.")
         return data
 
     # Get extended information about a resource.
@@ -65,12 +65,11 @@ class GopherConnection(Connection.Connection):
         try:
             req = "%s\t!\r\n" % resource.getLocator()
             data = self.requestToData(resource, req, msgBar)
-        except Connection.ConnectionException, errstr:
-            raise GopherConnectionException, errstr
+        except Connection.ConnectionException as errstr:
+            raise GopherConnectionException(errstr)
         
         if self.verbose:
-            print "Got %d bytes from INFO conn:\n%s" % (len(data),
-                                                        data)
+            print("Got %d bytes from INFO conn:\n%s" % (len(data), data))
 
         # The server sends back a length of -2 when it doesn't know how long
         # the document is, and when the document may contain the \r\n.\r\n
@@ -80,16 +79,16 @@ class GopherConnection(Connection.Connection):
         # been)
         if resource.getLen() != -2:
             if self.verbose:
-                print "Stripping protocol footer."
+                print("Stripping protocol footer.")
             data = self.stripTail(data)
             
         try:
             info = ResourceInformation.ResourceInformation(data)
-        except Exception, estr:
-            print "*********************************************************"
-            print "***GopherConnection: ResourceInformation Error: %s" % estr
-            print "*********************************************************"
-            raise GopherConnectionException, estr
+        except Exception as estr:
+            print("*********************************************************")
+            print("***GopherConnection: ResourceInformation Error: %s" % estr)
+            print("*********************************************************")
+            raise GopherConnectionException(estr)
         
         return info
             
@@ -121,9 +120,7 @@ class GopherConnection(Connection.Connection):
                                                    msgBar, 1)
             else:
                 request = resource.getLocator() + "\r\n"
-                self.response = self.requestToData(resource,
-                                                   request,
-                                                   msgBar, None)
+                self.response = self.requestToData(resource, request, msgBar, None)
         except Connection.ConnectionException as estr:
             error_resp = GopherResponse.GopherResponse()
             errstr = "Cannot fetch\n%s:\n%s" % (resource.toURL(), estr)
@@ -147,10 +144,10 @@ class GopherConnection(Connection.Connection):
             # if we get this far, then it's a directory entry, so set the
             # data to nothing.
             resp.setData(None)
-        except Exception, erstr:
+        except Exception as erstr:
             # print "Caught exception while parsing response: \"%s\"" % erstr
             if self.verbose:
-                print "OK, it's data."
+                print("OK, it's data.")
             resp.setData(self.response)
                 
         return resp

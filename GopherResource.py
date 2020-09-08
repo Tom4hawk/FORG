@@ -1,6 +1,5 @@
-# GopherResource.py
-# $Id: GopherResource.py,v 1.13 2001/07/11 22:43:09 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # This class defines the information needed for a gopher resource.  That
 # usually contains all the needed information about one instance of a file,
@@ -21,34 +20,27 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
-import re
-from string           import *
-from urlparse         import *
-from gopher           import *
+from urllib.parse import *
+from gopher import *
 import GopherConnection
 import GopherObject
 # import Options
 
+
 class GopherResource(GopherObject.GopherObject):
-    verbose   = None
+    verbose = None
     debugging = None  # Set to true for messages at the prompt, etc.
-    def __init__(self,
-                 type       = RESPONSE_DIR,
-                 host       = "gopher.floodgap.com",
-                 port       = 70,
-                 locator    = "/",
-                 stringName = "",
-                 auxFields  = []):
-        GopherObject.GopherObject.__init__(self, type, host, port,
-                                           locator, stringName)
+
+    def __init__(self, type=RESPONSE_DIR, host="gopher.floodgap.com", port=70, locator="/", stringName = "", auxFields=None):
+        GopherObject.GopherObject.__init__(self, type, host, port, locator, stringName)
         self.__class = "GopherResource"
         if self.debugging:
-            print "NEW GOPHER RESOURCE: " + self.toString()
+            print("NEW GOPHER RESOURCE: " + self.toString())
         self.info = None
+        if not auxFields:
+            auxFields = []
         self.setAuxFields(auxFields)
-            
-        return None
-    
+
     def setInfo(self, newinfo):
         self.info = newinfo
         return self.info
@@ -60,9 +52,9 @@ class GopherResource(GopherObject.GopherObject):
         if not self.info and shouldFetch:
             try:
                 self.setInfo(conn.getInfo(self))
-            except Exception, errstr:
-                print "**** GopherResource couldn't get info about itself:"
-                print errstr
+            except Exception as errstr:
+                print("**** GopherResource couldn't get info about itself:")
+                print(errstr)
                 # This is bad.
                 self.setInfo(None)
 
@@ -78,9 +70,9 @@ class GopherResource(GopherObject.GopherObject):
             
             try:
                 self.setInfo(conn.getInfo(self))
-            except Exception, errstr:
-                print "**** GopherResource couldn't get info about itself:"
-                print errstr
+            except Exception as errstr:
+                print("**** GopherResource couldn't get info about itself:")
+                print(errstr)
                 # This is bad.
                 self.setInfo(None)
         
@@ -93,12 +85,11 @@ class GopherResource(GopherObject.GopherObject):
         if not self.isGopherPlusResource():
             return None
 
-        if len(self.auxFields) > 0 and strip(self.auxFields[0]) == '?':
+        if len(self.auxFields) > 0 and self.auxFields[0].strip() == '?':
             return 1
         else:
             return None
-        return None
-    
+
     def isGopherPlusResource(self):
         if len(self.auxFields) > 0:
             return 1
@@ -112,7 +103,7 @@ class GopherResource(GopherObject.GopherObject):
                                              self.getName(),
                                              self.getLocator(),
                                              self.getHost(), self.getPort(),
-                                             join(self.getAuxFields(), "\t"))
+                                             "\t".join(self.getAuxFields()))
     
     def toXML(self):
         """Returns a small XML tree corresponding to this object.  The root
@@ -153,7 +144,7 @@ class GopherResource(GopherObject.GopherObject):
         type     = thingys[0]
         hostport = thingys[1]
         resource = thingys[2]
-        sublist  = split(hostport, ":", 2)
+        sublist  = hostport.split(":", 2)
         host     = sublist[0]
         
         try:

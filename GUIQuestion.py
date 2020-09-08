@@ -1,6 +1,6 @@
-# GUIQuestion.py
-# $Id: GUIQuestion.py,v 1.13 2001/07/02 22:50:39 s2mdalle Exp $
-# Written by David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
+#
 # Released under the terms of the GNU General Public License
 #
 # A GUI representation of a question.  It should provide all methods needed
@@ -21,10 +21,10 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
 
-from Tkinter import *
+from tkinter import *
 import Pmw
-import tkFileDialog
-from string import *
+import tkinter.filedialog
+
 from gopher import *
 import GopherResource
 import GopherResponse
@@ -92,12 +92,12 @@ class GUIQuestion(Frame):
                 self.entry.add(opt)
                 
             if defaultValue:
-                print "Invoking defalut %s" % defaultValue
+                print("Invoking defalut %s" % defaultValue)
                 self.entry.invoke(defaultValue)
 
             self.entry.grid(row=1, column=0, columnspan=4, rowspan=4,
                             sticky='NSEW')
-            print 'Returning SELECT GUIQuestion'
+            print('Returning SELECT GUIQuestion')
             return None
         if self.type == QUESTION_CHOOSE:
             self.entry = Pmw.RadioSelect(self, buttontype='radiobutton',
@@ -105,17 +105,17 @@ class GUIQuestion(Frame):
             for opt in self.question.options:
                 self.entry.add(opt)
             if defaultValue:
-                print "Invoking defalut %s" % defaultValue
+                print("Invoking defalut %s" % defaultValue)
                 self.entry.invoke(defaultValue)
                 
             self.entry.grid(row=1, column=0, columnspan=4, rowspan=4,
                             sticky='NSEW')
-            print "Returning CHOOSE GUIQuestion"
+            print("Returning CHOOSE GUIQuestion")
             return None
         return None
     def browse(self, *args):
         dir = os.path.abspath(os.getcwd())
-        filename = tkFileDialog.asksaveasfilename(initialdir=dir)
+        filename = tkinter.filedialog.asksaveasfilename(initialdir=dir)
         self.entry.delete(0, 'end')
         if filename:
             self.entry.insert('end', filename)
@@ -123,7 +123,7 @@ class GUIQuestion(Frame):
     def getType(self):
         return self.question.getType()
     def changed(self, *args):
-        print "Selection changed:  Current selection:  ", args
+        print("Selection changed:  Current selection:  ", args)
     def getResponse(self):
         """Returns the current state of the widget, or what should be sent
         to the server."""
@@ -138,7 +138,7 @@ class GUIQuestion(Frame):
             return "%s\n" % list[0]
         else:
             # Huh?  What?  Eh?  WTF is going on?
-            raise GUIQuestionException, "Cannot get content: Unknown type"
+            raise GUIQuestionException("Cannot get content: Unknown type")
         return ""
 
         

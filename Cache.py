@@ -23,7 +23,7 @@ import os
 import utils
 import string
 from gopher import *
-from Tkinter import *
+from tkinter import *
 import GopherResponse
 import Pmw
 import Options
@@ -129,10 +129,10 @@ class Cache:
         for item in cache_directories:
             item = "%s%s%s" % (pref, os.sep, item)
             if os.path.isdir(item):
-                print "Recursively deleting \"%s\"" % item
+                print("Recursively deleting \"%s\"" % item)
                 utils.recursive_delete(item)
             else:
-                print "Eh?  \"%s\" isn't a directory.  That's odd..." % item
+                print("Eh?  \"%s\" isn't a directory.  That's odd..." % item)
 
     def isInCache(self, resource):
         """Takes a resource, and returns true if the resource seems to have
@@ -174,12 +174,12 @@ class Cache:
             # See if the file exists...
             tuple = os.stat(filename)
             if self.verbose:
-                print "File %s of size %d exists." % (filename, tuple[6])
+                print("File %s of size %d exists." % (filename, tuple[6]))
         except OSError:
             # The file doesn't exist, we can't uncache it.
             return None
 
-        print "===> Uncaching \"%s\"" % filename
+        print("===> Uncaching \"%s\"" % filename)
         resp = GopherResponse.GopherResponse()
         resp.setType(resource.getTypeCode())
         resp.setHost(resource.getHost())
@@ -231,7 +231,7 @@ class Cache:
         # trailing filename info that shouldn't be part of the directories
         # we're creating.
         filenamecopy = basefilename[:]
-        ind = string.rfind(filenamecopy, os.sep)
+        ind = filenamecopy.rfind(os.sep)
         
         # Chop off extra info so "/home/x/foobar" becomes "/home/x/foobar"
         # this is because make_directories will otherwise create foobar as
@@ -252,7 +252,7 @@ class Cache:
         try:
             fp = open(filename, "w")
 
-            if resp.getData() == None:    # This is a directory entry.
+            if resp.getData() is None:    # This is a directory entry.
                 response_lines = resp.getResponses()
                 # Each response line is a GopherResource
                 # write them as if it was a file served by the gopher server.
@@ -273,8 +273,7 @@ class Cache:
             fp.close()
         except IOError as errstr:
             # Some error writing data to the file.  Bummer.
-            raise CacheException("Couldn't write to\n%s:\n%s" % (filename,
-                                                                  errstr))
+            raise CacheException("Couldn't write to\n%s:\n%s" % (filename, errstr))
         # Successfully wrote the data - return the filename that was used
         # to save the data into.  (Absolute path)
         return os.path.abspath(filename)

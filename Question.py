@@ -20,7 +20,6 @@
 ############################################################################
 
 from gopher import *
-from string import *
 
 QuestionException = "Error dealing with Question"
 
@@ -52,7 +51,7 @@ class Question:
     
     def getType(self):
         if self.verbose:
-            print "QTYPE is ", self.qtype
+            print("QTYPE is ", self.qtype)
         return self.qtype
     
     def setData(self, data):
@@ -62,55 +61,54 @@ class Question:
         
         self.linedata = data[:]   # Copy
 
-        ind = find(data, ":")
+        ind = data.find(":")
         if ind == -1:
-            raise QuestionException, "Cannot find \":\" on line"
-        qtype = strip(data[0:ind])
+            raise QuestionException("Cannot find \":\" on line")
+        qtype = data[0:ind].strip()
         data = data[ind+1:]
 
         try:
             self.qtype = questions[qtype]
         except KeyError:
-            raise(QuestionException,
-                  "Question type \"%s\" is not valid" % qtype)
+            raise QuestionException
         
         # Do the rest here...
         if (self.qtype    == QUESTION_ASK
             or self.qtype == QUESTION_ASKL
             or self.qtype == QUESTION_ASKP):
-            if find(data, "\t") != -1:
+            if data.find("\t") != -1:
                 try:
-                    [promptStr, default_val] = split(data, "\t")
+                    [promptStr, default_val] = data.strip("\t")
                 except:
-                    raise QuestionException, "Too many tabs in line"
-                self.promptString = strip(promptStr)
+                    raise QuestionException("Too many tabs in line")
+                self.promptString = promptStr.strip()
                 self.default = default_val
                 if self.verbose:
-                    print "Block has default of ", self.default
+                    print("Block has default of ", self.default)
             else:
-                self.promptString = strip(data)
+                self.promptString = data.strip()
         elif self.qtype == QUESTION_ASKP:
             pass
         elif (self.qtype    == QUESTION_ASKL
               or self.qtype == QUESTION_ASKF
               or self.qtype == QUESTION_CHOOSEF
               or self.qtype == QUESTION_NOTE):
-            self.promptString = strip(data)
+            self.promptString = data.strip()
         elif self.qtype == QUESTION_CHOOSE or self.qtype == QUESTION_SELECT:
             try:
-                ind = find(data, "\t")
+                ind = data.find("\t")
                 prompt = data[0:ind]
-                opts = split(data[ind+1:], "\t")
+                opts = data[ind+1:].strip("\t")
             except :
-                raise QuestionException, "Too many tabs in line"
+                raise QuestionException("Too many tabs in line")
 
-            self.promptString = strip(prompt)
+            self.promptString = prompt.strip()
             self.options = opts
             self.default = self.options[0]
         else:
-            raise QuestionException, "Unknown QType on parse"
+            raise QuestionException("Unknown QType on parse")
 
         if self.verbose:
-            print "Successfully parsed data line: ", self.linedata
+            print("Successfully parsed data line: ", self.linedata)
 
         return None

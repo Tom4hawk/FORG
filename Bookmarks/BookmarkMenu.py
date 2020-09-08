@@ -16,8 +16,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
 
-from Tkinter import Menu
-from string import strip
+from tkinter import Menu
 from xml.etree import ElementTree as ETs
 
 import List
@@ -35,12 +34,14 @@ class BookmarkMenuNode(ListNode.ListNode):
 # editable by the user.
 class BookmarkMenu(List.List):
     verbose = None
+
     def __init__(self, menuName=" "):
         List.List.__init__(self)
         self.menuName = menuName
         return None
+
     def getName(self):
-        if strip(self.menuName) > 0:
+        if len(self.menuName.strip()) > 0:
             return self.menuName
         else:
             self.setName("Bookmarks")
@@ -68,17 +69,15 @@ class BookmarkMenu(List.List):
     def addSubmenu(self, menu):
         """Adds menu as a submenu of this menu"""
         if menu.__class__ != BookmarkMenu and menu.__class__ != Bookmark:
-            raise Exception, "Cannot add a non-Bookmark/Menu as submenu"
+            raise Exception("Cannot add a non-Bookmark/Menu as submenu")
         return self.insert(BookmarkMenuNode(menu))
-
-
 
     def toXML(self):
         """Returns an XML representation of this object.  This is called
         recursively"""
 
         if self.verbose:
-            print "BookmarkMenu.toXML()"
+            print("BookmarkMenu.toXML()")
 
         folder = ETs.Element("folder")
         title = ETs.Element("title")

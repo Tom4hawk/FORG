@@ -34,7 +34,7 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ###############################################################################
 
-from Tkinter import *
+from tkinter import *
 import Pmw
 
 class ContentFrame:
@@ -45,7 +45,7 @@ class ContentFrame:
     def pack_content(self, *args):
         """Packs the content of the box into the frame.  Note this does NOT
         pack this object into its parent, only its children into itself."""
-        print "ContentFrame.pack_content:  Superclass failed to override."
+        print("ContentFrame.pack_content:  Superclass failed to override.")
         return None
     def find(self, term, caseSensitive=None, lastIdentifier=None):
         """Find some term within a frame.  If caseSensitive is true, then the
@@ -53,7 +53,7 @@ class ContentFrame:
         previously returned by this function as the last match.  If you want
         to find the next occurance of something, pass the last occurance in
         and it will search from then on."""
-        print "**********************************************************"
-        print "***** ContentFrame.find():  Some subclass fucked up. *****"
-        print "**********************************************************"
+        print("**********************************************************")
+        print("***** ContentFrame.find():  Some subclass fucked up. *****")
+        print("**********************************************************")
         return None
