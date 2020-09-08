@@ -20,23 +20,25 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #############################################################################
-import re
 from urllib.parse import *
 from gopher import *
 import GopherConnection
 import GopherObject
 # import Options
 
+
 class GopherResource(GopherObject.GopherObject):
     verbose = None
     debugging = None  # Set to true for messages at the prompt, etc.
 
-    def __init__(self, type=RESPONSE_DIR, host="gopher.floodgap.com", port=70, locator="/", stringName = "", auxFields=[]):
+    def __init__(self, type=RESPONSE_DIR, host="gopher.floodgap.com", port=70, locator="/", stringName = "", auxFields=None):
         GopherObject.GopherObject.__init__(self, type, host, port, locator, stringName)
         self.__class = "GopherResource"
         if self.debugging:
             print("NEW GOPHER RESOURCE: " + self.toString())
         self.info = None
+        if not auxFields:
+            auxFields = []
         self.setAuxFields(auxFields)
 
     def setInfo(self, newinfo):
@@ -87,8 +89,7 @@ class GopherResource(GopherObject.GopherObject):
             return 1
         else:
             return None
-        return None
-    
+
     def isGopherPlusResource(self):
         if len(self.auxFields) > 0:
             return 1
