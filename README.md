@@ -91,7 +91,7 @@ To do
 - [ ] Mobile version for UBPorts
 - [ ] Mobile version for Plasma Mobile
 - [ ] AppImage package
-- [ ] Support for XDG Base Directory Specification
+- [x] Support for XDG Base Directory Specification
 - [ ] Clean directory structure 
 
 License

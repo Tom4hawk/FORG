@@ -33,7 +33,6 @@ class Options:
         self.associations = Associations.Associations()
         self.setDefaultOpts()
         self.greenLight()
-        return None
 
     # Accessors/Mutators
     
@@ -101,15 +100,24 @@ class Options:
         self.GREEN_LIGHT = None
         return self.GREEN_LIGHT
     
-    def exists(self, filename):
-        """Returns true if filename exists, false otherwise."""
-        try:
-            stuff = os.stat(filename)
-            return 1
-        except OSError:
-            return None
-        return None
-            
+    def __get_xdg_path(self, variable: str) -> str:
+        """ Returns path to XDG_CONFIG_HOME, XDG_CACHE_HOME and XDG_DATA_HOME according to XDG Base spec"""
+        xdg_vars = {
+            "XDG_CONFIG_HOME": ".config",
+            "XDG_CACHE_HOME": ".cache",
+            "XDG_DATA_HOME": ".local" + os.sep + "share"
+        }
+
+        if not xdg_vars[variable]:
+            raise ValueError
+
+        xdg_path = os.environ.get(variable)
+
+        if not xdg_path:
+            xdg_path = os.path.expandvars("$HOME") + os.sep + xdg_vars[variable]
+
+        return xdg_path
+
     def setDefaultOpts(self):
         """Sets default set of options so that the structure is not empty."""
         self.opts = {}
@@ -118,15 +126,16 @@ class Options:
             # Ugly hack for windows.  Some versions of windows
             # yield c:\ for the home directory, and some return something
             # really screwed up like \ or c\ even.
-            self.opts['prefs_directory'] = "C:\\FORG-DATA"
+            self.opts['prefs_directory'] = "C:\\FORG-DATA" + os.sep + "Config"
+            self.opts['cache_directory'] = "C:\\FORG-DATA" + os.sep + "Cache"
         else:
-            self.opts['prefs_directory'] = "%s%s%s" % (os.path.expanduser("~"),
-                                                       os.sep, ".forg")
+            self.opts['prefs_directory'] = self.__get_xdg_path("XDG_CONFIG_HOME") + os.sep + "forg"
+            self.opts['cache_directory'] = self.__get_xdg_path("XDG_CACHE_HOME") + os.sep + "forg"
+
+        os.makedirs(self.opts['prefs_directory'], exist_ok=True)
+        os.makedirs(self.opts['cache_directory'], exist_ok=True)
 
         self.opts['home'] = "gopher://gopher.floodgap.com:70/1/"
-            
-        if not self.exists(self.opts['prefs_directory']):
-            os.mkdir(self.opts['prefs_directory'])
 
         self.opts['use_cache']                   = 1
         self.opts['delete_cache_on_exit']        = None
@@ -139,20 +148,7 @@ class Options:
         self.opts['display_info_in_directories'] = None
         self.opts['use_PIL']                     = 1  # Use PIL for images
 
-        basedir = self.getOption('prefs_directory')
-
-        pkey = 'prefs_directory'
-
-        self.opts['cache_directory'] = "%s%s%s" % (self.opts[pkey],
-                                                   os.sep,
-                                                   "cache")
-
-        if not self.exists(self.opts['cache_directory']):
-            os.mkdir(self.opts['cache_directory'])
-        
-        self.opts['cache_prefix'] = "%s%s" % (self.opts['cache_directory'],
-                                              os.sep)
-        return None
+        self.opts['cache_prefix'] = "%s%s" % (self.opts['cache_directory'], os.sep)
 
     def makeToggleWrapper(self, keyname):
         """Returns a function which when called with no arguments toggles the

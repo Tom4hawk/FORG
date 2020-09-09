@@ -23,7 +23,6 @@
 ############################################################################
 # Python-wide modules not specific to this program
 import os
-import string
 
 # Data structures, connections, and the like.
 import utils
