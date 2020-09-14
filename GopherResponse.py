@@ -36,12 +36,15 @@ import Options
 class GopherException(Exception):
     pass
 
+
 class GopherConnectionException(Exception):
     pass
+
 
 class GopherResponseException(Exception):
     def __init__(self, message):
         super(GopherResponseException, self).__init__(message)
+
 
 class GopherResponse(GopherObject.GopherObject):
     verbose = None
@@ -53,10 +56,8 @@ class GopherResponse(GopherObject.GopherObject):
         self.responses = []
 
     def toProtocolString(self):
-        if self.getData() == None:
-            def protString(item):
-                return item.toProtocolString()
-            return list(map(protString, self.getResponses())).join("")
+        if self.getData() is None:
+            return "".join(list(map(lambda x: x.toProtocolString(), self.getResponses())))
         else:
             return self.getData()
 

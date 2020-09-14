@@ -44,13 +44,15 @@ class ResourceInformation:
             self.setData(self.data)
 
         return None
+
     def __str__(self):
         return self.toString()
+
     def toString(self):
         def fn(key, obj=self):
             return "%s:\n%s\n" % (key.upper(), obj.getBlock(key))
         
-        return list(map(fn, self.getBlockNames())).join("") + "\n"
+        return "".join(list(map(fn, self.getBlockNames()))) + "\n"
     
     def setData(self, data):
         self.data = data
@@ -62,7 +64,7 @@ class ResourceInformation:
         try:
             while 1:
                 # This will throw ValueError if not found.
-                newindex = index(self.data, "\n+", (lastindex + 1), len(self.data))
+                newindex = self.data.index("\n+", (lastindex + 1), len(self.data))
                 blocks.append(self.data[lastindex+1:newindex])
                 lastindex = newindex
         except ValueError:  # When no more "\n+" are found.
