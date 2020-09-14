@@ -81,7 +81,7 @@ To do
 	- [x] Remove dependency on _xmllib_
 - [ ] Change name
 - [ ] Stop using [PMW](http://pmw.sourceforge.net/) (library doesn't look alive)
-- [ ] Scrolling with mouse wheel
+- [x] Scrolling directories with mouse wheel
 - [ ] Start using _[flake8](http://flake8.pycqa.org/)_
 - [ ] Add Gemini protocol support
 - [ ] Gtk Gui
