@@ -21,6 +21,7 @@
 from gopher import *
 from tkinter import *
 import Pmw
+import functools
 
 import GopherResource
 import GopherResponse
@@ -68,8 +69,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
 
         pmsgbar = self.parent.getMessageBar()
         if pmsgbar:
-            self.balloons = Pmw.Balloon(parent_widget,
-                                        statuscommand=pmsgbar.helpmessage)
+            self.balloons = Pmw.Balloon(parent_widget, statuscommand=pmsgbar.helpmessage)
         else:
             self.balloons = Pmw.Balloon(parent_widget)
 
@@ -77,8 +77,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
             labeltext = "%s:%d" % (resource.getHost(), int(resource.getPort()))
         
             if resource.getName() != '' and resource.getLocator() != '':
-                label2 = "\"%s\" ID %s" % (resource.getName(),
-                                           resource.getLocator())
+                label2 = "\"%s\" ID %s" % (resource.getName(), resource.getLocator())
             else:
                 label2 = "    "
             if len(label2) > 50:
@@ -96,15 +95,19 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                                                   vscrollmode='dynamic')
         
         self.sbox = Frame(self.scrolled_window.interior())
-        self.scrolled_window.create_window(0, 0, anchor='nw',
-                                           window=self.sbox)
+        self.scrolled_window.create_window(0, 0, anchor='nw', window=self.sbox)
         self.sbox.bind('<Button-3>', self.framePopupMenu)
+
+        self.scrolled_window.interior().bind_all('<Button-4>', functools.partial(self._on_mousewheel, scroll=-1))
+        self.scrolled_window.interior().bind_all('<Button-5>', functools.partial(self._on_mousewheel, scroll=1))
+
         self.scrolled_window.interior().bind('<Button-3>', self.framePopupMenu)
 
         # As very LAST thing, pack it in. 
         self.scrolled_window.pack(fill='both', expand=1)
-        return None
-        # End __init__
+
+    def _on_mousewheel(self, event, scroll):
+        self.scrolled_window.interior().yview_scroll(int(scroll), "units")
 
     def pack_content(self, *args):
         responses = self.resp.getResponses()
