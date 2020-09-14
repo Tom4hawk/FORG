@@ -1,31 +1,32 @@
 # Rudimentary Makefile for the FORG
 #
-# David Allen <mda@idatar.com>
+# Copyright (C) 2001 David Allen <mda@idatar.com>
+# Copyright (C) 2020 Tom4hawk
 #
 # Running ./forg.py hostname is sufficient to run the program, so don't 
 # use make at all unless you know what this does.  :)
-#
-# $Id: Makefile,v 1.12 2001/07/11 22:45:51 s2mdalle Exp $
 ###############################################################################
 
-srcdir  = `pwd`
-PYTHON  = /usr/bin/python
-RM      = /bin/rm -f
-CONFDIR = "$(HOME)/.forg"
+srcdir  = $(shell pwd)
+PYTHON  = /usr/bin/python3
+RM      = /bin/rm -rf
+CONFDIR = "$(HOME)/.config/forg"
+CACHEDIR= "$(HOME)/.cache/forg"
 
 all:
 	$(PYTHON) forg.py gopher.quux.org
 
 clean-cache:
-	$(RM) -r $(CONFDIR)/cache/*
+	$(RM) -r $(CACHEDIR)/*
 
 clean:	
 	@echo Yeeeeeeeeeeeeeehaw\!\!\!\!\!
-	$(RM) *.pyc *~
+	find . -name \*.pyc -delete
+	find . -name \*.~ -delete
+	find . -type d -name \__pycache__ -delete
 
 dist:
-	cd .. && tar cvf forg-latest.tar $(srcdir) --exclude CVS && \
-	gzip -9 forg-latest.tar
+	tar zcvf ../forg-latest.tar.gz --exclude='.*' --exclude='__pycache__' --exclude='*.pyc' -C $(srcdir) *
 
 install:
 	mkdir -v -p $(CONFDIR)
