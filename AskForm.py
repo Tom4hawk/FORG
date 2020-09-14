@@ -39,7 +39,7 @@ class AskForm(GopherResponse.GopherResponse):
         self.lines = self.data.split("\n")
 
         for line in self.lines:
-            line = line.split()
+            line = line.strip()
             if line == '' or line == '.':
                 continue
             try:
