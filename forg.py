@@ -75,7 +75,6 @@ class FORGException(Exception):
     def __init__(self, message):
         super(FORGException, self).__init__(message)
 
-
 def getVersion():
     return VERSION
 
@@ -103,14 +102,15 @@ class FORG(Frame):
 
         # Go wherever the user intended us to go.
         self.goElsewhere(resource)
-        
-        return None
+
     def getCache(self):
         """Return the cache object being used"""
         return Options.program_options.getCache()
+
     def getMessageBar(self):
         """Return the message bar being used."""
         return self.mb
+
     def setMessageBar(self, newmb):
         """Set the message bar object."""
         self.mb = newmb
