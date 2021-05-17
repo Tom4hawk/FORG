@@ -34,9 +34,8 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##############################################################################
 # System wide imports
-from tkinter   import *                # Tk interface
+from tkinter import *                # Tk interface
 from threading import *                # Threads
-import Pmw                             # Python Mega Widgets
 import os                              # Operating system stuff
 import socket                          # Socket communication
 import sys
@@ -373,23 +372,21 @@ class FORG(Frame):
         """Take the response already fetched and turn it into a child widget.
         This only works if the resource has already been fetched from the
         network."""
-        
+
         if not self.response:
-            raise(FORGException,
-                  "createResponseWidget: No valid response present")
+            raise(FORGException, "createResponseWidget: No valid response present")
         if not self.resource:
-            raise(FORGException,
-                  "createResponseWidget: No valid resource present")
+            raise(FORGException, "createResponseWidget: No valid resource present")
 
         cfilename = None
-        
+
         if self.opts.getOption('use_cache'):
             utils.msg(self.mb, 'Caching data...')
             cfilename = ''
 
             _resr = self.resource.shouldCache()
             _resp = self.response.shouldCache()
-            
+
             if not self.resource.isAskType() and _resr and _resp:
                 # Don't try to cache ASK blocks.  It will only throw an
                 # exception since caching them isn't a very stellar idea.
@@ -421,10 +418,10 @@ class FORG(Frame):
         elif r.getData() is not None and not r.looksLikeDir(r.getData()):
             if cfilename is not None:
                 assoc = self.opts.associations.getAssociation(cfilename)
-                
+
                 if assoc is not None:
                     self.LAUNCH_ME = [cfilename, assoc]
-                    
+
             if self.response.getTypeCode() == RESPONSE_FILE:
                 self.child = GUIFile.GUIFile(parent_widget=self,
                                              parent_object=self,
@@ -439,32 +436,18 @@ class FORG(Frame):
                                                      filename=cfilename)
 
         else:  # There is no data, display a directory entry
-            ma = {
-                "Back"       : self.goBackward,
-                "Forward"    : self.goForward,
-                "About FORG" : self.about }
-                
+            # Items in menu shown after right-click on the content
+            ma = {"Back": self.goBackward, "Forward": self.goForward}
+
             self.child = GUIDirectory.GUIDirectory(parent_widget=self,
-                                                   parent_object=self, 
+                                                   parent_object=self,
                                                    resp=self.response,
                                                    resource=self.resource,
                                                    filename=cfilename,
                                                    menuAssocs=ma)
 
-    def about(self, *args):
-        """Display the about box."""
-        Pmw.aboutversion(getVersion())
-        Pmw.aboutcopyright('Copyright 2000, 2001')
-        Pmw.aboutcontact(
-            'This program is licensed under the GNU General Public License\n' +
-            'For more information, please see\n' +
-            'http://www.gnu.org/')
-        self._about_dialog = Pmw.AboutDialog(self, applicationname='FORG')
-        # self._about_dialog.show()
-        return None
-
-
 ################################### MAIN CODE ###############################
+
 
 if __name__ == '__main__':
     # Require TkGui only if we are running the application stand-alone.

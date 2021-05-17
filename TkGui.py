@@ -496,8 +496,29 @@ class TkGui(Tk):
     def reload(self, *rest):
         return self.CONTENT_BOX.reload()
 
-    def about(self, *args):
-        return self.CONTENT_BOX.about()
+    def about(self):
+
+        window = Toplevel()
+
+        # This prevents about window from being resizeable. Most Linux WMs will also hide maximize button
+        window.resizable(0, 0)
+
+        window.title("About FORG")
+
+        forg_version = Label(window, text="Version " + forg.getVersion())
+        forg_copyright = Label(window, text="Copyright 2000, 2001 David Allen <mda@idatar.com> \n" +
+                                               "Copyright 2019-2021 Tom4hawk")
+        forg_license = Label(window, text="This program is licensed under the GNU General Public License\n" +
+                                             "For more information, please see\n" +
+                                             "https://www.gnu.org/")
+
+        close_button = Button(window, text="Close", command=window.destroy)
+
+        forg_version.pack(padx=50, pady=5)
+        forg_copyright.pack(padx=50, pady=5)
+        forg_license.pack(padx=50, pady=5)
+
+        close_button.pack(fill='x', padx=50, pady=5)
 
     def quit(self, *args):
         """Quit the entire program.  Caller may have something after this."""
