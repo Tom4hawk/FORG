@@ -33,6 +33,7 @@ import GopherResource
 import ResourceInformation
 import Options
 
+
 class GopherException(Exception):
     pass
 

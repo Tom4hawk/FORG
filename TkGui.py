@@ -24,6 +24,10 @@
 # Python-wide modules not specific to this program
 import os
 
+# TODO: Only here to prevent error "partially initialized module 'GopherResponse'"
+# (most likely due to a circular import)
+import AskForm
+
 # Data structures, connections, and the like.
 import utils
 import Options
@@ -40,9 +44,11 @@ from xml.etree.ElementTree import ParseError
 # GUI specific modules.
 from tkinter import *
 import AssociationsEditor         # GUI editor for association rules
-import forg                       # The guts of the entire application
+import forgtk                       # The guts of the entire application
 import Pmw                        # Python Mega Widgets
 import Dialogs                    # FORG specific dialogs
+
+
 
 class TkGui(Tk):
     verbose = None
@@ -81,7 +87,7 @@ class TkGui(Tk):
             print("OPTIONS:\n%s" % Options.program_options.toString())
 
         self.minsize(550, 550)
-        self.title("FORG v. %s" % forg.getVersion())
+        self.title("FORG v. %s" % forgtk.getVersion())
 
         self.saveFileDialog        = None
         self.DOWNLOAD_ME           = None     # Thread control variable
@@ -149,9 +155,9 @@ class TkGui(Tk):
         else:
             resource.setURL(Options.program_options.getOption('home'))
 
-        self.CONTENT_BOX = forg.FORG(parent_widget=self.mainBox,
-                                     parent_object=self,
-                                     resource=resource)
+        self.CONTENT_BOX = forgtk.ForgTk(parent_widget=self.mainBox,
+                                         parent_object=self,
+                                         resource=resource)
 
         self.messageBar = Pmw.MessageBar(self.mainBox,
                                          entry_width = 80,
@@ -505,7 +511,7 @@ class TkGui(Tk):
 
         window.title("About FORG")
 
-        forg_version = Label(window, text="Version " + forg.getVersion())
+        forg_version = Label(window, text="Version " + forgtk.getVersion())
         forg_copyright = Label(window, text="Copyright 2000, 2001 David Allen <mda@idatar.com> \n" +
                                                "Copyright 2019-2021 Tom4hawk")
         forg_license = Label(window, text="This program is licensed under the GNU General Public License\n" +

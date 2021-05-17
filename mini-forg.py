@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Written by David Allen <mda@idatar.com>
 # This is a proof of concept on how to embed the application.  Just using this
 # code embeds the entire application minus a few niceties (like bookmarks, etc)
@@ -11,9 +11,9 @@
 # This file is released under the terms of the GNU General Public License.
 ##############################################################################
 
-from Tkinter import *
+from tkinter import *
 import GopherResource
-import forg
+import forgtk
 
 x = Tk()
 r = GopherResource.GopherResource()
@@ -22,7 +22,7 @@ r.setName("QUUX.org")
 
 # Create a FORG object.  You only have to tell it what your parent
 # window is, and what resource it should load when it starts.
-f = forg.FORG(parent_widget=x, resource=r)
+f = forgtk.ForgTk(parent_widget=x, resource=r)
 
 # Pack it in
 f.pack(fill='both', expand=1)

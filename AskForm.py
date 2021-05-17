@@ -19,19 +19,22 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #########################################################################
 
-import GopherResponse
+from GopherResponse import GopherResponse
 import Question
 
-class AskForm(GopherResponse.GopherResponse):
+
+class AskForm(GopherResponse):
     def __init__(self, askformdata=""):
-        GopherResponse.GopherResponse.__init__(self)
+        GopherResponse.__init__(self)
         self.questions = []
         self.setAskFormData(askformdata)
-        return None
+
     def questionCount(self):
         return len(self.questions)
+
     def nthQuestion(self, nth):
         return self.questions[nth]
+
     def setAskFormData(self, data):
         self.data = data
 
