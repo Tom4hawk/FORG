@@ -320,11 +320,11 @@ class ForgTk(Frame):
         if usecache and optionsUseCache and not resource.getDataBlock():
             # Don't try to pull something out of cache unless it doesn't have
             # a data block. If it does, we have to submit information
-            utils.msg(self.mb, "Looking for document in cache...")
+            utils.set_statusbar_text(self.mb, "Looking for document in cache...")
             self.response = Options.program_options.cache.uncache(resource)
 
         if not self.response:
-            utils.msg(self.mb,
+            utils.set_statusbar_text(self.mb,
                       "Document not in cache. Fetching from network.")
             # We need to fetch this document from the network.
             # Signal the download thread to go to work, and get out.
@@ -336,7 +336,7 @@ class ForgTk(Frame):
             newthread.start()
             return
         else:
-            utils.msg(self.mb, "Loading document from cache to display.")
+            utils.set_statusbar_text(self.mb, "Loading document from cache to display.")
             self.createResponseWidget()
             s = State.State(self.response, self.resource, self.child)
             self.navList.insert(ListNode.ListNode(s))
@@ -349,10 +349,10 @@ class ForgTk(Frame):
             self.currentContent.pack_forget()
 
         if newwid:
-            utils.msg(self.mb, "Updating display...")            
+            utils.set_statusbar_text(self.mb, "Updating display...")
             newwid.pack(expand=1, fill='both')
             newwid.pack_content()
-            utils.msg(self.mb, "Done")
+            utils.set_statusbar_text(self.mb, "Done")
 
         self.currentContent = newwid
 
@@ -378,7 +378,7 @@ class ForgTk(Frame):
         cfilename = None
 
         if self.opts.getOption('use_cache'):
-            utils.msg(self.mb, 'Caching data...')
+            utils.set_statusbar_text(self.mb, 'Caching data...')
             cfilename = ''
 
             _resr = self.resource.shouldCache()

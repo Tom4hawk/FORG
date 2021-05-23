@@ -169,7 +169,7 @@ class TkGui(Tk):
 
         self.CONTENT_BOX.pack(expand=1, fill='both')
         self.messageBar.pack(expand=0, fill='x')
-        utils.msg(self.messageBar, "Ready")
+        utils.set_statusbar_text(self.messageBar, "Ready")
 
         # Call fn when the window is destroyed.
         self.protocol("WM_DELETE_WINDOW", self.destroy)
@@ -352,7 +352,7 @@ class TkGui(Tk):
         except IOError as str:
             self.genericError("Couldn't write options to file:\n%s" % str)
 
-        utils.msg(self.messageBar, "Finished saving options.")
+        utils.set_statusbar_text(self.messageBar, "Finished saving options.")
         return None
 
     def loadBookmarks(self, *args):

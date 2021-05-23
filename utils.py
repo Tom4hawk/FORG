@@ -126,7 +126,7 @@ def make_directories(path, basedir):
         basedir = dirname
     return 1
 
-def msg(msgBar, msgtxt):
+def set_statusbar_text(msgBar, msgtxt: str) -> None:
     """Puts msgtext into the msgBar.  Does nothing if msgBar is None"""
     if msgBar is not None:
         msgBar.message('state', msgtxt)

@@ -143,13 +143,13 @@ class Connection:
         This is provided so that the user can immediately stop the connection
         if it exists."""
 
-        utils.msg(msgBar, "Creating socket...")
+        utils.set_statusbar_text(msgBar, "Creating socket...")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if not self.socket:
             raise ConnectionException("Cannot create socket.")
 
         self.checkStopped(msgBar)
-        utils.msg(msgBar, "Looking up hostname...")
+        utils.set_statusbar_text(msgBar, "Looking up hostname...")
         try:
             # Try to get a cached copy of the IP address rather than
             # looking it up again which takes longer...
@@ -169,7 +169,7 @@ class Connection:
         
         # At this point, ipaddr holds the actual network address of the
         # host we're contacting.
-        utils.msg(msgBar,
+        utils.set_statusbar_text(msgBar,
                   "Connecting to %s:%s..." % (ipaddr, resource.getPort()))
         try:
             retval = self.socket.connect((ipaddr, int(resource.getPort())))
@@ -218,7 +218,7 @@ class Connection:
         else:
             data = self.readloop(self.socket, -1, msgBar)
 
-        utils.msg(msgBar, "Closing socket.")
+        utils.set_statusbar_text(msgBar, "Closing socket.")
         self.socket.close()
 
         # FIXME: 'data' may be huge.  Buffering?  Write to cache file here

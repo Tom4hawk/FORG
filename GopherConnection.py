@@ -128,7 +128,7 @@ class GopherConnection(Connection.Connection):
             error_resp.setError(errstr)
             return error_resp
 
-        utils.msg(msgBar, "Examining response...")
+        utils.set_statusbar_text(msgBar, "Examining response...")
 
         resp = GopherResponse.GopherResponse()
         resp.setType(resource.getTypeCode())
