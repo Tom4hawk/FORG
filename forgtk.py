@@ -80,9 +80,7 @@ def getVersion():
 class ForgTk(Frame):
     verbose = None
     
-    def __init__(self, parent_widget, resource, response=None,
-                 messageBar=None,
-                 parent_object=None):
+    def __init__(self, parent_widget, resource, response=None, messageBar=None, parent_object=None):
         Frame.__init__(self, parent_widget)
         self.parent_widget = parent_widget
         self.parent_object = parent_object

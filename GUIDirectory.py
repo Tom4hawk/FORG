@@ -56,8 +56,7 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
     HOSTPORT_COLUMN = 7
     HOSTPORT_SPAN   = 1
 
-    def __init__(self, parent_widget, parent_object, resp,
-                 resource, filename=None, menuAssocs={}):
+    def __init__(self, parent_widget, parent_object, resp, resource, filename=None, menuAssocs={}):
         Frame.__init__(self, parent_widget)  # Superclass constructor
         self.searchlist = []    # Searchable terms...
         self.parent = parent_object

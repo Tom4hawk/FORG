@@ -174,7 +174,6 @@ class TkGui(Tk):
         # Call fn when the window is destroyed.
         self.protocol("WM_DELETE_WINDOW", self.destroy)
         self.setLocation(self.CONTENT_BOX.getResource())
-        return None
 
     def getCache(self):
         return Options.program_options.cache
