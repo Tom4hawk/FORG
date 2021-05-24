@@ -112,12 +112,9 @@ class Connection:
                 else:
                     pctDone = ""
 
-                msgBar.message('state',
-                               "Read %d bytes (%0.2f Kb) %s %s" %
-                               (bytesRead,
-                                kbRead,
-                                numKBtoRead,
-                                pctDone))
+                utils.set_statusbar_text(msgBar, "Read %d bytes (%0.2f Kb) %s %s" %
+                                         (bytesRead, kbRead, numKBtoRead, pctDone))
+
 
         # Break standards-compliance because of all those terrible gopher
         # servers out there.  Return all of the data that we read, not just

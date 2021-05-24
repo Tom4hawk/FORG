@@ -17,7 +17,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ########################################################################
-
+import utils
 from gopher import *
 from tkinter import *
 import Pmw
@@ -66,11 +66,8 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
         self.menuAssocs = menuAssocs
         self.createPopup()
 
-        pmsgbar = self.parent.getMessageBar()
-        if pmsgbar:
-            self.balloons = Pmw.Balloon(parent_widget, statuscommand=pmsgbar.helpmessage)
-        else:
-            self.balloons = Pmw.Balloon(parent_widget)
+        self.pmsgbar = self.parent.getMessageBar()
+
 
         if self.useStatusLabels:
             labeltext = "%s:%d" % (resource.getHost(), int(resource.getPort()))
@@ -160,29 +157,32 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                     # one of several popup commands will use.
                     return self.popupMenu(event, resource)
 
-                def enter_signal(event, resource=r,
-                                 box=self.sbox, rowno=x, p=self):
-                    host = resource.getHost()
-                    port = resource.getPort()
-                    resource.__blurb__ = Label(box,
-                                               text=resource.toURL())
-                    resource.__blurb__.grid(row=rowno,
-                                            column=p.HOSTPORT_COLUMN,
-                                            columnspan=p.HOSTPORT_SPAN,
-                                            sticky=E)
+                def enter_signal(event, resource=r, box=self.sbox, rowno=x, p=self):
+                    show_address_in_statusbar(event, resource)
+
+                    # Why the hell is it here? It basically duplicates statusbar information
+                    # Is it somehow connected to caching??
+                    resource.__blurb__ = Label(box, text=resource.toURL())
+                    resource.__blurb__.grid(row=rowno, column=p.HOSTPORT_COLUMN, columnspan=p.HOSTPORT_SPAN, sticky=E)
 
                 def leave_signal(event, resource=r):
                     try:
+                        restore_status_bar(event)
                         resource.__blurb__.destroy()
                     except:
                         pass
+
+                def show_address_in_statusbar(event, resource=r):
+                    utils.set_statusbar_text(self.pmsgbar, resource.toURL())
+
+                def restore_status_bar(event):
+                    utils.set_statusbar_text(self.pmsgbar, "")
                 
                 # Don't make it clickable if it's an error.  But if it
                 # isn't an error, connect these signals.
                 if r.getTypeCode() != RESPONSE_ERR:
                     default_color = self.LINK_COLOR
-                    b = Label(self.sbox, foreground=self.LINK_COLOR,
-                              text=r.getName())
+                    b = Label(self.sbox, foreground=self.LINK_COLOR, text=r.getName())
                     b.bind('<ButtonRelease-1>', fn)
                     b.bind('<Button-1>', color_widget)
                     b.bind('<Button-3>', dopopup)
@@ -191,9 +191,10 @@ class GUIDirectory(ContentFrame.ContentFrame, Frame):
                         b.bind('<Enter>', enter_signal)
                         b.bind('<Leave>', leave_signal)
 
-                    # Attach a balloon
-                    btext = r.toURL()
-                    self.balloons.bind(b, None, btext)
+                    b.bind('<Enter>', show_address_in_statusbar, add="+")
+                    b.bind('<Leave>', restore_status_bar, add="+")
+
+
                 else:
                     default_color = self.DEFAULT_COLOR
                     b = Label(self.sbox, foreground=self.DEFAULT_COLOR,

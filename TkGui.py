@@ -159,16 +159,12 @@ class TkGui(Tk):
                                          parent_object=self,
                                          resource=resource)
 
-        self.messageBar = Pmw.MessageBar(self.mainBox,
-                                         entry_width = 80,
-                                         entry_relief='groove',
-                                         labelpos = 'w',
-                                         label_text = 'Status:')
+        self.messageBar = Label(text="on the way…", bd=1, relief=SUNKEN, anchor=W)
 
         self.CONTENT_BOX.setMessageBar(self.messageBar)
 
         self.CONTENT_BOX.pack(expand=1, fill='both')
-        self.messageBar.pack(expand=0, fill='x')
+        self.messageBar.pack(side=BOTTOM, fill=X)
         utils.set_statusbar_text(self.messageBar, "Ready")
 
         # Call fn when the window is destroyed.
