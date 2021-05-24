@@ -45,7 +45,6 @@ from xml.etree.ElementTree import ParseError
 from tkinter import *
 import AssociationsEditor         # GUI editor for association rules
 import forgtk                       # The guts of the entire application
-import Pmw                        # Python Mega Widgets
 import Dialogs                    # FORG specific dialogs
 
 
