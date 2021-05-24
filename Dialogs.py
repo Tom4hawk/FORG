@@ -196,16 +196,16 @@ class InformationDialog:
         # print "Error Dialog: %s" % errstr
         # print "========================================================"
 
-        if type(errstr) != StringType:
+        if type(errstr) != str:
             errstr = str(errstr)
 
-        labels = split(errstr, "\n")
+        labels = errstr.split("\n")
         
         for label in labels:
             Label(self.dialog.interior(), text=label).pack(side='top')
 
         # self.dialog.activate() # Modalize  :)
-        return None
+
 
 class ErrorDialog(InformationDialog):
     def __init__(self, parent, errstr, title="Error:"):
