@@ -18,11 +18,11 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
-from tkinter import *
+import tkinter as tk
 from types import *
 import Pmw
-
 from Bookmarks.Bookmark import Bookmark
+from tkui.Dialog import Dialog
 
 
 class FindDialog:
@@ -30,22 +30,23 @@ class FindDialog:
         self.parent = parent
         self.parentobj = parentobj
         self.searchwidget = searchwidget
-        self.dialog = Pmw.Dialog(parent, title='Find Text...',
-                                 buttons=('OK', 'Cancel'), defaultbutton='OK',
+
+        self.dialog = Dialog(title='Find Text...',
+                                 buttons=('OK', 'Cancel'), default_button='OK',
                                  command=self.dispatch)
-        self.frame = Frame(self.dialog.interior())
+
+        self.frame = tk.Frame(self.dialog.interior())
         self.frame.pack(expand=1, fill='both')
 
-        Label(self.frame, text="Find a term...").grid(row=0, column=0,
-                                                      columnspan=5)
-        Label(self.frame, text="Term: ").grid(row=1, column=0)
+        tk.Label(self.frame, text="Find a term...").grid(row=0, column=0, columnspan=5)
+        tk.Label(self.frame, text="Term: ").grid(row=1, column=0)
 
-        self.searchEntry = Entry(self.frame, text="")
+        self.searchEntry = tk.Entry(self.frame, text="")
         self.searchEntry.grid(row=1, column=1, columnspan=4)
 
-        self.css = IntVar()
+        self.css = tk.IntVar()
         
-        self.caseSensitiveCheckBox = Checkbutton(self.frame,
+        self.caseSensitiveCheckBox = tk.Checkbutton(self.frame,
                                                  text="Case-sensitive search",
                                                  variable = self.css,
                                                  command  = self.cb)
@@ -53,8 +54,7 @@ class FindDialog:
         
         self.lastMatch = None
         # self.dialog.activate()
-        return None
-    
+
     def cb(self, *args):
         # print "Var is ", self.css.get()
         return None
@@ -76,9 +76,7 @@ class FindDialog:
 
         # Otherwise, go look for a term...
         # try:
-        self.lastMatch = self.searchwidget.find(self.getSearchTerm(),
-                                                self.getCaseSensitive(),
-                                                self.lastMatch)
+        self.lastMatch = self.searchwidget.find(self.getSearchTerm(), self.getCaseSensitive(), self.lastMatch)
         
         print("Last match is now ", self.lastMatch)
         return self.lastMatch
@@ -91,9 +89,8 @@ class OpenURLDialog:
                                    buttons=('OK', 'Cancel'),
                                    defaultbutton='OK')
         i = self.dialog.interior()
-        Label(i, text="Enter URL to Open:").pack(side='top', expand=1,
-                                                 fill='both')
-        self.urlEntry = Entry(i, width=30)
+        tk.Label(i, text="Enter URL to Open:").pack(side='top', expand=1, fill='both')
+        self.urlEntry = tk.Entry(i, width=30)
         self.urlEntry.insert('end', "gopher://")
         self.urlEntry.pack()
         
@@ -115,17 +112,16 @@ class NewBookmarkDialog:
                                  command=self.callback,
                                  buttons=('OK', 'Cancel'))
         i = self.dialog.interior()
-        namebox = Frame(i)
-        urlbox  = Frame(i)
-        Label(i, text="Enter Bookmark Information:").pack(side='top', expand=1,
-                                                          fill='both')
+        namebox = tk.Frame(i)
+        urlbox  = tk.Frame(i)
+        tk.Label(i, text="Enter Bookmark Information:").pack(side='top', expand=1, fill='both')
         namebox.pack(fill='both', expand=1)
         urlbox.pack(fill='both', expand=1)
         
-        Label(namebox, text="Name:").pack(side='left')
+        tk.Label(namebox, text="Name:").pack(side='left')
         self.nameEntry = Entry(namebox, width=30)
         self.nameEntry.pack(side='right', fill='x', expand=1)
-        Label(urlbox, text="URL:").pack(side='left')
+        tk.Label(urlbox, text="URL:").pack(side='left')
         self.URLEntry = Entry(urlbox, width=30)
         self.URLEntry.pack(side='right', fill='x', expand=1)
 
@@ -159,9 +155,8 @@ class NewFolderDialog:
                                  buttons=self.buttons)
 
         i = self.dialog.interior()
-        Label(i, text="New Folder Title:").grid(row=0, column=0,
-                                               sticky='EW')
-        self.__entry = Entry(i)        
+        tk.Label(i, text="New Folder Title:").grid(row=0, column=0, sticky='EW')
+        self.__entry = tk.Entry(i)
         self.__entry.grid(row=1, column=0, sticky='EW')
         
         if folderName:
@@ -202,7 +197,7 @@ class InformationDialog:
         labels = errstr.split("\n")
         
         for label in labels:
-            Label(self.dialog.interior(), text=label).pack(side='top')
+            tk.Label(self.dialog.interior(), text=label).pack(side='top')
 
         # self.dialog.activate() # Modalize  :)
 
