@@ -119,17 +119,15 @@ class NewBookmarkDialog:
         urlbox.pack(fill='both', expand=1)
         
         tk.Label(namebox, text="Name:").pack(side='left')
-        self.nameEntry = Entry(namebox, width=30)
+        self.nameEntry = tk.Entry(namebox, width=30)
         self.nameEntry.pack(side='right', fill='x', expand=1)
         tk.Label(urlbox, text="URL:").pack(side='left')
-        self.URLEntry = Entry(urlbox, width=30)
+        self.URLEntry = tk.Entry(urlbox, width=30)
         self.URLEntry.pack(side='right', fill='x', expand=1)
 
         if resource:
             self.URLEntry.insert('end', resource.toURL())
             self.nameEntry.insert('end', resource.getName())
-
-        return None
 
     def callback(self, button):
         if button and button != 'Cancel':
@@ -139,7 +137,7 @@ class NewBookmarkDialog:
             self.cmd(res) # Do whatever our parent wants us to with this...
 
         self.dialog.destroy()
-        return None
+
 
 class NewFolderDialog:
     BUTTON_OK     = 0
