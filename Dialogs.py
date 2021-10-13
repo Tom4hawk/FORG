@@ -145,10 +145,7 @@ class NewFolderDialog:
         self.buttons = ('OK', 'Cancel')
         self.callback = callback
         self.parent   = parentwin
-        self.dialog = Pmw.Dialog(parentwin,
-                                 title="New Folder:",
-                                 command=self.closeDialog,
-                                 buttons=self.buttons)
+        self.dialog = Dialog(parent=parentwin, title="New Folder:", command=self.closeDialog, buttons=self.buttons)
 
         i = self.dialog.interior()
         tk.Label(i, text="New Folder Title:").grid(row=0, column=0, sticky='EW')
@@ -159,12 +156,10 @@ class NewFolderDialog:
             self.__entry.insert('end', folderName)
             
         self.bindCallbacks()
-        return None
 
     def bindCallbacks(self):
         self.__entry.bind('<Return>', self.closeDialog)
-        return None
-    
+
     def closeDialog(self, result):
         if result == self.buttons[self.BUTTON_CANCEL]:
             self.dialog.destroy()
