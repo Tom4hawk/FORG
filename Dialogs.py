@@ -108,13 +108,11 @@ class OpenURLDialog:
 class NewBookmarkDialog:
     def __init__(self, parentwin, cmd, resource=None):
         self.cmd = cmd
-        self.dialog = Pmw.Dialog(parentwin, title="New Bookmark:",
-                                 command=self.callback,
-                                 buttons=('OK', 'Cancel'))
-        i = self.dialog.interior()
-        namebox = tk.Frame(i)
-        urlbox  = tk.Frame(i)
-        tk.Label(i, text="Enter Bookmark Information:").pack(side='top', expand=1, fill='both')
+        self.dialog = Dialog(parent=parentwin, title="New Bookmark:", command=self.callback, buttons=('OK', 'Cancel'))
+        interior = self.dialog.interior()
+        namebox = tk.Frame(interior)
+        urlbox = tk.Frame(interior)
+        tk.Label(interior, text="Enter Bookmark Information:").pack(side='top', expand=1, fill='both')
         namebox.pack(fill='both', expand=1)
         urlbox.pack(fill='both', expand=1)
         
