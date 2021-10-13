@@ -83,8 +83,7 @@ class BookmarkEditor(Toplevel):
         self.mainBox = Frame(self)
         self.mainBox.pack(fill='both', expand=1)
         
-        self.tree = Tree.Tree(self.mainBox, bmtree,
-                              rootlabel="Bookmarks", lineflag=0)
+        self.tree = Tree.Tree(self.mainBox, bmtree, rootlabel="Bookmarks", lineflag=0)
         self.tree.grid(row=0, column=0, sticky='NSEW')
 
         # Make expandable

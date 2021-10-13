@@ -787,7 +787,7 @@ class Tree(Canvas):
         self.bind('<Prior>', self.pageup)
 
         # arrow-up/arrow-down
-        self.bind('<Down>', self.__next__)
+        self.bind('<Down>', self.next)
         self.bind('<Up>', self.prev)
 
         # arrow-left/arrow-right
