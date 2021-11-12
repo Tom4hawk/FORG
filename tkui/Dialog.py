@@ -38,6 +38,11 @@ class Dialog:
         # Buttons
         button_frame = tk.Frame(dialog_window)
 
+        # In some windows (e.g. information windows) we only need one button that closes the window,
+        # there is no reason to force caller to provide function for that
+        if command is None:
+            def command(_): return self.destroy()
+
         for idx, button in enumerate(buttons):
             active = tk.ACTIVE if button == default_button else tk.NORMAL
             btn = tk.Button(button_frame, text=button, state=active, command=partial(command, button))

@@ -171,21 +171,21 @@ class NewFolderDialog:
     # End NewFolderDialog
     
 class InformationDialog:
-    def __init__(self, parent, errstr, title='Information:'):
+    def __init__(self, parent, error_msg: str, title: str = 'Information:'):
         # We don't need an activate command since we want the dialog to just
         # get smacked when the user presses close.
         if title == '':
-            title = errstr
-        self.dialog = Pmw.Dialog(parent, title=title, buttons=["Close"])
+            title = error_msg
+        self.dialog = Dialog(parent=parent, title=title, buttons=["Close"])
 
         # print "========================================================"
         # print "Error Dialog: %s" % errstr
         # print "========================================================"
 
-        if type(errstr) != str:
-            errstr = str(errstr)
+        if type(error_msg) != str:
+            error_msg = str(error_msg)
 
-        labels = errstr.split("\n")
+        labels = error_msg.split("\n")
         
         for label in labels:
             tk.Label(self.dialog.interior(), text=label).pack(side='top')
@@ -194,8 +194,8 @@ class InformationDialog:
 
 
 class ErrorDialog(InformationDialog):
-    def __init__(self, parent, errstr, title="Error:"):
-        InformationDialog.__init__(self, parent, errstr, title)
+    def __init__(self, parent, error_msg: str, title: str = "Error:"):
+        InformationDialog.__init__(self, parent, error_msg, title)
 
 
 
