@@ -439,8 +439,7 @@ class TkGui(Tk):
         return self.goElsewhere(resource)
         
     def showOpenURL(self, *args):
-        d = Dialogs.OpenURLDialog(self, self.openURL)
-        return None
+        Dialogs.OpenURLDialog(self, self.openURL)
 
     def saveFile(self, *args):
         return self.CONTENT_BOX.saveFile()

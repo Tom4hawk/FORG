@@ -19,10 +19,8 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ############################################################################
 import tkinter as tk
-from types import *
-import Pmw
-from Bookmarks.Bookmark import Bookmark
 from tkui.Dialog import Dialog
+from Bookmarks.Bookmark import Bookmark
 
 
 class FindDialog:
@@ -81,19 +79,17 @@ class FindDialog:
         print("Last match is now ", self.lastMatch)
         return self.lastMatch
 
+
 class OpenURLDialog:
-    def __init__(self, parentwin, callback):
+    def __init__(self, parent, callback):
         self.callback = callback
-        self.dialog   = Pmw.Dialog(parentwin, title="Open URL:",
-                                   command=self.dispatch,
-                                   buttons=('OK', 'Cancel'),
-                                   defaultbutton='OK')
+        self.dialog = Dialog(title="Open URL:", command=self.dispatch, buttons=('OK', 'Cancel'), default_button='OK')
         i = self.dialog.interior()
         tk.Label(i, text="Enter URL to Open:").pack(side='top', expand=1, fill='both')
         self.urlEntry = tk.Entry(i, width=30)
         self.urlEntry.insert('end', "gopher://")
         self.urlEntry.pack()
-        
+
     def dispatch(self, button):
         if button == 'OK':
             # If OK is clicked, fire the callback with whatever the URL
@@ -102,8 +98,7 @@ class OpenURLDialog:
 
         # In any case, destroy the dialog when finished.
         self.dialog.destroy()
-        return None
-    
+
 
 class NewBookmarkDialog:
     def __init__(self, parentwin, cmd, resource=None):
@@ -169,7 +164,8 @@ class NewFolderDialog:
             self.dialog.destroy()
             return self.callback(str)
     # End NewFolderDialog
-    
+
+
 class InformationDialog:
     def __init__(self, parent, error_msg: str, title: str = 'Information:'):
         # We don't need an activate command since we want the dialog to just
